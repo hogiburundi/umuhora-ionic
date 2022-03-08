@@ -1,32 +1,53 @@
 <template>
   <ion-page>
-    <ion-content class="ion-padding">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12">
+    <ion-content>
+    <ion-col class="center-h ion-padding">
+      <ion-col size=12>
+        <ion-item>
           <ion-label position="floating">Username</ion-label>
-          <ion-input type=text placeholder="Username" clearInput/>
-        </ion-col>
-        <ion-col size="12">
+          <ion-input type=text placeholder="Username" v-model="username" clearInput/>
+        </ion-item>
+        <ion-item>
           <ion-label position="floating">Password</ion-label>
-          <ion-input type=password placeholder="Password" clearInput/>
-        </ion-col>
-        <ion-col size="12">
-          <ion-button expand="block">
-            CONNEXION
-          </ion-button>
-        </ion-col>
-      </ion-row>
+          <ion-input type=password placeholder="Password" v-model="password" clearInput/>
+        </ion-item>
+        <ion-button expand="block" @click="login">
+          CONNEXION
+        </ion-button>
+      </ion-col>
       <div>
-        Mot de passe oublié? Demandez de l'aide
+        Mot de passe oublié?
+        <a>
+          Demandez de l'aide
+          <ion-icon :src="icon('logo-whatsapp')"></ion-icon>
+        </a>
       </div>
-    </ion-grid>
+    </ion-col>
     </ion-content>
   </ion-page>
 </template>
 
 <script>
-
 export default {
+  data(){
+    return {
+      username:"", password:""
+    }
+  },
+  methods:{
+    login(){
+      this.$store.state.user = {
+        username:this.username,
+        password:this.password,
+      }
+    }
+  }
 }
 </script>
+<style>
+.center-h{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-90%);
+}
+</style>
