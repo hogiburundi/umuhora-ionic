@@ -13,33 +13,33 @@
         <div class="menus">
           <ion-list lines="none">
             <ion-item-divider>menu</ion-item-divider>
-            <ion-item button @click="buttonClick()">
+            <ion-item button @click="e => navigateTo('/home/vente')">
               <ion-icon :src="getIcon('cartOutline')"/>
               <ion-label>Vente</ion-label>
             </ion-item>
-            <ion-item button @click="buttonClick()">
+            <ion-item button @click="navigateTo('/home/stock')">
               <ion-icon :src="getIcon('basketOutline')"/>
               <ion-label>Stock</ion-label>
             </ion-item>
-            <ion-item button @click="buttonClick()">
+            <ion-item button @click="navigateTo('/home/stats')">
               <ion-icon :src="getIcon('statsChart')"/>
               <ion-label>Statistiques</ion-label>
             </ion-item>
           </ion-list>
           <ion-list lines="none">
             <ion-item-divider>Compte</ion-item-divider>
-            <ion-item button @click="buttonClick()">
+            <ion-item button @click="navigateTo('/compte')">
               <ion-icon :src="getIcon('personOutline')"/>
               <ion-label>Edition</ion-label>
             </ion-item>
-            <ion-item button @click="buttonClick()">
+            <ion-item button @click="logout()">
               <ion-icon :src="getIcon('logOutOutline')"/>
               <ion-label>Deconnexion</ion-label>
             </ion-item>
           </ion-list>
           <ion-list lines="none">
             <ion-item-divider>Autres</ion-item-divider>
-            <ion-item button @click="buttonClick()">
+            <ion-item button @click="openWhatsapp()">
               <ion-icon :src="getIcon('logoWhatsapp')"/>
               <ion-label>Demander l'aide</ion-label>
             </ion-item>
@@ -52,6 +52,7 @@
 </template>
 <script>
 import LoginForm from "./components/login_form"
+import { useIonRouter } from '@ionic/vue';
 export default {
   components: {
     LoginForm
@@ -86,12 +87,15 @@ export default {
   //   }
   // },
   methods:{
-    beforeTabChange(){
-
+    navigateTo(url){
+      console.log(url)
+      this.$route.push(url)
     },
-    afterTabChange(){
-
+    logout(){
+      this.$store.state.user = null
     },
+    openWhatsapp(){
+    }
   }
 };
 </script>

@@ -24,9 +24,19 @@
               <ion-label>Statistiques</ion-label>
             </ion-tab-button>
           </ion-tab-bar>
+          <ion-fab-button class="todo-fab" @click="addTodo">
+            <ion-icon :src="getIcon('qrCode')"></ion-icon>
+          </ion-fab-button>
     </ion-content>
   </ion-page>
 </template>
 
 <script>
 </script>
+<style>
+  ion-fab-button{
+    position: fixed;
+    right: 20px;
+    bottom: 50px;
+  }
+</style>
