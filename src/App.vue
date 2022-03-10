@@ -2,7 +2,7 @@
   <ion-app>
     <div class="logged-in" v-if="!!active_user">
       <ion-router-outlet id="main"/>
-      <ion-menu side="start" menu-id="custom" class="my-custom-menu" content-id="main">
+      <ion-menu side="start" menu-id="custom" class="drawer-layout" content-id="main">
         <div class="session-info">
           <div class="img-user">
             <img src="/img/ic_user.png" alt="">
@@ -10,8 +10,40 @@
           <div>Jonathan NKURUNZIZA</div>
           <div>HOGI Super Market</div>
         </div>
-        <div class="menu">
-          
+        <div class="menus">
+          <ion-list lines="none">
+            <ion-item-divider>menu</ion-item-divider>
+            <ion-item button @click="buttonClick()">
+              <ion-icon :src="getIcon('cartOutline')"/>
+              <ion-label>Vente</ion-label>
+            </ion-item>
+            <ion-item button @click="buttonClick()">
+              <ion-icon :src="getIcon('basketOutline')"/>
+              <ion-label>Stock</ion-label>
+            </ion-item>
+            <ion-item button @click="buttonClick()">
+              <ion-icon :src="getIcon('statsChart')"/>
+              <ion-label>Statistiques</ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-list lines="none">
+            <ion-item-divider>Compte</ion-item-divider>
+            <ion-item button @click="buttonClick()">
+              <ion-icon :src="getIcon('personOutline')"/>
+              <ion-label>Edition</ion-label>
+            </ion-item>
+            <ion-item button @click="buttonClick()">
+              <ion-icon :src="getIcon('logOutOutline')"/>
+              <ion-label>Deconnexion</ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-list lines="none">
+            <ion-item-divider>Autres</ion-item-divider>
+            <ion-item button @click="buttonClick()">
+              <ion-icon :src="getIcon('logoWhatsapp')"/>
+              <ion-label>Demander l'aide</ion-label>
+            </ion-item>
+          </ion-list>
         </div>
       </ion-menu>
     </div>

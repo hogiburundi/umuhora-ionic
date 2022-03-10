@@ -19,7 +19,7 @@
         Mot de passe oublié?
         <a>
           Demandez de l'aide
-          <ion-icon :src="getIcon('logo-whatsapp')"></ion-icon>
+          <ion-icon :src="getIcon('logoWhatsapp')"></ion-icon>
         </a>
       </div>
     </ion-col>

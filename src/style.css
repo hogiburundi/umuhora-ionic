@@ -14,8 +14,14 @@
 }
 .session-info{
 	padding: 50px 0 10px 20px;
-}
-.session-info>div{
-	margin-top: 10px;
 	color: white;
+}
+.drawer-layout .menus{
+	height: 100%;
+}
+ion-list ion-icon{
+	margin-right: 10px;
+}
+ion-list ion-label{
+	margin-top: 15px;
 }
