@@ -2,6 +2,18 @@
   <ion-app>
     <div class="logged-in" v-if="!!active_user">
       <ion-router-outlet id="main"/>
+      <ion-menu side="start" menu-id="custom" class="my-custom-menu" content-id="main">
+        <div class="session-info">
+          <div class="img-user">
+            <img src="/img/ic_user.png" alt="">
+          </div>
+          <div>Jonathan NKURUNZIZA</div>
+          <div>HOGI Super Market</div>
+        </div>
+        <div class="menu">
+          
+        </div>
+      </ion-menu>
     </div>
     <LoginForm v-else/>
   </ion-app>
