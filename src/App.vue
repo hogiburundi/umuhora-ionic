@@ -13,22 +13,22 @@
         <div class="menus">
           <ion-list lines="none">
             <ion-item-divider>menu</ion-item-divider>
-            <ion-item button @click="e => navigateTo('/home/vente')">
+            <ion-item button routerLink="/home/vente">
               <ion-icon :src="getIcon('cartOutline')"/>
               <ion-label>Vente</ion-label>
             </ion-item>
-            <ion-item button @click="navigateTo('/home/stock')">
+            <ion-item button routerLink="/home/stock">
               <ion-icon :src="getIcon('basketOutline')"/>
               <ion-label>Stock</ion-label>
             </ion-item>
-            <ion-item button @click="navigateTo('/home/stats')">
+            <ion-item button routerLink="/home/stats">
               <ion-icon :src="getIcon('statsChart')"/>
               <ion-label>Statistiques</ion-label>
             </ion-item>
           </ion-list>
           <ion-list lines="none">
             <ion-item-divider>Compte</ion-item-divider>
-            <ion-item button @click="navigateTo('/compte')">
+            <ion-item button routerLink="/compte">
               <ion-icon :src="getIcon('personOutline')"/>
               <ion-label>Edition</ion-label>
             </ion-item>

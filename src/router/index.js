@@ -5,6 +5,7 @@ import Home from '../views/Home.vue'
 import Stats from '../views/Stats.vue'
 import Stock from '../views/Stock.vue'
 import Vente from '../views/Vente.vue'
+import Commande from '../views/Commande.vue'
 
 const routes = [
   { path: '/', redirect: 'home' },
@@ -18,7 +19,7 @@ const routes = [
       { path: "stats", component: Stats}
     ]
   },
-  // { path: '/', name: 'vente', component: Vente},
+  { path: '/commande', name: 'commande', component: Commande},
 ]
 
 const router = createRouter({
