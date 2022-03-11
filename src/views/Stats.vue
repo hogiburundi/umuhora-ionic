@@ -4,32 +4,32 @@
       <ion-col class="menu" routerLink="/commande">
         <div>HISTORIQUE DES VENTES</div>
         <ion-icon :src="getIcon('bagCheckOutline')"/>
-        <ion-button routerLink="/commande">VOIR LES VENTES</ion-button>
+        <ion-button size="small">VOIR LES VENTES</ion-button>
       </ion-col>
       <ion-col class="menu" routerLink="/clients">
         <div>HISTORIQUE DES STOCKS</div>
         <ion-icon :src="getIcon('pieChartOutline')"/>
-        <ion-button>VOIR LES STOCKS</ion-button>
+        <ion-button size="small">VOIR LES STOCKS</ion-button>
       </ion-col>
       <ion-col class="menu" routerLink="/dettes">
         <div>HISTORIQUE DES DETTES</div>
         <ion-icon :src="getIcon('receiptOutline')"/>
-        <ion-button>VOIR LES DETTES</ion-button>
+        <ion-button size="small">VOIR LES DETTES</ion-button>
       </ion-col>
       <ion-col class="menu" routerLink="/pertes">
         <div>HISTORIQUE DES PERTES</div>
         <ion-icon :src="getIcon('barChartOutline')"/>
-        <ion-button>VOIR LES PERTES</ion-button>
+        <ion-button size="small">VOIR LES PERTES</ion-button>
       </ion-col>
       <ion-col class="menu" routerLink="/statstock">
-        <div>HISTORIQUE DES CLIENTÈLES</div>
+        <div>HISTORIQUE DU CLIENTÈLE</div>
         <ion-icon :src="getIcon('peopleOutline')"/>
-        <ion-button>VOIR LES CLIENTS</ion-button>
+        <ion-button size="small">VOIR LES CLIENTS</ion-button>
       </ion-col>
       <ion-col class="menu" routerLink="/versement">
         <div>VERSEMENT</div>
         <ion-icon :src="getIcon('walletOutline')"/>
-        <ion-button>LES VERSEMENTS</ion-button>
+        <ion-button size="small">LES VERSEMENTS</ion-button>
       </ion-col>
     </ion-col>
     <ion-tab-bar slot="bottom">
@@ -80,5 +80,8 @@ ion-col{
   flex-grow: 1;
   width: 100%;
   color: var(--ion-color-primary);
+}
+ion-button{
+  width: 100%;
 }
 </style>

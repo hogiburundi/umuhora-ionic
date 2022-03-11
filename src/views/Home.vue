@@ -19,7 +19,7 @@
 
 <script>
 </script>
-<style>
+<style scoped>
   ion-fab-button{
     position: fixed;
     right: 10px;

@@ -31,7 +31,7 @@
 
 <script>
 </script>
-<style>
+<style scoped>
 ion-footer{
   display: flex;
   justify-content: space-between;

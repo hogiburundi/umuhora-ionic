@@ -28,7 +28,7 @@
           </ion-list>
           <ion-list lines="none">
             <ion-item-divider>Compte</ion-item-divider>
-            <ion-item button routerLink="/compte">
+            <ion-item button routerLink="/profile">
               <ion-icon :src="getIcon('personOutline')"/>
               <ion-label>Edition</ion-label>
             </ion-item>
