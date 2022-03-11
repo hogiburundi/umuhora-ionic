@@ -1,6 +1,37 @@
 <template>
   <ion-page>
-    <div>Statistics Tab</div>
+    <ion-col>
+      <div class="menu">
+        <div>HISTORIQUE DES VENTES</div>
+        <ion-icon :src="getIcon('bagCheckOutline')"/>
+        <ion-button>VOIR LES VENTES</ion-button>
+      </div>
+      <div class="menu">
+        <div>HISTORIQUE DES STOCKS</div>
+        <ion-icon :src="getIcon('pieChartOutline')"/>
+        <ion-button>VOIR LES STOCKS</ion-button>
+      </div>
+      <div class="menu">
+        <div>HISTORIQUE DES DETTES</div>
+        <ion-icon :src="getIcon('receiptOutline')"/>
+        <ion-button>VOIR LES DETTES</ion-button>
+      </div>
+      <div class="menu">
+        <div>HISTORIQUE DES PERTES</div>
+        <ion-icon :src="getIcon('barChartOutline')"/>
+        <ion-button>VOIR LES PERTES</ion-button>
+      </div>
+      <div class="menu">
+        <div>HISTORIQUE DES CLIENTÈLES</div>
+        <ion-icon :src="getIcon('peopleOutline')"/>
+        <ion-button>VOIR LES CLIENTS</ion-button>
+      </div>
+      <div class="menu">
+        <div>VERSEMENT</div>
+        <ion-icon :src="getIcon('walletOutline')"/>
+        <ion-button>LES VERSEMENTS</ion-button>
+      </div>
+    </ion-col>
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="vente" href="/home/vente">
         <ion-icon :src="getIcon('cartOutline')"></ion-icon>
@@ -18,4 +49,35 @@
   </ion-page>
 </template>
 <script>
+export default {
+  data(){
+    return {
+    }
+  },
+}
 </script>
+<style scoped>
+ion-col{
+  max-height: 100%;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 5px;
+  grid-row-gap: 5px;
+  background: #eee;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.menu{
+  height: 160px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+.menu ion-icon{
+  flex-grow: 1;
+  width: 100%;
+  color: var(--ion-color-primary);
+}
+</style>
