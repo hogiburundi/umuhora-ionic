@@ -6,27 +6,27 @@
         <ion-icon :src="getIcon('bagCheckOutline')"/>
         <ion-button routerLink="/commande">VOIR LES VENTES</ion-button>
       </ion-col>
-      <ion-col class="menu">
+      <ion-col class="menu" routerLink="/clients">
         <div>HISTORIQUE DES STOCKS</div>
         <ion-icon :src="getIcon('pieChartOutline')"/>
         <ion-button>VOIR LES STOCKS</ion-button>
       </ion-col>
-      <ion-col class="menu">
+      <ion-col class="menu" routerLink="/dettes">
         <div>HISTORIQUE DES DETTES</div>
         <ion-icon :src="getIcon('receiptOutline')"/>
         <ion-button>VOIR LES DETTES</ion-button>
       </ion-col>
-      <ion-col class="menu">
+      <ion-col class="menu" routerLink="/pertes">
         <div>HISTORIQUE DES PERTES</div>
         <ion-icon :src="getIcon('barChartOutline')"/>
         <ion-button>VOIR LES PERTES</ion-button>
       </ion-col>
-      <ion-col class="menu">
+      <ion-col class="menu" routerLink="/statstock">
         <div>HISTORIQUE DES CLIENTÈLES</div>
         <ion-icon :src="getIcon('peopleOutline')"/>
         <ion-button>VOIR LES CLIENTS</ion-button>
       </ion-col>
-      <ion-col class="menu">
+      <ion-col class="menu" routerLink="/versement">
         <div>VERSEMENT</div>
         <ion-icon :src="getIcon('walletOutline')"/>
         <ion-button>LES VERSEMENTS</ion-button>
@@ -67,6 +67,7 @@ ion-col{
   background: #eee;
   align-items: flex-start;
   align-content: flex-start;
+  overflow-x: hidden;
 }
 .menu{
   height: 160px;
