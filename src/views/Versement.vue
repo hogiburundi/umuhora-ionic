@@ -11,7 +11,13 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <ion-col>
+        <VersementItem v-for="i in 13" :item="{}"/>
+      </ion-col>
     </ion-content>
+    <ion-fab-button class="todo-fab" @click="">
+      <ion-icon :src="getIcon('walletOutline')"></ion-icon>
+    </ion-fab-button>
     <ion-footer>
       <div class="group">
         <div>Montant: </div>
@@ -28,8 +34,11 @@
     </ion-footer>
   </ion-page>
 </template>
-
 <script>
+import VersementItem from "../components/versement_item"
+export default {
+  components:{VersementItem},
+}
 </script>
 <style scoped>
 ion-footer{
@@ -39,5 +48,10 @@ ion-footer{
 }
 .group{
   display: flex;
+}
+ion-fab-button{
+  position: fixed;
+  right: 10px;
+  bottom: 40px;
 }
 </style>
