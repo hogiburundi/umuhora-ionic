@@ -1,27 +1,27 @@
 <template>
   <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
+      <b>HOGI Burundi</b>
       <div class="inline">
         <div class="group">
-          <b style="margin-right: 3px;">3</b> Fanta du 2021-12-31
+          <div class="key">Nombre: </div>
+          <div>12</div>
         </div>
-        <div>2 400 FBU</div>
+        <div class="group">
+          <div class="key">Montant: </div>
+          <div>1 600 FBu</div>
+        </div>
       </div>
-      <div class="group">
-        <div>Inganzamarumpu</div>
-        <div>18 Jan 2022 15:57:13</div>
+      <div class="inline">
+        <div class="group">
+          <div class="key">du: </div>
+          <div>18-01-2021</div>
+        </div>
+        <div class="group">
+          <div class="key">au: </div>
+          <div>18-01-2021</div>
+        </div>
       </div>
-      <div class="descr">Lorem ipsum dolor sit amet consectetur adipisicing, elit.</div>
-    </div>
-    <div>
-      <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="increaseQtt">
-        <ion-icon :src="getIcon('checkmarkDone')"/>
-      </ion-button>
-      <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="increaseQtt">
-        <ion-icon color="danger" :src="getIcon('close')"/>
-      </ion-button>
     </div>
   </div>
 </template>
@@ -72,13 +72,14 @@ export default {
 }
 .inline{
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 .group{
   display: flex;
   align-items: baseline;
+  margin-right: 20px;
 }
-.descr{
-  font-size: .9em;
+.key{
+  margin-right: 2px;
 }
 </style>

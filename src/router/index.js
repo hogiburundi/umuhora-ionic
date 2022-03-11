@@ -6,7 +6,7 @@ import Stats from '../views/Stats.vue'
 import Stock from '../views/Stock.vue'
 import Vente from '../views/Vente.vue'
 import Commande from '../views/Commande.vue'
-import Clients from '../views/Clients.vue'
+import Clientele from '../views/Clientele.vue'
 import Dettes from '../views/Dettes.vue'
 import Pertes from '../views/Pertes.vue'
 import StatStock from '../views/StatStock.vue'
@@ -26,7 +26,7 @@ const routes = [
     ]
   },
   { path: '/commande', name: 'commande', component: Commande},
-  { path: '/clients', name: 'clients', component: Clients},
+  { path: '/clients', name: 'clients', component: Clientele},
   { path: '/dettes', name: 'dettes', component: Dettes},
   { path: '/pertes', name: 'pertes', component: Pertes},
   { path: '/statstock', name: 'statstock', component: StatStock},
