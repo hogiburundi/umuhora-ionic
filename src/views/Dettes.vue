@@ -11,6 +11,9 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <ion-col>
+        <DetteItem v-for="i in 13" :item="{}"/>
+      </ion-col>
     </ion-content>
     <ion-footer>
       <div class="group">
@@ -28,8 +31,11 @@
     </ion-footer>
   </ion-page>
 </template>
-
 <script>
+import DetteItem from "../components/dette_item"
+export default {
+  components:{DetteItem},
+}
 </script>
 <style scoped>
 ion-footer{
