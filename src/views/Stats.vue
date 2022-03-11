@@ -6,7 +6,7 @@
         <ion-icon :src="getIcon('bagCheckOutline')"/>
         <ion-button size="small">VOIR LES VENTES</ion-button>
       </ion-col>
-      <ion-col class="menu" routerLink="/clients">
+      <ion-col class="menu" routerLink="/statstock">
         <div>HISTORIQUE DES STOCKS</div>
         <ion-icon :src="getIcon('pieChartOutline')"/>
         <ion-button size="small">VOIR LES STOCKS</ion-button>
@@ -21,7 +21,7 @@
         <ion-icon :src="getIcon('barChartOutline')"/>
         <ion-button size="small">VOIR LES PERTES</ion-button>
       </ion-col>
-      <ion-col class="menu" routerLink="/statstock">
+      <ion-col class="menu" routerLink="/clients">
         <div>HISTORIQUE DU CLIENTÈLE</div>
         <ion-icon :src="getIcon('peopleOutline')"/>
         <ion-button size="small">VOIR LES CLIENTS</ion-button>

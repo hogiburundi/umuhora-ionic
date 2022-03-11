@@ -11,6 +11,9 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <ion-col>
+        <StatStockItem v-for="i in 13" :item="{}"/>
+      </ion-col>
     </ion-content>
     <ion-footer>
       <div class="group">
@@ -30,6 +33,10 @@
 </template>
 
 <script>
+import StatStockItem from "../components/stat_stock_item"
+export default {
+  components:{StatStockItem},
+}
 </script>
 <style scoped>
 ion-footer{

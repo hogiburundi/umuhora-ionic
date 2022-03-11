@@ -1,30 +1,39 @@
 <template>
   <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
-      <b>No. 396 du 01 Mar 2022 14:34:13</b>
+      <div line="none">
+        <b>Ndagala</b>
+        <span> 01 Mar 2022 02:00:00</span>
+      </div>
       <div class="inline">
         <div class="group">
-          <div class="key">Montant: </div>
+          <div class="key">Qtt init.: </div>
           <div>0</div>
         </div>
         <div class="group">
-          <div class="key">Payée: </div>
+          <div class="key">Qtt act.: </div>
           <div>0</div>
         </div>
         <div class="group">
-          <div class="key">Reste: </div>
+          <div class="key">PT: </div>
           <div>0</div>
         </div>
-      </div>
-      <div class="group">
-        <div class="key">Client: </div>
-        <div>Tony 68 252 977</div>
       </div>
     </div>
     <div class="inline">
+      <div class="inline" v-if="Math.random() < 0.5">
+        <ion-button size="small" expand="full" fill="clear"
+          style="margin: 0;" @click="increaseQtt">
+          <ion-icon :src="getIcon('checkmarkDone')"/>
+        </ion-button>
+        <ion-button size="small" expand="full" fill="clear"
+          style="margin: 0;" @click="increaseQtt">
+          <ion-icon color="danger" :src="getIcon('close')"/>
+        </ion-button>
+      </div>
       <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="increaseQtt">
-        <ion-icon color="danger" :src="getIcon('close')"/>
+        style="margin: 0;" @click="increaseQtt" v-else>
+        <ion-icon :src="getIcon('removeCircleOutline')"/>
       </ion-button>
     </div>
   </div>
@@ -41,29 +50,6 @@ export default {
       editable:false
     }
   },
-  methods: {
-    increaseQtt : function(){
-      this.cart.add(this.item);
-    },
-    decreaseQtt : function(){
-      this.cart.decrease(this.item.id);
-    },
-    enableEdition(){
-      if(this.item.quantite!=0) this.editable=true
-    }
-  },
-  computed:{
-    qtt:{
-      get(){
-        return 0
-        // return this.cart.getQuantite(this.item.id);
-      },
-      set(value){
-        if(value.length==0) return;
-        this.cart.add(this.item, value);
-      }
-    }
-  }
 };
 </script>
 <style scoped>

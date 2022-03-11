@@ -33,29 +33,6 @@ export default {
       cart : this.$store.state.cart,
       editable:false
     }
-  },
-  methods: {
-    increaseQtt : function(){
-      this.cart.add(this.item);
-    },
-    decreaseQtt : function(){
-      this.cart.decrease(this.item.id);
-    },
-    enableEdition(){
-      if(this.item.quantite!=0) this.editable=true
-    }
-  },
-  computed:{
-    qtt:{
-      get(){
-        return 0
-        // return this.cart.getQuantite(this.item.id);
-      },
-      set(value){
-        if(value.length==0) return;
-        this.cart.add(this.item, value);
-      }
-    }
   }
 };
 </script>
