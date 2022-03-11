@@ -1,6 +1,8 @@
 <template>
   <ion-page>
-    <div>Vente Tab</div>
+    <ion-col>
+      <VenteItem v-for="i in 12" :item="default_vente"/>
+    </ion-col>
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="vente" href="/home/vente">
         <ion-icon :src="getIcon('cartOutline')"></ion-icon>
@@ -18,4 +20,33 @@
   </ion-page>
 </template>
 <script>
+import VenteItem from "../components/vente_item"
+export default {
+  data(){
+    return {
+      default_vente:{
+        id:1, quantite:5, nom:"ibiharage", prix_vente:2000,
+        unite_sortante:"kg"
+      }
+    }
+  },
+  components:{VenteItem},
+}
 </script>
+<style scoped>
+.scroll-items {
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  overflow-x: scroll !important;
+  overflow-y: hidden;
+}
+ion-col{
+  max-height: 100%;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: flex-start;
+  align-content: flex-start;
+
+}
+</style>

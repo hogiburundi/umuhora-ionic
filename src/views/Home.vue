@@ -8,7 +8,7 @@
         <ion-title>URUFATANAMENDE</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content class="ion-padding">
+    <ion-content>
         <ion-router-outlet/>
       <ion-fab-button class="todo-fab" @click="">
         <ion-icon :src="getIcon('qrCode')"></ion-icon>

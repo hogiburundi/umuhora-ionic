@@ -41,7 +41,12 @@ app.mixin({
   methods: {
     getIcon(name) {
       return allIcons[name];
-    }
+    },
+    money(x) {
+      let cash = parseFloat(x).toFixed(0)
+      if(!x) return "0";
+      return cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    },
   }
 });
 
