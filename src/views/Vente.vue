@@ -34,12 +34,6 @@ export default {
 }
 </script>
 <style scoped>
-.scroll-items {
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  overflow-x: scroll !important;
-  overflow-y: hidden;
-}
 ion-col{
   max-height: 100%;
   overflow-y: auto;
@@ -47,6 +41,5 @@ ion-col{
   grid-template-columns: repeat(3, 1fr);
   align-items: flex-start;
   align-content: flex-start;
-
 }
 </style>
