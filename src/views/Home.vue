@@ -14,7 +14,7 @@
           </ion-button>
         </ion-buttons>
         <ion-buttons slot="primary">
-          <ion-button color="primary" @click.stop.prevent="displayMenu">
+          <ion-button color="primary" id="menu-toggler">
             <ion-icon slot="icon-only"
               :ios="getIcon('ellipsisHorizontal')"
               :md="getIcon('ellipsisVertical')"/>
@@ -22,10 +22,14 @@
         </ion-buttons>
         <ion-title>UMUHORA</ion-title>
       </ion-toolbar>
-      <ion-list class="menu" lines="none" v-if="menu_shown">
-        <ion-item size="small" button @click="hideMenu">Notifications</ion-item>
-        <ion-item size="small" button @click="hideMenu">Synchroniser</ion-item>
-      </ion-list>
+      <ion-popover trigger="menu-toggler" dismiss-on-select="true" show-backdrop="false">
+        <ion-content>
+          <ion-list lines="none">
+            <ion-item button size="small">Notifications</ion-item>
+            <ion-item button size="small">Synchroniser</ion-item>
+          </ion-list>
+        </ion-content>
+      </ion-popover>
     </ion-header>
     <ion-content>
       <ion-router-outlet/>
@@ -77,15 +81,5 @@ ion-fab-button{
 }
 ion-tab-bar{
   display: flex!important;
-}
-.menu{
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  z-index: 10;
-  background-color: white;
-  border-radius: 5px;
-  border: 1px solid #e5e5e5;
-  width: 160px;
 }
 </style>

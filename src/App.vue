@@ -2,7 +2,7 @@
   <ion-app>
     <div class="logged-in" v-if="!!active_user">
       <ion-router-outlet id="main"/>
-      <ion-menu side="start" menu-id="custom" class="drawer-layout" content-id="main">
+      <ion-menu side="start" class="drawer-layout" content-id="main">
         <div class="session-info">
           <div class="img-user">
             <img src="/img/ic_user.png" alt="">
