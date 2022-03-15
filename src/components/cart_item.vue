@@ -3,7 +3,9 @@
     <ion-button color="medium">-</ion-button>
     <ion-button>+</ion-button>
     <ion-label>1.0 x Umuceri à 2 500 par kg</ion-label>
-    <ion-icon :src="getIcon('close')" color="danger"/>
+    <ion-button fill=clear>
+      <ion-icon :src="getIcon('close')" color="danger"/>
+    </ion-button>
   </div>
 </template>
 

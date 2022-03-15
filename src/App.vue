@@ -10,7 +10,7 @@
           <div>Jonathan NKURUNZIZA</div>
           <div>HOGI Super Market</div>
         </div>
-        <div class="menus">
+        <div class="menus" @click="doThings">
           <ion-list lines="none">
             <ion-item-divider>menu</ion-item-divider>
             <ion-item button routerLink="/home/vente">
@@ -53,9 +53,14 @@
 <script>
 import LoginForm from "./components/login_form"
 import { useIonRouter } from '@ionic/vue';
+import { menuController } from '@ionic/vue';
 export default {
   components: {
     LoginForm
+  },
+  data(){
+    return {
+    }
   },
   // watch:{
   //   "$store.state.user":{
@@ -87,14 +92,13 @@ export default {
   //   }
   // },
   methods:{
-    navigateTo(url){
-      console.log(url)
-      this.$route.push(url)
-    },
     logout(){
       this.$store.state.user = null
     },
     openWhatsapp(){
+    },
+    doThings(event){
+      menuController.close();
     }
   }
 };
