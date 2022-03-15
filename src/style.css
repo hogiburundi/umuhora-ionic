@@ -28,3 +28,45 @@ ion-list ion-icon{
 ion-list ion-label{
 	margin-top: 15px;
 }
+.dialog{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #5555;
+}
+.dialog .body{
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 90%;
+	max-width: 360px;
+	background-color: white;
+	border-radius: 5px;
+}
+.dialog h3{
+	font-weight: 700;
+	text-align: center;
+	color: #333;
+	margin-top: 0;
+}
+.field{
+	margin-bottom: 10px;
+}
+.field>*{
+	display: block;
+	width: 100%;
+}
+select, input[type=date]{
+	padding: 5px 10px;
+	margin: 2px 0;
+}
+option{
+	width: 100px;
+}
+.dialog .options{
+	display: flex;
+	justify-content: flex-end;
+}

@@ -52,8 +52,7 @@
 </template>
 <script>
 import LoginForm from "./components/login_form"
-import { useIonRouter } from '@ionic/vue';
-import { menuController } from '@ionic/vue';
+import { useIonRouter, menuController } from '@ionic/vue';
 export default {
   components: {
     LoginForm

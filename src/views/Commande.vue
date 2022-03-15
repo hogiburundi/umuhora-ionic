@@ -9,7 +9,7 @@
         </ion-buttons>
         <ion-title>UMUHORA</ion-title>
         <ion-buttons slot="secondary">
-          <ion-button>
+          <ion-button @click="showDateDialog">
             <ion-icon slot="icon-only" :icon="getIcon('calendar')"/>
           </ion-button>
         </ion-buttons>
@@ -35,11 +35,23 @@
       </div>
     </ion-footer>
   </ion-page>
+  <DialogDateFilter v-if="date_shown"/>
 </template>
 <script>
 import CommandeItem from "../components/commande_item"
+import DialogDateFilter from "../components/dialog_date_filter"
 export default {
-  components:{CommandeItem},
+  components:{ CommandeItem, DialogDateFilter},
+  data(){
+    return {
+      date_shown:false
+    }
+  },
+  methods:{
+    showDateDialog(){
+      this.date_shown = true
+    }
+  }
 }
 </script>
 <style scoped>
