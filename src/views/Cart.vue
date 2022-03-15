@@ -11,6 +11,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
+      <CartItem v-for="i in 3"/>
       <div class="total">
         <div>Total:</div>
         <b>0.0 </b>
@@ -54,7 +55,9 @@
   </ion-page>
 </template>
 <script>
+import CartItem from "../components/cart_item"
 export default {
+  components:{ CartItem },
   data(){
     return {
       is_new:false, nom:"", tel:""
