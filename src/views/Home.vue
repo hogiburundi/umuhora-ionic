@@ -6,7 +6,7 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-buttons slot="secondary">
-          <ion-button>
+          <ion-button routerLink="/cart">
             <ion-icon slot="icon-only" :src="getIcon('cartOutline')"/>
           </ion-button>
           <ion-button>

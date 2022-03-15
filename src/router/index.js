@@ -12,6 +12,7 @@ import Pertes from '../views/Pertes.vue'
 import StatStock from '../views/StatStock.vue'
 import Versement from '../views/Versement.vue'
 import Profile from '../views/Profile.vue'
+import Cart from '../views/Cart.vue'
 
 const routes = [
   { path: '/', redirect: 'home' },
@@ -32,6 +33,7 @@ const routes = [
   { path: '/statstock', name: 'statstock', component: StatStock},
   { path: '/versement', name: 'versement', component: Versement},
   { path: '/profile', name: 'profile', component: Profile},
+  { path: '/cart', name: 'cart', component: Cart},
 ]
 
 const router = createRouter({
