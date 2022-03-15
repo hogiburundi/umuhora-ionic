@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <ion-page @click="hideMenu">
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
@@ -14,7 +14,7 @@
           </ion-button>
         </ion-buttons>
         <ion-buttons slot="primary">
-          <ion-button color="primary">
+          <ion-button color="primary" @click.stop.prevent="displayMenu">
             <ion-icon slot="icon-only"
               :ios="getIcon('ellipsisHorizontal')"
               :md="getIcon('ellipsisVertical')"/>
@@ -22,6 +22,10 @@
         </ion-buttons>
         <ion-title>UMUHORA</ion-title>
       </ion-toolbar>
+      <ion-list class="menu" lines="none" v-if="menu_shown">
+        <ion-item size="small" button @click="hideMenu">Notifications</ion-item>
+        <ion-item size="small" button @click="hideMenu">Synchroniser</ion-item>
+      </ion-list>
     </ion-header>
     <ion-content>
       <ion-router-outlet/>
@@ -49,6 +53,21 @@
 </template>
 
 <script>
+export default {
+  data(){
+    return {
+      menu_shown:false
+    }
+  },
+  methods:{
+    displayMenu(){
+      this.menu_shown=true
+    },
+    hideMenu(){
+      this.menu_shown=false
+    }
+  }
+}
 </script>
 <style scoped>
 ion-fab-button{
@@ -58,5 +77,15 @@ ion-fab-button{
 }
 ion-tab-bar{
   display: flex!important;
+}
+.menu{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 10;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid #e5e5e5;
+  width: 160px;
 }
 </style>

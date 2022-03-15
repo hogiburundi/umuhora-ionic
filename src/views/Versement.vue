@@ -2,12 +2,17 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button slot="start" routerLink="/home/stats">
-              <ion-icon :src="getIcon('arrowBack')"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        <ion-title>URUFATANAMENDE</ion-title>
+        <ion-buttons slot="start">
+          <ion-button slot="start" routerLink="/home/stats">
+            <ion-icon :src="getIcon('arrowBack')"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title>UMUHORA</ion-title>
+        <ion-buttons slot="secondary">
+          <ion-button>
+            <ion-icon slot="icon-only" :icon="getIcon('calendar')"/>
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content>

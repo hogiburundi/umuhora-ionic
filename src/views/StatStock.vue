@@ -7,7 +7,7 @@
               <ion-icon :src="getIcon('arrowBack')"></ion-icon>
             </ion-button>
           </ion-buttons>
-        <ion-title>URUFATANAMENDE</ion-title>
+        <ion-title>UMUHORA</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
