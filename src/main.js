@@ -2,6 +2,7 @@ import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios'
 import {
   IonApp, IonPage, IonicVue, IonRouterOutlet, IonIcon, IonTabs, IonLabel,
   IonInput, IonItem, IonButton, IonButtons, IonCol, IonContent, IonTabButton,
@@ -11,6 +12,7 @@ import {
 import '@ionic/core/css/ionic.bundle.css'
 import * as allIcons from "ionicons/icons";
 
+window.axios = axios;
 const app = createApp(App).use(IonicVue).use(router).use(store);
 
 app.component("IonRouterOutlet", IonRouterOutlet)

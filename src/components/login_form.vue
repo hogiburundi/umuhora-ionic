@@ -5,12 +5,15 @@
       <ion-col size=12>
         <ion-item>
           <ion-label position="floating">Username</ion-label>
-          <ion-input type=text placeholder="Username" v-model="username" clearInput/>
+          <ion-input type=text placeholder="Username"
+            @IonChange="username=$event.target.value" clearInput/>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Password</ion-label>
-          <ion-input type=password placeholder="Password" v-model="password" clearInput/>
+          <ion-input type=password placeholder="Password"
+            @IonChange="password=$event.target.value" clearInput/>
         </ion-item>
+        <ion-label color="danger">{{ logs }}</ion-label>
         <ion-button expand="block" @click="login">
           CONNEXION
         </ion-button>
@@ -31,15 +34,23 @@
 export default {
   data(){
     return {
-      username:"", password:""
+      username:"", password:"", logs:""
     }
   },
   methods:{
     login(){
-      this.$store.state.user = {
-        username:this.username,
-        password:this.password,
-      }
+      this.logs = ""
+      axios.post(this.url+"/login/", 
+        {"username": this.username, "password":this.password}
+      ).then((response) => {
+        this.$store.state.user = response.data
+        this.$store.state.alert = {
+          type:"success", message:"Bienvenue"
+        }
+      }).catch((error) => {
+        console.log(error)
+        this.logs = error.response.data
+      })
     }
   }
 }
@@ -48,6 +59,6 @@ export default {
 .center-h{
   position: absolute;
   top: 50%;
-  transform: translateY(-90%);
+  transform: translateY(-60%);
 }
 </style>
