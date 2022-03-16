@@ -1,8 +1,10 @@
 <template>
   <ion-page>
-    <ion-col>
-      <VenteItem v-for="i in 12" :item="default_vente"/>
-    </ion-col>
+    <ion-content>
+      <ion-col>
+        <VenteItem v-for="i in 12" :item="default_vente"/>
+      </ion-col>
+    </ion-content>
   </ion-page>
 </template>
 <script>
