@@ -10,9 +10,8 @@
           </ion-buttons>
         <ion-title>UMUHORA</ion-title>
         <ion-buttons slot="secondary">
-          <ion-button>
-            <ion-icon slot="icon-only" :icon="getIcon('calendar')"
-              @click="showDateDialog"/>
+          <ion-button @click="showDateDialog">
+            <ion-icon slot="icon-only" :icon="getIcon('calendar')"/>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -43,11 +42,10 @@
 
 <script>
 import StatStockItem from "../components/stat_stock_item"
-
 import DialogDateFilter from "../components/dialog_date_filter"
 
 export default {
-  components:{StatStockItem,},
+  components:{StatStockItem, DialogDateFilter},
   data(){
     return {
       date_shown:false

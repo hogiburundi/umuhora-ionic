@@ -10,7 +10,7 @@
         </ion-buttons>
         <ion-title>UMUHORA</ion-title>
         <ion-buttons slot="secondary">
-          <ion-button>
+          <ion-button @click="showDateDialog">
             <ion-icon slot="icon-only" :icon="getIcon('calendar')"/>
           </ion-button>
         </ion-buttons>
