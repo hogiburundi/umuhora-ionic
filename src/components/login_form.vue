@@ -3,12 +3,12 @@
     <ion-content>
     <ion-col class="center-h ion-padding">
       <ion-col size=12>
-        <ion-item>
+        <ion-item class="ion-no-padding">
           <ion-label position="floating">Username</ion-label>
           <ion-input type=text placeholder="Username"
             @IonChange="username=$event.target.value" clearInput/>
         </ion-item>
-        <ion-item>
+        <ion-item class="ion-no-padding">
           <ion-label position="floating">Password</ion-label>
           <ion-input type=password placeholder="Password"
             @IonChange="password=$event.target.value" clearInput/>

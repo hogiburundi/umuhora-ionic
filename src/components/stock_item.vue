@@ -1,5 +1,5 @@
 <template>
-  <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
+  <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
       <div>{{ item.nom }}</div>
       <div class="inline">
@@ -13,17 +13,15 @@
         </div>
       </div>
     </div>
-    <div class="inline">
-      <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="decreaseQtt">
+    <ion-col class="inline">
+      <ion-button size="small" expand="full" fill="clear" @click="editStock">
         <ion-icon :src="getIcon('pencil')"/>
       </ion-button>
-      <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="increaseQtt">
+      <ion-button size="small" expand="full" fill="clear" @click="increaseQtt">
         <ion-icon :src="getIcon('bagAdd')"/>
       </ion-button>
-    </div>
-  </div>
+    </ion-col>
+  </ion-col>
 </template>
 
 <script >
@@ -36,13 +34,23 @@ export default {
       cart : this.$store.state.cart,
       editable:false
     }
+  },
+  methods:{
+    editStock(){
+      this.$emit("edit")
+    },
+    increaseQtt(){
+      this.$emit("buy")
+    }
   }
 };
 </script>
 <style scoped>
 .parent{
   display: flex;
-  margin: 10px 0;
+  margin: 10px 0 0 10px;
+  padding: 0;
+  flex-grow: 0;
 }
 .item{
   flex-grow: 1;
@@ -59,5 +67,8 @@ export default {
 }
 .inline{
   display: flex;
+}
+ion-button{
+  margin: 0
 }
 </style>
