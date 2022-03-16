@@ -1,4 +1,5 @@
 <template>
+<ion-page>
   <ion-page>
     <ion-header>
       <ion-toolbar>
@@ -8,6 +9,12 @@
             </ion-button>
           </ion-buttons>
         <ion-title>UMUHORA</ion-title>
+        <ion-buttons slot="secondary">
+          <ion-button>
+            <ion-icon slot="icon-only" :icon="getIcon('calendar')"
+              @click="showDateDialog"/>
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -30,12 +37,27 @@
       </div>
     </ion-footer>
   </ion-page>
+  <DialogDateFilter :active="date_shown" @close="date_shown=false"/>
+</ion-page>
 </template>
 
 <script>
 import StatStockItem from "../components/stat_stock_item"
+
+import DialogDateFilter from "../components/dialog_date_filter"
+
 export default {
-  components:{StatStockItem},
+  components:{StatStockItem,},
+  data(){
+    return {
+      date_shown:false
+    }
+  },
+  methods:{
+    showDateDialog(){
+      this.date_shown = true
+    }
+  }
 }
 </script>
 <style scoped>

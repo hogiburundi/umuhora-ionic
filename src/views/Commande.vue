@@ -1,4 +1,5 @@
 <template>
+<ion-page>
   <ion-page>
     <ion-header>
       <ion-toolbar>
@@ -35,7 +36,8 @@
       </div>
     </ion-footer>
   </ion-page>
-  <DialogDateFilter v-if="date_shown"/>
+  <DialogDateFilter :active="date_shown" @close="date_shown=false"/>
+</ion-page>
 </template>
 <script>
 import CommandeItem from "../components/commande_item"

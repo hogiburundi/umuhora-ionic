@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog">
+  <div class="dialog" v-if="active">
     <div class="body ion-padding">
       <h3>Filtrage</h3>
       <div class="field">
@@ -15,10 +15,12 @@
         <label for="au">Jusqu'au</label>
         <input type="date" id="au">
       </div>
-      <div class="options">
-        <ion-button fill=clear color="medium">ANULLER</ion-button>
+      <ion-col class="options">
+        <ion-button fill=clear color="medium" @click="close">
+          ANULLER
+        </ion-button>
         <ion-button fill=clear>VALIDER</ion-button>
-      </div>
+      </ion-col>
     </div>
   </div>
 </template>
@@ -26,17 +28,26 @@
 <script >
 export default {
   props: {
-    item:{type:Object, required:true}
+    active:{type:Boolean, required:true}
   },
   data(){
     return {
     }
   },
   methods: {
+    close(){
+      this.$emit("close")
+    }
   },
   computed:{
   }
 };
 </script>
 <style scoped>
+.options{
+  padding-bottom: 0;
+}
+.ion-padding{
+  padding-bottom: 5px;
+}
 </style>

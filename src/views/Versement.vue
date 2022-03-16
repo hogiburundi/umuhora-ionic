@@ -1,4 +1,5 @@
 <template>
+<ion-page>
   <ion-page>
     <ion-header>
       <ion-toolbar>
@@ -38,11 +39,25 @@
       </div>
     </ion-footer>
   </ion-page>
+  <DialogDateFilter :active="date_shown" @close="date_shown=false"/>
+</ion-page>
 </template>
 <script>
 import VersementItem from "../components/versement_item"
+import DialogDateFilter from "../components/dialog_date_filter"
+
 export default {
-  components:{VersementItem},
+  components:{VersementItem, DialogDateFilter},
+  data(){
+    return {
+      date_shown:false
+    }
+  },
+  methods:{
+    showDateDialog(){
+      this.date_shown = true
+    }
+  }
 }
 </script>
 <style scoped>

@@ -70,3 +70,6 @@ option{
 	display: flex;
 	justify-content: flex-end;
 }
+ion-footer{
+  background-color: white;
+}

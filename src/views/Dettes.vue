@@ -1,4 +1,5 @@
 <template>
+<ion-page>
   <ion-page>
     <ion-header>
       <ion-toolbar>
@@ -10,7 +11,8 @@
         <ion-title>UMUHORA</ion-title>
         <ion-buttons slot="secondary">
           <ion-button>
-            <ion-icon slot="icon-only" :icon="getIcon('calendar')"/>
+            <ion-icon slot="icon-only" :icon="getIcon('calendar')"
+              @click="showDateDialog"/>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
@@ -35,11 +37,25 @@
       </div>
     </ion-footer>
   </ion-page>
+  <DialogDateFilter :active="date_shown" @close="date_shown=false"/>
+</ion-page>
 </template>
 <script>
 import DetteItem from "../components/dette_item"
+import DialogDateFilter from "../components/dialog_date_filter"
+
 export default {
-  components:{DetteItem},
+  components:{DetteItem, DialogDateFilter},
+  data(){
+    return {
+      date_shown:false
+    }
+  },
+  methods:{
+    showDateDialog(){
+      this.date_shown = true
+    }
+  }
 }
 </script>
 <style scoped>
