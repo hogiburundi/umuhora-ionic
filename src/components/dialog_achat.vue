@@ -1,7 +1,7 @@
 <template>
   <div class="dialog" v-if="active">
     <div class="body ion-padding">
-      <h3>Produit</h3>
+      <h3>Acheter</h3>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">Nom du produit</ion-label>
           <ion-input type=text placeholder="Nom du produit"
@@ -12,21 +12,10 @@
           <ion-input type=text placeholder="Unité entrante"
             @IonChange="unite_entrante=$event.target.value" clearInput/>
         </ion-item>
-        <ion-item class="ion-no-padding">
-          <ion-label position="floating">Unité sortante</ion-label>
-          <ion-input type=text placeholder="Unité sortante"
-            @IonChange="unite=$event.target.value" clearInput/>
-        </ion-item>
-        <ion-item class="ion-no-padding">
-          <ion-label position="floating">rapport</ion-label>
-          <ion-input type=text placeholder="rapport" value=1
-            @IonChange="rapport=$event.target.value" clearInput/>
-        </ion-item>
-        <ion-item class="ion-no-padding">
-          <ion-label position="floating">prix de vente</ion-label>
-          <ion-input type=text placeholder="prix de vente"
-            @IonChange="prix_vente=$event.target.value" clearInput/>
-        </ion-item>
+        <div class="field">
+          <label for="du">Date d'expiration</label>
+          <input type="date" id="du">
+        </div>
       <ion-col class="options">
         <ion-button fill=clear color="medium" @click="close">
           ANULLER
@@ -61,5 +50,8 @@ export default {
 }
 .ion-padding{
   padding-bottom: 5px;
+}
+.field{
+  margin-top: 10px;
 }
 </style>
