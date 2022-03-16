@@ -61,35 +61,35 @@ export default {
     return {
     }
   },
-  // watch:{
-  //   "$store.state.user":{
-  //     deep:true,
-  //     handler(new_val){
-  //       if(!!new_val){
-  //         localStorage.setItem('user', JSON.stringify(new_val));
-  //       } else {
-  //         localStorage.removeItem('user')
-  //       }
-  //     }
-  //   },
-  //   "$store.state.active_kiosk"(new_val){
-  //     if(!!new_val){
-  //       localStorage.setItem('active_kiosk', JSON.stringify(new_val));
-  //     } else {
-  //       localStorage.removeItem('active_kiosk')
-  //     }
-  //   }
-  // },
-  // mounted(){
-  //   var user = JSON.parse(localStorage.getItem('user'));
-  //   var active_kiosk = JSON.parse(localStorage.getItem('active_kiosk'));
-  //   if (user) {
-  //     this.$store.state.user = user;
-  //   }
-  //   if(active_kiosk) {
-  //     this.$store.state.active_kiosk = active_kiosk;
-  //   }
-  // },
+  watch:{
+    "$store.state.user":{
+      deep:true,
+      handler(new_val){
+        if(!!new_val){
+          localStorage.setItem('user', JSON.stringify(new_val));
+        } else {
+          localStorage.removeItem('user')
+        }
+      }
+    },
+    "$store.state.active_kiosk"(new_val){
+      if(!!new_val){
+        localStorage.setItem('active_kiosk', JSON.stringify(new_val));
+      } else {
+        localStorage.removeItem('active_kiosk')
+      }
+    }
+  },
+  mounted(){
+    var user = JSON.parse(localStorage.getItem('user'));
+    var active_kiosk = JSON.parse(localStorage.getItem('active_kiosk'));
+    if (user) {
+      this.$store.state.user = user;
+    }
+    if(active_kiosk) {
+      this.$store.state.active_kiosk = active_kiosk;
+    }
+  },
   methods:{
     logout(){
       this.$store.state.user = null
