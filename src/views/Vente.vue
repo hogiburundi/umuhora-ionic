@@ -59,7 +59,8 @@ ion-col{
   overflow-y: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  align-items: flex-start;
+  grid-gap: 5px;
+  max-width: 100vw;
   align-content: flex-start;
 }
 </style>
