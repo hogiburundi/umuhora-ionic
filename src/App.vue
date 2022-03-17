@@ -1,6 +1,7 @@
 <template>
   <ion-app>
-    <div class="logged-in" v-if="!!active_user">
+    <div v-if="!!active_user">
+      <KioskChooser :active="must_choose_kiosk"/>
       <ion-router-outlet id="main"/>
       <ion-menu side="start" class="drawer-layout" content-id="main">
         <div class="session-info">
@@ -51,34 +52,41 @@
   </ion-app>
 </template>
 <script>
-import LoginForm from "./components/login_form"
 import { useIonRouter, menuController } from '@ionic/vue';
+import LoginForm from "./components/login_form"
+import KioskChooser from "./components/kiosk_chooser"
+
 export default {
-  components: {
-    LoginForm
-  },
+  components: { LoginForm, KioskChooser },
   data(){
     return {
     }
   },
+  computed:{
+    must_choose_kiosk(){
+      return !!this.active_user.kiosks &&
+             this.active_user.kiosks.length>1 &&
+             !this.$store.state.active_kiosk
+    }
+  },
   watch:{
-    // "$store.state.user":{
-    //   deep:true,
-    //   handler(new_val){
-    //     if(!!new_val){
-    //       localStorage.setItem('user', JSON.stringify(new_val));
-    //     } else {
-    //       localStorage.removeItem('user')
-    //     }
-    //   }
-    // },
-    // "$store.state.active_kiosk"(new_val){
-    //   if(!!new_val){
-    //     localStorage.setItem('active_kiosk', JSON.stringify(new_val));
-    //   } else {
-    //     localStorage.removeItem('active_kiosk')
-    //   }
-    // }
+    "$store.state.user":{
+      deep:true,
+      handler(new_val){
+        if(!!new_val){
+          localStorage.setItem('user', JSON.stringify(new_val));
+        } else {
+          localStorage.removeItem('user')
+        }
+      }
+    },
+    "$store.state.active_kiosk"(new_val){
+      if(!!new_val){
+        localStorage.setItem('active_kiosk', JSON.stringify(new_val));
+      } else {
+        localStorage.removeItem('active_kiosk')
+      }
+    }
   },
   mounted(){
     var user = JSON.parse(localStorage.getItem('user'));
@@ -92,6 +100,7 @@ export default {
   },
   methods:{
     logout(){
+      this.$store.state.active_kiosk = null
       this.$store.state.user = null
     },
     openWhatsapp(){

@@ -1,7 +1,7 @@
 <template>
   <ion-page @click="hideMenu">
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="primary">
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
@@ -17,7 +17,7 @@
           </ion-button>
         </ion-buttons>
         <ion-buttons slot="primary">
-          <ion-button color="primary" id="menu-toggler">
+          <ion-button id="menu-toggler">
             <ion-icon slot="icon-only"
               :ios="getIcon('ellipsisHorizontal')"
               :md="getIcon('ellipsisVertical')"/>

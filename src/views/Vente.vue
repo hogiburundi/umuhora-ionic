@@ -2,7 +2,7 @@
   <ion-page>
     <ion-content>
       <ion-col>
-        <VenteItem v-for="i in 12" :item="default_vente"/>
+        <VenteItem v-for="item in $store.state.produits" :item="item"/>
       </ion-col>
     </ion-content>
   </ion-page>
@@ -14,7 +14,43 @@ export default {
     return {
     }
   },
+  watch:{
+    "$store.state.active_kiosk"(new_val){
+      this.fetchData()
+    }
+  },
   components:{VenteItem},
+  methods:{
+    fetchData(){
+      let link = ""
+      if(this.getActiveKiosk()==null){
+        return
+      }
+      let kiosk_id = this.getActiveKiosk().id
+      if(!this.next){
+        link = this.url+`/produit/?kiosk=${kiosk_id}`;
+      } else {
+        link = this.next
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        this.$store.state.produits.push(...response.data.results)
+        if(response.data.next.length > 0){
+          this.next = response.data.next
+          this.fetchData()
+        } else {
+          this.next = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.fetchData)
+      });
+    },
+  },
+  mounted(){
+    if(this.$store.state.produits.length<1){
+      this.fetchData()
+    }
+  },
 }
 </script>
 <style scoped>

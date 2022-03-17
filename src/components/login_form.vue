@@ -39,10 +39,6 @@ export default {
   },
   methods:{
     login(){
-      this.$store.state.user = {
-        "username": this.username,
-        "password":this.password
-      }
       this.logs = ""
       axios.post(this.url+"/login/", 
         {"username": this.username, "password":this.password}
