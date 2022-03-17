@@ -3,7 +3,8 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     user:null,
-    base_url: "http://127.0.0.1:8000",
+    base_url: "https://urufatanamende.hogi.bi",
+    // base_url: "http://127.0.0.1:8000",
     // base_url: "",
     api: "/api",
     notification:{type:"", message:"Bienvenue"},

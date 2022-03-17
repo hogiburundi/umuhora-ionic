@@ -135,7 +135,7 @@ app.mixin({
       }
     },
     getActiveKiosk(){
-      if(!this.$store.state.active_kiosk){
+      if(!this.$store.state.active_kiosk && this.active_user){
         if(!!this.active_user.kiosks && this.active_user.kiosks.length == 1){
           this.$store.state.active_kiosk = this.active_user.kiosks[0]
         }

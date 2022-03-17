@@ -2,12 +2,10 @@
   <div class="dialog" v-if="active">
     <div class="body ion-padding">
       <h3>Hitamwo</h3>
-      <ion-radio-group ref="kiosk">
-        <ion-item lines="none" v-for="kiosk in active_user.kiosks">
-          <ion-radio :value="kiosk" :id="kiosk.id"/>
-          <ion-label :for="kiosk.id">{{ kiosk.nom }}</ion-label>
-        </ion-item>
-      </ion-radio-group>
+      <div class="item" v-for="kiosk in active_user.kiosks">
+        <input type="radio" v-model="active_kiosk" :value="kiosk" :id="kiosk.id"/>
+        <label :for="kiosk.id">{{ kiosk.nom }}</label>
+      </div>
       <ion-col class="options">
         <ion-button fill=clear @click="chooseKiosk">
           VALIDER
@@ -24,6 +22,7 @@ export default {
   },
   data(){
     return {
+      active_kiosk:null
     }
   },
   methods: {
@@ -31,7 +30,7 @@ export default {
       this.$emit("close")
     },
     chooseKiosk(){
-      this.$store.state.active_kiosk = this.$refs.kiosk.value
+      this.$store.state.active_kiosk = this.active_kiosk
     }
   }
 };
@@ -40,11 +39,15 @@ export default {
 .options{
   padding-bottom: 0;
 }
-.ion-padding{
-  padding-bottom: 5px;
-}
-ion-radio{
+input[type=radio]{
   margin-right: 5px;
+}
+.item{
+  margin: 20px 0 0 0;
+}
+label{
+  font-size: 1.2em;
+  width: 100%;
 }
 .dialog{
   z-index: 1001;

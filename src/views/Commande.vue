@@ -2,7 +2,7 @@
 <ion-page>
   <ion-page>
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="primary">
         <ion-buttons slot="start">
           <ion-button slot="start" routerLink="/home/stats">
             <ion-icon :src="getIcon('arrowBack')"></ion-icon>

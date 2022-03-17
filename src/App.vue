@@ -6,10 +6,10 @@
       <ion-menu side="start" class="drawer-layout" content-id="main">
         <div class="session-info">
           <div class="img-user">
-            <img src="/img/ic_user.png" alt="">
+            <img :src="!!active_kiosk?active_kiosk.logo:''" alt="">
           </div>
-          <div>Jonathan NKURUNZIZA</div>
-          <div>HOGI Super Market</div>
+          <div>{{ active_user_fullname }}</div>
+          <div>{{ !!active_kiosk?active_kiosk.nom:'' }}</div>
         </div>
         <div class="menus" @click="doThings">
           <ion-list lines="none">
@@ -67,6 +67,9 @@ export default {
       return !!this.active_user.kiosks &&
              this.active_user.kiosks.length>1 &&
              !this.$store.state.active_kiosk
+    },
+    active_kiosk(){
+      return this.getActiveKiosk()
     }
   },
   watch:{
@@ -102,6 +105,16 @@ export default {
     logout(){
       this.$store.state.active_kiosk = null
       this.$store.state.user = null
+      this.$store.state.notifs = []
+      this.$store.state.attributions = []
+      this.$store.state.versements = []
+      this.$store.state.commandes = []
+      this.$store.state.produits = []
+      this.$store.state.payments = []
+      this.$store.state.stocks = []
+      this.$store.state.pertes = []
+      this.$store.state.stats_prod = []
+      this.$store.state.stats_client = []
     },
     openWhatsapp(){
     },
