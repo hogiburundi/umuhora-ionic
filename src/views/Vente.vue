@@ -12,10 +12,6 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      default_vente:{
-        id:1, quantite:5, nom:"ibiharage", prix_vente:2000,
-        unite_sortante:"kg"
-      }
     }
   },
   components:{VenteItem},

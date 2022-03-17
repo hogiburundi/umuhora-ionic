@@ -62,23 +62,23 @@ export default {
     }
   },
   watch:{
-    "$store.state.user":{
-      deep:true,
-      handler(new_val){
-        if(!!new_val){
-          localStorage.setItem('user', JSON.stringify(new_val));
-        } else {
-          localStorage.removeItem('user')
-        }
-      }
-    },
-    "$store.state.active_kiosk"(new_val){
-      if(!!new_val){
-        localStorage.setItem('active_kiosk', JSON.stringify(new_val));
-      } else {
-        localStorage.removeItem('active_kiosk')
-      }
-    }
+    // "$store.state.user":{
+    //   deep:true,
+    //   handler(new_val){
+    //     if(!!new_val){
+    //       localStorage.setItem('user', JSON.stringify(new_val));
+    //     } else {
+    //       localStorage.removeItem('user')
+    //     }
+    //   }
+    // },
+    // "$store.state.active_kiosk"(new_val){
+    //   if(!!new_val){
+    //     localStorage.setItem('active_kiosk', JSON.stringify(new_val));
+    //   } else {
+    //     localStorage.removeItem('active_kiosk')
+    //   }
+    // }
   },
   mounted(){
     var user = JSON.parse(localStorage.getItem('user'));

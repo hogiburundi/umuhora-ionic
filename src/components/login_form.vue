@@ -39,10 +39,18 @@ export default {
   },
   methods:{
     login(){
+      this.$store.state.user = {
+        "username": this.username,
+        "password":this.password
+      }
       this.logs = ""
       axios.post(this.url+"/login/", 
         {"username": this.username, "password":this.password}
       ).then((response) => {
+        this.$store.state.user = {
+          "username": this.username,
+          "password":this.password
+        }
         this.$store.state.user = response.data
         this.$store.state.alert = {
           type:"success", message:"Bienvenue"

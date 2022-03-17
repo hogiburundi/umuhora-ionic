@@ -8,6 +8,9 @@
         <ion-buttons slot="secondary">
           <ion-button routerLink="/cart">
             <ion-icon slot="icon-only" :src="getIcon('cartOutline')"/>
+            <ion-badge color="primary" v-if="$store.state.cart.content.length>0">
+              {{ $store.state.cart.content.length }}
+            </ion-badge>
           </ion-button>
           <ion-button>
             <ion-icon slot="icon-only" :icon="getIcon('search')"/>
@@ -81,5 +84,11 @@ ion-fab-button{
 }
 ion-tab-bar{
   display: flex!important;
+}
+ion-badge{
+  position: absolute;
+  top: -5px;
+  right: -7px;
+  font-size: .6em;
 }
 </style>
