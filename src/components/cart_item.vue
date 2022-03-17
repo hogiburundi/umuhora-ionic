@@ -1,15 +1,19 @@
 <template>
-  <div class="parent" lines="none">
-    <ion-button color="medium">-</ion-button>
-    <ion-button>+</ion-button>
-    <ion-label>1.0 x Umuceri à 2 500 par kg</ion-label>
-    <ion-button fill=clear>
+  <ion-col class="parent ion-no-padding">
+    <ion-button size=small @click="decrease" color="medium">
+      -
+    </ion-button>
+    <ion-button size=small @click="increase">+</ion-button>
+    <ion-label>
+      {{ item.quantite }} {{ item.product.nom }} à {{ money(item.getTotal()) }}
+    </ion-label>
+    <ion-button size=small fill=clear @click="remove">
       <ion-icon :src="getIcon('close')" color="danger"/>
     </ion-button>
-  </div>
+  </ion-col>
 </template>
 
-<script >
+<script>
 export default {
   props: {
     item:{type:Object, required:true}
@@ -18,10 +22,22 @@ export default {
     return {
     }
   },
-  methods: {
-  },
   computed:{
-  }
+    cart(){
+      return this.$store.state.cart
+    }
+  },
+  methods: {
+    decrease(){
+      this.cart.decrease(this.item.product.id)
+    },
+    increase(){
+      this.cart.increase(this.item.product.id)
+    },
+    remove(){
+      this.cart.remove(this.item.product.id)
+    },
+  },
 };
 </script>
 <style scoped>
@@ -31,5 +47,6 @@ export default {
 }
 ion-label{
   flex-grow: 1;
+  margin-top: 0;
 }
 </style>
