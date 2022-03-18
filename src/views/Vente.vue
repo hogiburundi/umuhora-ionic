@@ -2,7 +2,7 @@
   <ion-page>
     <ion-content>
       <ion-col>
-        <VenteItem v-for="item in $store.state.produits" :item="item"/>
+        <VenteItem v-for="item in produits" :item="item"/>
       </ion-col>
     </ion-content>
   </ion-page>
@@ -12,11 +12,15 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
+      produits:this.$store.state.produits.filter(x => x.quantite>0)
     }
   },
   watch:{
     "$store.state.active_kiosk"(new_val){
       this.fetchData()
+    },
+    "$store.state.produits"(new_val){
+      this.produits = new_val.filter(x => x.quantite>0)
     }
   },
   components:{VenteItem},

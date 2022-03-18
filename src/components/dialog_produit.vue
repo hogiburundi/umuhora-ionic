@@ -79,7 +79,9 @@ export default {
         for(let key of Object.keys(data)){
           this.item[key] = data[key]
         }
-        this.$store.state.updated_produits.push(data)
+        if(!!this.item.id){
+          this.$store.state.updated_produits_ids.add(this.item.id)
+        }
       }
       this.close()
     }

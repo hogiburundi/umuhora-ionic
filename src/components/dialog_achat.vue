@@ -59,7 +59,7 @@ export default {
         kiosk:this.getActiveKiosk().id,
         date:new Date()
       }
-      this.$store.state.off_stocks.push(data)
+      this.$store.state.creaded_stocks.push(data)
       this.item.quantite += parseInt(this.item.quantite) + parseInt(this.qtt)
       this.$emit("close")
     },
