@@ -5,7 +5,7 @@
       <div class="inline">
         <div class="info">
           <div>Qtt.:</div>
-          {{item.quantite || 0}} {{item.unite_sortante}}
+          {{item.quantite || 0}} {{item.unite}}
         </div>
         <div class="info">
           <div>PU:</div>
@@ -13,14 +13,14 @@
         </div>
       </div>
     </div>
-    <ion-col class="inline">
-      <ion-button size="small" expand="full" fill="clear" @click="editStock">
+    <ion-list class="inline">
+      <ion-button size="small" fill="clear" @click="editStock">
         <ion-icon :src="getIcon('pencil')"/>
       </ion-button>
-      <ion-button size="small" expand="full" fill="clear" @click="increaseQtt">
+      <ion-button size="small" fill="clear" @click="increaseQtt">
         <ion-icon :src="getIcon('bagAdd')"/>
       </ion-button>
-    </ion-col>
+    </ion-list>
   </ion-col>
 </template>
 
@@ -50,7 +50,7 @@ export default {
   display: flex;
   margin: 10px 0 0 10px;
   padding: 0;
-  flex-grow: 0;
+  width: 100%;
 }
 .item{
   flex-grow: 1;

@@ -1,11 +1,14 @@
 <template>
   <ion-page>
     <ion-content fullscreen=true>
-      <StockItem v-for="i in 13" :item="default_vente"
-       @edit="editStock" @buy="makeAchat"/>
+      <ion-button style="margin: 5px 10px;" size=block>
+        Ajouter un produit
+      </ion-button>
+      <StockItem v-for="item in produits" :item="item"
+        @edit="editStock(item)" @buy="makeAchat(item)"/>
     </ion-content>
-    <DialogProduit :active="produit_shown" @close="closeDialog"/>
-    <DialogAchat :active="achat_shown" @close="closeDialog"/>
+    <DialogProduit :active="produit_shown" @close="closeDialog" :item="active_item"/>
+    <DialogAchat :active="achat_shown" @close="closeDialog" :item="active_item"/>
   </ion-page>
 </template>
 <script>
@@ -17,25 +20,58 @@ export default {
   components:{ DialogProduit, StockItem, DialogAchat },
   data(){
     return {
-      default_vente:{
-        id:1, quantite:5, nom:"ibiharage", prix_vente:2000,
-        unite_sortante:"kg",
-      },
-      produit_shown:false, achat_shown:false
+      produits:this.$store.state.produits, produit_shown:false,
+      achat_shown:false, active_item:null
+    }
+  },
+  watch:{
+    "$store.state.produits"(new_val){
+      this.produits = this.$store.state.produits
     }
   },
   methods:{
-    editStock(){
+    editStock(item){
+      this.active_item = item
       this.produit_shown = true
     },
-    makeAchat(){
+    makeAchat(item){
+      this.active_item = item
       this.achat_shown = true
     },
     closeDialog(){
       this.produit_shown = false
       this.achat_shown = false
+    },
+    fetchData(){
+      let link = ""
+      if(this.getActiveKiosk()==null){
+        return
+      }
+      let kiosk_id = this.getActiveKiosk().id
+      if(!this.next){
+        link = this.url+`/produit/?kiosk=${kiosk_id}`;
+      } else {
+        link = this.next
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        this.$store.state.produits.push(...response.data.results)
+        if(response.data.next.length > 0){
+          this.next = response.data.next
+          this.fetchData()
+        } else {
+          this.next = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.fetchData)
+      });
+    },
+  },
+  mounted(){
+    if(this.$store.state.produits.length<1){
+      this.fetchData()
     }
-  }
+  },
 }
 </script>
 <style scoped>
@@ -43,5 +79,4 @@ ion-col{
   max-height: 100%;
   overflow-y: auto;
 }
-
 </style>
