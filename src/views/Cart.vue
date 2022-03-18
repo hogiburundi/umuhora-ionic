@@ -22,11 +22,11 @@
         <label for="is_new"> C'est un nouveau client</label>
       </div>
       <div class="create" v-if="is_new">
-        <ion-item>
+        <ion-item class="ion-no-padding">
           <ion-label position="floating">Nom du client</ion-label>
           <ion-input type=text placeholder="Password" v-model="nom" clearInput/>
         </ion-item>
-        <ion-item>
+        <ion-item class="ion-no-padding">
           <ion-label position="floating">Télephone du client</ion-label>
           <ion-input type=text placeholder="Password" v-model="tel" clearInput/>
         </ion-item>

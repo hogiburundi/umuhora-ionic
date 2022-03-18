@@ -54,15 +54,13 @@ export default {
         quantite_actuelle:this.qtt,
         date_expiration:!!this.date?this.date:undefined,
         prix_total:this.prix_vente,
-        produit:this.item.id
+        produit:this.item.id,
+        kiosk:this.getActiveKiosk().id,
+        date:new Date()
       }
-      axios.post(this.url+"/stock/", data, this.headers)
-      .then((response) => {
-        this.$store.state.stocks.unshift(response.data)
-        this.close()
-      }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.postStock)
-      });
+      this.$store.state.off_stocks.push(data)
+      this.item.quantite += parseInt(this.item.quantite) + parseInt(this.qtt)
+      this.$emit("close")
     },
   }
 };
