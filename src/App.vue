@@ -8,8 +8,8 @@
           <div class="img-user">
             <img :src="!!active_kiosk?active_kiosk.logo:''" alt="">
           </div>
-          <div>{{ active_user_fullname }}</div>
           <div>{{ !!active_kiosk?active_kiosk.nom:'' }}</div>
+          <div>{{ active_user_fullname }}</div>
         </div>
         <div class="menus" @click="doThings">
           <ion-list lines="none">
