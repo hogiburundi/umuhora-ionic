@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-content fullscreen=true>
-      <ion-button style="margin: 5px 10px;" size=block>
+      <ion-button style="margin: 5px 10px;" size=block @click="createProduit">
         Ajouter un produit
       </ion-button>
       <StockItem v-for="item in produits" :item="item"
@@ -30,6 +30,10 @@ export default {
     }
   },
   methods:{
+    createProduit(){
+      this.active_item = null
+      this.produit_shown = true
+    },
     editStock(item){
       this.active_item = item
       this.produit_shown = true
