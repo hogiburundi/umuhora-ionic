@@ -14,42 +14,36 @@
       <CartItem v-for="item in $store.state.cart.content" :item="item"/>
       <div class="total">
         <div>Total:</div>
-        <b>0.0 </b>
+        <b>{{ money($store.state.cart.getTotal()) }} </b>
         <div> BIF</div>
       </div>
-      <div>
-        <input type="checkbox" v-model="is_new" id="is_new">
-        <label for="is_new"> C'est un nouveau client</label>
-      </div>
-      <div class="create" v-if="is_new">
+      <ion-col class="create">
         <ion-item class="ion-no-padding">
           <ion-label position="floating">Nom du client</ion-label>
-          <ion-input type=text placeholder="Password" v-model="nom" clearInput/>
+          <ion-input type=text placeholder="Nom du client"
+            :value="nom" @IonChange="setNom($event.target.value)" clearInput/>
         </ion-item>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">Télephone du client</ion-label>
-          <ion-input type=text placeholder="Password" v-model="tel" clearInput/>
+          <ion-input type="number" placeholder="Télephone du client"
+            :value="tel" @IonChange="setTel($event.target.value)" clearInput/>
         </ion-item>
-      </div>
-      <div class="search" v-else>
-        <input type="text">
-        <button>chercher</button>
-      </div>
+      </ion-col>
     </ion-content>
     <ion-footer>
       <div class="payment">
         <ion-label>le montant payé:</ion-label>
-        <input type="number" value="0.0">
+        <input type="number" v-model="paid">
         <ion-label>BIF</ion-label>
       </div>
       <div class="payment">
-        <ion-label>ayo kugarura:</ion-label>
-        <b>0</b>
+        <ion-label>{{ ingaru<0?"ayo kugarura":"ideni rya" }}:</ion-label>
+        <b>{{ money(Math.abs(ingaru)) }}</b>
         <ion-label>BIF</ion-label>
       </div>
       <div class="two-cols">
-        <ion-button size="6">RESET</ion-button>
-        <ion-button size="6">SUBMIT</ion-button>
+        <ion-button size="6" @click="clearCart">RESET</ion-button>
+        <ion-button size="6" @click="submitVente">SUBMIT</ion-button>
       </div>
     </ion-footer>
   </ion-page>
@@ -60,9 +54,40 @@ export default {
   components:{ CartItem },
   data(){
     return {
-      is_new:false, nom:"", tel:""
+      nom:"", tel:"", paid:this.$store.state.cart.getTotal()
     }
   },
+  computed:{
+    ingaru(){
+      return this.$store.state.cart.getTotal() - this.paid
+    }
+  },
+  watch:{
+    "$store.state.cart.content":{
+      deep:true,
+      handler(new_val){
+        this.paid = this.$store.state.cart.getTotal()
+      }
+    }
+  },
+  methods:{
+    clearCart(){
+      this.$store.state.cart.content = []
+    },
+    setTel(value){
+      this.tel = value
+      this.searchFor(value)
+    },
+    setNom(value){
+      this.nom = value
+      this.searchFor(value)
+    },
+    searchFor(keyword){
+    },
+    submitVente(){
+      console.log(this.nom, this.tel)
+    }
+  }
 }
 </script>
 <style scoped>

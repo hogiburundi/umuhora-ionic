@@ -16,6 +16,7 @@ export default createStore({
     stocks:[], creaded_stocks:[], deleted_stocks_ids:new Set(),
     pertes:[], creaded_pertes:[], deleted_pertes_ids:new Set(),
     stats_prod:[],
+    clients:[],
     stats_client:[],
     commande:{infos:{}},
     alert:{type:"", message:"Bienvenue"},
