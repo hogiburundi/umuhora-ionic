@@ -4,34 +4,34 @@
       <h3>Produit</h3>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">Nom du produit</ion-label>
-          <ion-input type=text placeholder="Nom du produit"
+          <ion-input type=text placeholder="Nom du produit" :value="nom"
             @IonChange="nom=$event.target.value" clearInput/>
         </ion-item>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">Unité entrante</ion-label>
-          <ion-input type=text placeholder="Unité entrante"
+          <ion-input type=text placeholder="Unité entrante" :value="unite_entrante"
             @IonChange="unite_entrante=$event.target.value" clearInput/>
         </ion-item>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">Unité sortante</ion-label>
-          <ion-input type=text placeholder="Unité sortante"
+          <ion-input type=text placeholder="Unité sortante" :value="unite"
             @IonChange="unite=$event.target.value" clearInput/>
         </ion-item>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">rapport</ion-label>
-          <ion-input type=text placeholder="rapport" value=1
+          <ion-input type=text placeholder="rapport" value=1 :value="rapport"
             @IonChange="rapport=$event.target.value" clearInput/>
         </ion-item>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">prix de vente</ion-label>
-          <ion-input type=text placeholder="prix de vente"
+          <ion-input type=text placeholder="prix de vente" :value="prix_vente"
             @IonChange="prix_vente=$event.target.value" clearInput/>
         </ion-item>
       <ion-col class="options">
         <ion-button fill=clear color="medium" @click="close">
           ANULLER
         </ion-button>
-        <ion-button fill=clear>VALIDER</ion-button>
+        <ion-button fill=clear @click="save">VALIDER</ion-button>
       </ion-col>
     </div>
   </div>
@@ -40,7 +40,17 @@
 <script >
 export default {
   props: {
-    active:{type:Boolean, required:true}
+    active:{type:Boolean, required:true},
+    item:{type:Object, required:false},
+  },
+  watch:{
+    item(new_val){
+      this.nom = new_val.nom
+      this.unite_entrante = new_val.unite_entrante
+      this.unite = new_val.unite
+      this.rapport = new_val.rapport
+      this.prix_vente = new_val.prix_vente
+    }
   },
   data(){
     return {
@@ -51,6 +61,27 @@ export default {
   methods: {
     close(){
       this.$emit("close")
+    },
+    save(){
+      let data = {
+        nom: this.nom,
+        unite_entrante: this.unite_entrante,
+        unite: this.unite,
+        rapport: this.rapport,
+        prix_vente: this.prix_vente,
+        user: this.active_user.id,
+        kiosk: this.getActiveKiosk().id
+      }
+      if(!this.item){
+        this.$store.state.produits.push(data)
+        this.$store.state.created_produits.push(data)
+      } else {
+        for(let key of Object.keys(data)){
+          this.item[key] = data[key]
+        }
+        this.$store.state.updated_produits.push(data)
+      }
+      this.close()
     }
   }
 };

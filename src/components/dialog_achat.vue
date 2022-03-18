@@ -33,7 +33,7 @@
 export default {
   props: {
     active:{type:Boolean, required:true},
-    item:{type:Object, required:false}
+    item:{type:Object, required:true}
   },
   data(){
     return {
@@ -55,6 +55,7 @@ export default {
         date_expiration:!!this.date?this.date:undefined,
         prix_total:this.prix_vente,
         produit:this.item.id,
+        user: this.active_user.id,
         kiosk:this.getActiveKiosk().id,
         date:new Date()
       }
