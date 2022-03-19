@@ -4,6 +4,7 @@
       <KioskChooser :active="must_choose_kiosk"/>
       <ion-router-outlet id="main"/>
       <ion-menu side="start" class="drawer-layout" content-id="main">
+      <div class="menu-content">
         <div class="session-info">
           <div class="img-user">
             <img :src="!!active_kiosk?active_kiosk.logo:''" alt="">
@@ -46,6 +47,7 @@
             </ion-item>
           </ion-list>
         </div>
+      </div>
       </ion-menu>
     </div>
     <LoginForm v-else/>
