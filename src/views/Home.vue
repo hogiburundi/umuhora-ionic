@@ -1,5 +1,5 @@
 <template>
-  <ion-page @click="hideMenu">
+  <ion-page>
     <ion-header>
       <ion-toolbar color="primary">
         <ion-buttons slot="start">
@@ -35,10 +35,12 @@
       </ion-popover>
     </ion-header>
     <ion-content>
-      <ion-router-outlet/>
-      <ion-fab-button class="todo-fab" @click="startScan">
-        <ion-icon :src="getIcon('qrCode')"></ion-icon>
-      </ion-fab-button>
+      <div @touchend="toggleFab">
+        <ion-router-outlet/>
+        <ion-fab-button class="todo-fab" @click="startScan" v-show="fab_shown">
+          <ion-icon :src="getIcon('qrCode')"></ion-icon>
+        </ion-fab-button>
+      </div>
     </ion-content>
     <ion-footer>
       <ion-tab-bar slot="bottom">
@@ -76,6 +78,7 @@ export default {
     return {
       menu_shown:false, produit_shown:false, achat_shown:false,
       active_stock_item:null, produit_shown: false, achat_shown:false,
+      fab_shown:true
     }
   },
   watch:{
@@ -98,9 +101,6 @@ export default {
       this.$store.state.dialog_achat_shown = false
       this.$store.state.active_stock_item = null
     },
-    hideMenu(){
-      this.menu_shown=false
-    },
     startScan(){
       Camera.requestPermissions()
     },
@@ -113,6 +113,14 @@ export default {
     },
     search(keyword){
       console.log(keyword)
+    },
+    toggleFab(){
+      let vue = this
+      this.fab_shown = true
+      window.clearTimeout(window.current_event)
+      window.current_event = window.setTimeout(() => {
+        vue.fab_shown = false
+      }, 5000)
     }
   }
 }
