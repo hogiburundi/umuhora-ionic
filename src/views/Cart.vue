@@ -11,10 +11,10 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <CartItem v-for="item in $store.state.cart.content" :item="item"/>
+      <CartItem v-for="item in cart.content" :item="item"/>
       <div class="total">
         <div>Total:</div>
-        <b>{{ money($store.state.cart.getTotal()) }} </b>
+        <b>{{ money(cart.getTotal()) }} </b>
         <div> BIF</div>
       </div>
       <ion-col class="create">
@@ -60,19 +60,22 @@ export default {
   computed:{
     ingaru(){
       return this.$store.state.cart.getTotal() - this.paid
+    },
+    cart(){
+      return this.$store.state.cart
     }
   },
   watch:{
     "$store.state.cart.content":{
       deep:true,
       handler(new_val){
-        this.paid = this.$store.state.cart.getTotal()
+        this.paid = this.cart.getTotal()
       }
     }
   },
   methods:{
     clearCart(){
-      this.$store.state.cart.content = []
+      this.cart.content = []
     },
     setTel(value){
       this.tel = value
@@ -85,7 +88,41 @@ export default {
     searchFor(keyword){
     },
     submitVente(){
-      console.log(this.nom, this.tel)
+      let client_infos_are_correct = (this.tel.length>=7)&&(this.nom.length>=3)
+      if(this.ingaru > 0){
+        if(!client_infos_are_correct){
+          console.error("pour les dettes le client est obligatiore")
+          return;
+        }
+      }
+      let data = {};
+      let items = [];
+      let client;
+      if(client_infos_are_correct){
+        client = {"nom":this.nom, "tel":this.tel}
+      }
+      for(let item of this.cart.content){
+        items.unshift({"produit":item.product.id, "quantite":item.quantite})
+      }
+      if(items.length==0){
+        console.error("les ventes nulles ne sont pas plausible")
+        return;
+      }
+      let payee = this.paid<=this.cart.getTotal()?this.paid:this.cart.getTotal()
+      data = {
+        "payee":payee,
+        "client": client,
+        "ventes":items,
+        "user":this.active_user.id,
+        "date":new Date(),
+        "kiosk":this.getActiveKiosk().id
+      };
+      for(let item of this.cart.content){
+        item.product.quantite -= item.quantite
+      }
+      this.cart.content = []
+      this.$store.state.created_commandes.push(data)
+      this.$router.push("/")
     }
   }
 }
