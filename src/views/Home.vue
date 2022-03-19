@@ -56,19 +56,44 @@
         </ion-tab-button>
       </ion-tab-bar>
     </ion-footer>
+    <DialogProduit :active="produit_shown" @close="closeDialog"
+      :item="active_stock_item"/>
+    <DialogAchat :active="achat_shown" @close="closeDialog"
+      :item="active_stock_item"/>
   </ion-page>
 </template>
 
 <script>
+import DialogProduit from "../components/dialog_produit"
+import DialogAchat from "../components/dialog_achat"
+
 export default {
+  components:{ DialogProduit, DialogAchat },
   data(){
     return {
-      menu_shown:false
+      menu_shown:false, produit_shown:false, achat_shown:false,
+      active_stock_item:null, produit_shown: false, achat_shown:false,
+    }
+  },
+  watch:{
+    "$store.state.dialog_produit_shown"(new_val){
+      this.produit_shown = new_val
+    },
+    "$store.state.dialog_achat_shown"(new_val){
+      this.achat_shown = new_val
+    },
+    "$store.state.active_stock_item"(new_val){
+      this.active_stock_item = new_val
     }
   },
   methods:{
     displayMenu(){
       this.menu_shown=true
+    },
+    closeDialog(){
+      this.$store.state.dialog_produit_shown = false
+      this.$store.state.dialog_achat_shown = false
+      this.$store.state.active_stock_item = null
     },
     hideMenu(){
       this.menu_shown=false

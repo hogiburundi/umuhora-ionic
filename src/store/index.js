@@ -7,7 +7,7 @@ export default createStore({
     // base_url: "http://127.0.0.1:8000",
     // base_url: "",
     api: "/api",
-    notification:{type:"", message:"Bienvenue"},
+    dialog_produit_shown:false, dialog_achat_shown:false, active_stock_item:null,
     notifs:[], read_notif:[],
     versements:[], created_versements:[],
     commandes:[], created_commandes:[], deleted_commandes_ids:new Set(),

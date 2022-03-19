@@ -7,21 +7,16 @@
       <StockItem v-for="item in produits" :item="item"
         @edit="editStock(item)" @buy="makeAchat(item)"/>
     </ion-content>
-    <DialogProduit :active="produit_shown" @close="closeDialog" :item="active_item"/>
-    <DialogAchat :active="achat_shown" @close="closeDialog" :item="active_item"/>
   </ion-page>
 </template>
 <script>
 import StockItem from "../components/stock_item"
-import DialogProduit from "../components/dialog_produit"
-import DialogAchat from "../components/dialog_achat"
 
 export default {
-  components:{ DialogProduit, StockItem, DialogAchat },
+  components:{ StockItem },
   data(){
     return {
-      produits:this.$store.state.produits, produit_shown:false,
-      achat_shown:false, active_item:null
+      produits:this.$store.state.produits,
     }
   },
   watch:{
@@ -31,20 +26,16 @@ export default {
   },
   methods:{
     createProduit(){
-      this.active_item = null
-      this.produit_shown = true
+      this.$store.state.active_stock_item = null
+      this.$store.state.dialog_produit_shown = true
     },
     editStock(item){
-      this.active_item = item
-      this.produit_shown = true
+      this.$store.state.active_stock_item = item
+      this.$store.state.dialog_produit_shown = true
     },
     makeAchat(item){
-      this.active_item = item
-      this.achat_shown = true
-    },
-    closeDialog(){
-      this.produit_shown = false
-      this.achat_shown = false
+      this.$store.state.active_stock_item = item
+      this.$store.state.dialog_achat_shown = true
     },
     fetchData(){
       let link = ""

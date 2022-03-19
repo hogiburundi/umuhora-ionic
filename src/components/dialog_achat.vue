@@ -33,7 +33,7 @@
 export default {
   props: {
     active:{type:Boolean, required:true},
-    item:{type:Object, required:true}
+    item:{type:Object, required:false}
   },
   data(){
     return {
@@ -43,6 +43,11 @@ export default {
   watch:{
     qtt(new_val){
       this.escompte = new_val*this.item.prix_vente
+    },
+    item(new_val){
+      if(!new_val){
+        this.close()
+      }
     }
   },
   methods: {
@@ -61,7 +66,7 @@ export default {
       }
       this.$store.state.creaded_stocks.push(data)
       this.item.quantite += parseInt(this.item.quantite) + parseInt(this.qtt)
-      this.$emit("close")
+      this.close()
     },
   }
 };

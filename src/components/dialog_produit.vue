@@ -45,11 +45,19 @@ export default {
   },
   watch:{
     item(new_val){
-      this.nom = new_val.nom
-      this.unite_entrante = new_val.unite_entrante
-      this.unite = new_val.unite
-      this.rapport = new_val.rapport
-      this.prix_vente = new_val.prix_vente
+      if(!!new_val){
+        this.nom = new_val.nom
+        this.unite_entrante = new_val.unite_entrante
+        this.unite = new_val.unite
+        this.rapport = new_val.rapport
+        this.prix_vente = new_val.prix_vente
+      } else {
+        this.nom = ""
+        this.unite_entrante = ""
+        this.unite = ""
+        this.rapport = ""
+        this.prix_vente = ""
+      }
     }
   },
   data(){
