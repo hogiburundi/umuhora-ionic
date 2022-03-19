@@ -12,7 +12,7 @@
               {{ $store.state.cart.content.length }}
             </ion-badge>
           </ion-button>
-          <ion-button>
+          <ion-button @click="showSearch">
             <ion-icon slot="icon-only" :icon="getIcon('search')"/>
           </ion-button>
         </ion-buttons>
@@ -36,7 +36,7 @@
     </ion-header>
     <ion-content>
       <ion-router-outlet/>
-      <ion-fab-button class="todo-fab" @click="">
+      <ion-fab-button class="todo-fab" @click="startScan">
         <ion-icon :src="getIcon('qrCode')"></ion-icon>
       </ion-fab-button>
     </ion-content>
@@ -60,12 +60,15 @@
       :item="active_stock_item"/>
     <DialogAchat :active="achat_shown" @close="closeDialog"
       :item="active_stock_item"/>
+    <ion-searchbar show-cancel-button="always" debounce="500" id="search"
+      @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
   </ion-page>
 </template>
 
 <script>
 import DialogProduit from "../components/dialog_produit"
 import DialogAchat from "../components/dialog_achat"
+import { Camera } from '@capacitor/camera';
 
 export default {
   components:{ DialogProduit, DialogAchat },
@@ -97,6 +100,19 @@ export default {
     },
     hideMenu(){
       this.menu_shown=false
+    },
+    startScan(){
+      Camera.requestPermissions()
+    },
+    closeSearch(event){
+      event.target.classList.remove("hidden")
+    },
+    showSearch(){
+      let search_view = document.getElementById("search")
+      search_view.classList.add("hidden")
+    },
+    search(keyword){
+      console.log(keyword)
     }
   }
 }

@@ -78,3 +78,15 @@ option{
 ion-footer{
   background-color: white;
 }
+ion-searchbar{
+  position: fixed!important;
+  z-index: 10;
+  top: 0;
+  right: 0; 
+  transform: scaleX(0);
+  transition: transform 400ms ease 0ms; 
+}
+ion-searchbar.hidden{
+  transform: scaleX(1);
+  transition: transform 400ms ease 0ms;
+}

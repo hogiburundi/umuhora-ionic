@@ -13,6 +13,9 @@
           <ion-button @click="showDateDialog">
             <ion-icon slot="icon-only" :icon="getIcon('calendar')"/>
           </ion-button>
+          <ion-button @click="showSearch">
+            <ion-icon slot="icon-only" :icon="getIcon('search')"/>
+          </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -37,6 +40,8 @@
     </ion-footer>
   </ion-page>
   <DialogDateFilter :active="date_shown" @close="date_shown=false"/>
+  <ion-searchbar show-cancel-button="always" debounce="500" id="search_com"
+    @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
 </ion-page>
 </template>
 <script>
@@ -53,7 +58,14 @@ export default {
   methods:{
     showDateDialog(){
       this.date_shown = true
-    }
+    },
+    closeSearch(event){
+      event.target.classList.remove("hidden")
+    },
+    showSearch(){
+      let search_view = document.getElementById("search_com")
+      search_view.classList.add("hidden")
+    },
   }
 }
 </script>
