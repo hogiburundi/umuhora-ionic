@@ -105,11 +105,11 @@ export default {
       Camera.requestPermissions()
     },
     closeSearch(event){
-      event.target.classList.remove("hidden")
+      event.target.classList.remove("shown")
     },
     showSearch(){
       let search_view = document.getElementById("search")
-      search_view.classList.add("hidden")
+      search_view.classList.add("shown")
     },
     search(keyword){
       console.log(keyword)

@@ -61,11 +61,11 @@ export default {
       this.date_shown = true
     },
     closeSearch(event){
-      event.target.classList.remove("hidden")
+      event.target.classList.remove("shown")
     },
     showSearch(){
       let search_view = document.getElementById("search_st")
-      search_view.classList.add("hidden")
+      search_view.classList.add("shown")
     },
   }
 }
