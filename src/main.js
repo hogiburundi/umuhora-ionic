@@ -11,6 +11,7 @@ import {
 } from '@ionic/vue';
 import '@ionic/core/css/ionic.bundle.css'
 import * as allIcons from "ionicons/icons";
+import { App as CapacitorApp } from '@capacitor/app';
 
 window.axios = axios;
 const app = createApp(App).use(IonicVue).use(router).use(store);
@@ -169,5 +170,11 @@ app.mixin({
     }
   }
 })
-
+CapacitorApp.addListener('backButton', ({canGoBack}) => {
+  if((!canGoBack) || (window.history.state.back == null)){
+    CapacitorApp.exitApp();
+  } else {
+    window.open(window.history.state.back, "_self")
+  }
+});
 app.mount('#app');
