@@ -21,7 +21,7 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <StatStockItem v-for="i in 13" :item="{}"/>
+        <StatStockItem v-for="stock in stocks" :item="stock"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -53,7 +53,12 @@ export default {
   components:{StatStockItem, DialogDateFilter},
   data(){
     return {
-      date_shown:false
+      date_shown:false, stocks:this.$store.state.stocks
+    }
+  },
+  watch:{
+    "$store.state.stocks"(new_val){
+      this.stocks = new_val
     }
   },
   methods:{
@@ -67,7 +72,36 @@ export default {
       let search_view = document.getElementById("search_st")
       search_view.classList.add("shown")
     },
-  }
+    fetchData(){
+      let link = ""
+      if(this.getActiveKiosk()==null){
+        return
+      }
+      let kiosk_id = this.getActiveKiosk().id
+      if(!this.next){
+        link = this.url+`/stock/?kiosk=${kiosk_id}`;
+      } else {
+        link = this.next
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        this.$store.state.stocks.push(...response.data.results)
+        if(response.data.next.length > 0){
+          this.next = response.data.next
+          this.fetchData()
+        } else {
+          this.next = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.fetchData)
+      });
+    },
+  },
+  mounted(){
+    if(this.$store.state.stocks.length<1){
+      this.fetchData()
+    }
+  },
 }
 </script>
 <style scoped>

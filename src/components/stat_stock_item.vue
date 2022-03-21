@@ -2,26 +2,26 @@
   <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
       <div line="none">
-        <b>Ndagala</b>
-        <span> 01 Mar 2022 02:00:00</span>
+        <b>{{ item.produit.nom }}</b>
+        <span> {{ datetime(item.date) }}</span>
       </div>
       <div class="inline">
         <div class="group">
           <div class="key">Qtt init.: </div>
-          <div>0</div>
+          <div>{{ item.quantite_initiale }}</div>
         </div>
         <div class="group">
           <div class="key">Qtt act.: </div>
-          <div>0</div>
+          <div>{{ item.quantite_actuelle }}</div>
         </div>
         <div class="group">
           <div class="key">PT: </div>
-          <div>0</div>
+          <div>{{ money(item.prix_total) }}</div>
         </div>
       </div>
     </div>
     <div class="inline">
-      <div class="inline" v-if="Math.random() < 0.5">
+      <div class="inline" v-if="!item.validated_by">
         <ion-button size="small" expand="full" fill="clear"
           style="margin: 0;" @click="increaseQtt">
           <ion-icon :src="getIcon('checkmarkDone')"/>
