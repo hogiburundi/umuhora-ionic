@@ -1,24 +1,24 @@
 <template>
-  <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
+  <div :data-id='item.id' :class="{'parent':true,'waiting':!item.user}">
     <div class="item">
-      <b>01 Mar 2022 14:34:13</b>
+      <b>{{ datetime(item.date) }}</b>
       <div class="inline">
         <div class="group">
           <div class="key">Vente: </div>
-          <div>0</div>
+          <div>{{ money(item.vente) }}</div>
         </div>
         <div class="group">
           <div class="key">Dettes: </div>
-          <div>0</div>
+          <div>{{ money(item.dettes) }}</div>
         </div>
         <div class="group">
           <div class="key">NET: </div>
-          <div>0</div>
+          <div>{{ money(item.dettes+item.vente) }}</div>
         </div>
       </div>
       <div class="group">
         <div class="key">prise par: </div>
-        <div>Jonathan NKURUNZIZA</div>
+        <div>{{ item.user|| "(en attente)" }}</div>
       </div>
     </div>
   </div>
@@ -79,5 +79,8 @@ export default {
 .key{
   font-size: .8em;
   margin-right: 2px;
+}
+.waiting{
+  color: green;
 }
 </style>
