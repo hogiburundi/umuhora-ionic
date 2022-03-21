@@ -23,16 +23,16 @@
     <div class="inline">
       <div class="inline" v-if="!item.validated_by">
         <ion-button size="small" expand="full" fill="clear"
-          style="margin: 0;" @click="increaseQtt">
+          style="margin: 0;" @click="">
           <ion-icon :src="getIcon('checkmarkDone')"/>
         </ion-button>
         <ion-button size="small" expand="full" fill="clear"
-          style="margin: 0;" @click="increaseQtt">
+          style="margin: 0;" @click="">
           <ion-icon color="danger" :src="getIcon('close')"/>
         </ion-button>
       </div>
       <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="increaseQtt" v-else>
+        style="margin: 0;" @click="" v-else>
         <ion-icon :src="getIcon('removeCircleOutline')"/>
       </ion-button>
     </div>
