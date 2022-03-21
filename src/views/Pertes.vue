@@ -18,15 +18,9 @@
     <ion-footer>
       <div class="group">
         <div>Montant: </div>
-        <div>0</div>
-      </div>
-      <div class="group">
-        <div>Payée: </div>
-        <div>0</div>
-      </div>
-      <div class="group">
-        <div>Reste: </div>
-        <div>0</div>
+        <div>{{ money(
+          pertes.reduce((acc, x) => acc+=x.prix, 0)
+        )}}</div>
       </div>
     </ion-footer>
   </ion-page>
@@ -81,7 +75,7 @@ export default {
 <style scoped>
 ion-footer{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 5px 10px;
 }
 .group{

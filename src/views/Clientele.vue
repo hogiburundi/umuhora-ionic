@@ -17,16 +17,20 @@
     </ion-content>
     <ion-footer>
       <div class="group">
-        <div>Montant: </div>
-        <div>0</div>
+        <div>Nombre: </div>
+        <div>{{ clients.length }}</div>
       </div>
       <div class="group">
         <div>Payée: </div>
-        <div>0</div>
+        <div>{{ money(
+          clients.reduce((acc, x) => acc+=x.payee, 0)
+        )}}</div>
       </div>
       <div class="group">
         <div>Reste: </div>
-        <div>0</div>
+        <div>{{ money(
+          clients.reduce((acc, x) => acc+=x.prix-x.payee, 0)
+        )}}</div>
       </div>
     </ion-footer>
   </ion-page>

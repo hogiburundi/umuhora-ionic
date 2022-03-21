@@ -27,15 +27,21 @@
     <ion-footer>
       <div class="group">
         <div>Montant: </div>
-        <div>0</div>
+        <div>{{ money(
+          commandes.reduce((acc, x) => acc+=x.prix, 0)
+        )}}</div>
       </div>
       <div class="group">
         <div>Payée: </div>
-        <div>0</div>
+        <div>{{ money(
+          commandes.reduce((acc, x) => acc+=x.payee, 0)
+        )}}</div>
       </div>
       <div class="group">
         <div>Reste: </div>
-        <div>0</div>
+        <div>{{ money(
+          commandes.reduce((acc, x) => acc+=x.prix-x.payee, 0)
+        )}}</div>
       </div>
     </ion-footer>
   </ion-page>

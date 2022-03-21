@@ -4,7 +4,7 @@
       <b>{{ item.client || "autres" }}</b>
       <div class="inline">
         <div class="group">
-          <div class="key">Nombre: </div>
+          <div class="key">fois: </div>
           <div>{{ item.fois }}</div>
         </div>
         <div class="group">
