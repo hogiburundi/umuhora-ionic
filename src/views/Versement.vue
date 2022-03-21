@@ -18,7 +18,7 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <VersementItem v-if="today_versement" :item="today_versement"/>
+        <VersementItem v-if="today_vers" :item="today_vers"/>
         <VersementItem v-for="versement in versements" :item="versement"/>
       </ion-col>
     </ion-content>
@@ -26,17 +26,30 @@
       <ion-icon :src="getIcon('walletOutline')"></ion-icon>
     </ion-fab-button>
     <ion-footer>
-      <div class="group">
-        <div>Montant: </div>
-        <div>0</div>
+      <div class="group" v-if="!today_vers">
+        <div>Ventes: </div>
+        <div>{{ money(
+          versements.reduce(
+            (acc, x) => acc+=x.vente,
+            (!!today_vers?today_vers.vente:0)
+          )
+        )}}</div>
       </div>
       <div class="group">
-        <div>Payée: </div>
-        <div>0</div>
+        <div>Dettes: </div>
+        <div>{{ money(
+          versements.reduce((acc, x) => acc+=x.dettes,
+            (!!today_vers?today_vers.dettes:0)
+          )
+        )}}</div>
       </div>
       <div class="group">
         <div>Reste: </div>
-        <div>0</div>
+        <div>{{ money(
+          versements.reduce((acc, x) => acc+=x.vente+x.dettes,
+            (!!today_vers?today_vers.vente+today_vers.dettes:0)
+          )
+        )}}</div>
       </div>
     </ion-footer>
   </ion-page>
@@ -52,7 +65,7 @@ export default {
   data(){
     return {
       date_shown:false, versements:this.$store.state.versements,
-      today_versement:null
+      today_vers:null
     }
   },
   watch:{
@@ -96,7 +109,7 @@ export default {
       let link = this.url+`/versement/today/?kiosk=${kiosk_id}`;
       axios.get(link, this.headers)
       .then((response) => {
-        this.today_versement = response.data
+        this.today_vers = response.data
       });
     },
   },
