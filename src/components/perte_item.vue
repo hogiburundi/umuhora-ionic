@@ -3,15 +3,15 @@
     <div class="item">
       <div class="inline">
         <div class="group">
-          <b style="margin-right: 3px;">3</b> Fanta du 2021-12-31
+          <b style="margin-right: 3px;">3</b> {{ item.stock }}
         </div>
-        <div>2 400 FBU</div>
+        <div>{{ money(item.prix) }} FBU</div>
       </div>
       <div class="group">
-        <div>Inganzamarumpu</div>
-        <div>18 Jan 2022 15:57:13</div>
+        <div>{{ item.user }}</div>
+        <b>{{ datetime(item.date) }}</b>
       </div>
-      <div class="descr">Lorem ipsum dolor sit amet consectetur adipisicing, elit.</div>
+      <div class="descr">{{ item.details }}</div>
     </div>
     <div>
       <ion-button size="small" expand="full" fill="clear"
@@ -77,6 +77,9 @@ export default {
 .group{
   display: flex;
   align-items: baseline;
+}
+.group>div{
+  margin-right: 10px;
 }
 .descr{
   font-size: .9em;

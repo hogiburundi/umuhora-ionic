@@ -12,7 +12,7 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <PerteItem v-for="i in 13" :item="{}"/>
+        <PerteItem v-for="perte in pertes" :item="perte"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -35,6 +35,47 @@
 import PerteItem from "../components/perte_item"
 export default {
   components:{PerteItem},
+  data(){
+    return {
+      pertes:this.$store.state.pertes
+    }
+  },
+  watch:{
+    "$store.state.pertes"(new_val){
+      this.pertes = new_val
+    }
+  },
+  methods:{
+    fetchData(){
+      let link = ""
+      if(this.getActiveKiosk()==null){
+        return
+      }
+      let kiosk_id = this.getActiveKiosk().id
+      if(!this.next){
+        link = this.url+`/perte/?kiosk=${kiosk_id}`;
+      } else {
+        link = this.next
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        this.$store.state.pertes.push(...response.data.results)
+        if(response.data.next.length > 0){
+          this.next = response.data.next
+          this.fetchData()
+        } else {
+          this.next = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.fetchData)
+      });
+    },
+  },
+  mounted(){
+    if(this.$store.state.pertes.length<1){
+      this.fetchData()
+    }
+  },
 }
 </script>
 <style scoped>
