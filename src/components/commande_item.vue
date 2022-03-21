@@ -1,24 +1,24 @@
 <template>
   <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
-      <b>No. 396 du 01 Mar 2022 14:34:13</b>
+      <b>No. {{item.id}} du {{ datetime(item.date) }}</b>
       <div class="inline">
         <div class="group">
           <div class="key">Montant: </div>
-          <div>0</div>
+          <div>{{ money(item.prix) }}</div>
         </div>
         <div class="group">
           <div class="key">Payée: </div>
-          <div>0</div>
+          <div>{{ item.payee }}</div>
         </div>
         <div class="group">
           <div class="key">Reste: </div>
-          <div>0</div>
+          <div>{{ item.prix - item.payee }}</div>
         </div>
       </div>
       <div class="group">
         <div class="key">Client: </div>
-        <div>Tony 68 252 977</div>
+        <div>{{ item.client }}</div>
       </div>
     </div>
     <div class="inline">

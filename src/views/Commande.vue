@@ -21,7 +21,7 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <CommandeItem v-for="i in 13" :item="{}"/>
+        <CommandeItem v-for="commande in commandes" :item="commande"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -52,7 +52,12 @@ export default {
   components:{ CommandeItem, DialogDateFilter},
   data(){
     return {
-      date_shown:false
+      date_shown:false, commandes:this.$store.state.commandes
+    }
+  },
+  watch:{
+    "$store.state.commandes"(new_val){
+      this.commandes = new_val
     }
   },
   methods:{
@@ -66,7 +71,36 @@ export default {
       let search_view = document.getElementById("search_com")
       search_view.classList.add("shown")
     },
-  }
+    fetchData(){
+      let link = ""
+      if(this.getActiveKiosk()==null){
+        return
+      }
+      let kiosk_id = this.getActiveKiosk().id
+      if(!this.next){
+        link = this.url+`/commande/?kiosk=${kiosk_id}`;
+      } else {
+        link = this.next
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        this.$store.state.commandes.push(...response.data.results)
+        if(response.data.next.length > 0){
+          this.next = response.data.next
+          this.fetchData()
+        } else {
+          this.next = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.fetchData)
+      });
+    },
+  },
+  mounted(){
+    if(this.$store.state.commandes.length<1){
+      this.fetchData()
+    }
+  },
 }
 </script>
 <style scoped>
