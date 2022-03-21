@@ -42,12 +42,6 @@ export default {
     }
   },
   methods: {
-    increaseQtt : function(){
-      this.cart.add(this.item);
-    },
-    decreaseQtt : function(){
-      this.cart.decrease(this.item.id);
-    },
     enableEdition(){
       if(this.item.quantite!=0) this.editable=true
     }

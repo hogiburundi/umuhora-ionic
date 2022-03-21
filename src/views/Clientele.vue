@@ -12,7 +12,7 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <StatClientItem v-for="i in 13" :item="{}"/>
+        <StatClientItem v-for="client in clients" :item="client"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -35,6 +35,37 @@
 import StatClientItem from "../components/stat_client_item"
 export default {
   components:{StatClientItem},
+  data(){
+    return {
+      clients:this.$store.state.clients
+    }
+  },
+  watch:{
+    "$store.state.clients"(new_val){
+      this.clients = new_val
+    }
+  },
+  methods:{
+    fetchData(){
+      let link = ""
+      if(this.getActiveKiosk()==null){
+        return
+      }
+      let kiosk_id = this.getActiveKiosk().id
+      link = this.url+`/commande/stats/?kiosk=${kiosk_id}`;
+      axios.get(link, this.headers)
+      .then((response) => {
+        this.$store.state.clients.push(...response.data)
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.fetchData)
+      });
+    },
+  },
+  mounted(){
+    if(this.$store.state.clients.length<1){
+      this.fetchData()
+    }
+  }
 }
 </script>
 <style scoped>

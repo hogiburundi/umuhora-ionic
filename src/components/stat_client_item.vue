@@ -1,25 +1,25 @@
 <template>
   <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
-      <b>HOGI Burundi</b>
+      <b>{{ item.client || "autres" }}</b>
       <div class="inline">
         <div class="group">
           <div class="key">Nombre: </div>
-          <div>12</div>
+          <div>{{ item.fois }}</div>
         </div>
         <div class="group">
           <div class="key">Montant: </div>
-          <div>1 600 FBu</div>
+          <div>{{ money(item.prix) }} FBu</div>
         </div>
       </div>
       <div class="inline">
         <div class="group">
           <div class="key">du: </div>
-          <div>18-01-2021</div>
+          <div>{{ datetime(item.du) }}</div>
         </div>
         <div class="group">
           <div class="key">au: </div>
-          <div>18-01-2021</div>
+          <div>{{ datetime(item.du) }}</div>
         </div>
       </div>
     </div>
@@ -38,12 +38,6 @@ export default {
     }
   },
   methods: {
-    increaseQtt : function(){
-      this.cart.add(this.item);
-    },
-    decreaseQtt : function(){
-      this.cart.decrease(this.item.id);
-    },
     enableEdition(){
       if(this.item.quantite!=0) this.editable=true
     }
