@@ -50,15 +50,17 @@
   <ion-searchbar show-cancel-button="always" debounce="500" id="search_det"
     @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
   <DialogPay :item="active_item" :active="pay_shown" @close="closeDialogs"/>
+  <DialogPayments :item="active_item" :active="payments_shown" @close="closeDialogs"/>
 </ion-page>
 </template>
 <script>
 import DetteItem from "../components/dette_item"
 import DialogDateFilter from "../components/dialog_date_filter"
 import DialogPay from "../components/dialog_pay"
+import DialogPayments from "../components/dialog_payments"
 
 export default {
-  components:{DetteItem, DialogDateFilter, DialogPay},
+  components:{DetteItem, DialogDateFilter, DialogPay, DialogPayments},
   data(){
     return {
       commandes:this.$store.state.commandes.filter(x => x.prix>x.payee),
@@ -119,10 +121,37 @@ export default {
         this.displayErrorOrRefreshToken(error, this.fetchData)
       });
     },
+    fetchPayments(){
+      let link = ""
+      if(this.getActiveKiosk()==null){
+        return
+      }
+      let kiosk_id = this.getActiveKiosk().id
+      if(!this.next){
+        link = this.url+`/payment/?commande__kiosk=${kiosk_id}`;
+      } else {
+        link = this.next
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        this.$store.state.payments.push(...response.data.results)
+        if(response.data.next.length > 0){
+          this.next = response.data.next
+          this.fetchPayments()
+        } else {
+          this.next = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.fetchData)
+      });
+    },
   },
   mounted(){
     if(this.$store.state.commandes.length<1){
       this.fetchData()
+    }
+    if(this.$store.state.payments.length<1){
+      this.fetchPayments()
     }
   },
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="dialog" v-if="active">
     <div class="body ion-padding">
-      <h3>Perte facture #{{ item.id }}</h3>
+      <h3>Reglage facture #{{ item.id }}</h3>
       <div class="payment">
         <ion-label>Montant à payer:</ion-label>
         <b>{{ money(ideni) }}</b>
