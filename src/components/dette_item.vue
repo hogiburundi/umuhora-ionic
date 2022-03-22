@@ -24,11 +24,11 @@
     <div>
       <ion-button size="small" expand="full" fill="clear"
         style="margin: 0;" @click="pay">
-        <ion-icon :src="getIcon('checkmarkDone')"/>
+        <ion-icon slot="icon-only" :src="getIcon('checkmarkDone')"/>
       </ion-button>
       <ion-button size="small" expand="full" fill="clear"
         style="margin: 0;" @click="payments">
-        <ion-icon :src="getIcon('documentText')"/>
+        <ion-icon slot="icon-only" :src="getIcon('documentText')"/>
       </ion-button>
     </div>
   </ion-col>

@@ -13,15 +13,17 @@
       </div>
       <div class="descr">{{ item.details }}</div>
     </div>
-    <div>
+    <div v-if="!item.validated_by">
       <ion-button size="small" expand="full" fill="clear"
         style="margin: 0;" @click="validateStock">
-        <ion-icon :src="getIcon('checkmarkDone')"/>
+        <ion-icon slot="icon-only" :src="getIcon('checkmarkDone')"/>
       </ion-button>
       <ion-button size="small" expand="full" fill="clear"
         style="margin: 0;" @click="deleteStock">
-        <ion-icon color="danger" :src="getIcon('close')"/>
+        <ion-icon slot="icon-only" color="danger" :src="getIcon('close')"/>
       </ion-button>
+    </div>
+    <div v-else style="min-width: 20px;">
     </div>
   </ion-col>
 </template>

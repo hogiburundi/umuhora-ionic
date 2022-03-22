@@ -24,7 +24,7 @@
     <div class="inline" text-center button>
       <ion-button size="small" expand="full" fill="clear"
         style="margin: 0;" @click="deleteCommande">
-        <ion-icon color="danger" :src="getIcon('close')"/>
+        <ion-icon color="danger" slot="icon-only" :src="getIcon('close')"/>
       </ion-button>
     </div>
   </ion-col>

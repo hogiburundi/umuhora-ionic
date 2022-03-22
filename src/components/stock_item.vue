@@ -14,11 +14,11 @@
       </div>
     </div>
     <ion-list class="inline">
-      <ion-button size="small" fill="clear" @click="editStock">
-        <ion-icon :src="getIcon('pencil')"/>
+      <ion-button size="small" fill="clear" class="ion-no-padding" @click="editStock">
+        <ion-icon slot="icon-only" :src="getIcon('pencil')"/>
       </ion-button>
-      <ion-button size="small" fill="clear" @click="increaseQtt">
-        <ion-icon :src="getIcon('bagAdd')"/>
+      <ion-button size="small" fill="clear" class="ion-no-padding" @click="increaseQtt">
+        <ion-icon slot="icon-only" :src="getIcon('bagAdd')"/>
       </ion-button>
     </ion-list>
   </ion-col>
@@ -48,8 +48,7 @@ export default {
 <style scoped>
 .parent{
   display: flex;
-  margin: 10px 0 0 10px;
-  padding: 0;
+  padding: 10px 0 0 10px;
   width: 100%;
 }
 .item{
