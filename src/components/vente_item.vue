@@ -1,5 +1,5 @@
 <template>
-  <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
+  <ion-col :data-id='item.id' class="parent ion-no-padding" :class="{'danger':item.quantite==0}">
     <div class="item">
       <div class="name">{{ item.nom }}</div>
       <div class="qtt">{{item.quantite || 0}} {{item.unite}}</div>
@@ -19,7 +19,7 @@
         style="margin: 0;" @click="increaseQtt">+
       </ion-button>
     </ion-list>
-  </div>
+  </ion-col>
 </template>
 
 <script >
@@ -62,6 +62,7 @@ export default {
   border: 1px solid var(--ion-color-primary);
   display: flex;
   flex-direction: column;
+  grid-gap: 0;
 }
 .item{
   padding: 3px;

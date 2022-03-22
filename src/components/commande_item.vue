@@ -1,5 +1,5 @@
 <template>
-  <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
+  <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
       <b>No. {{item.id}} du {{ datetime(item.date) }}</b>
       <div class="inline">
@@ -21,13 +21,13 @@
         <div>{{ item.client }}</div>
       </div>
     </div>
-    <div class="inline">
+    <div class="inline" text-center button>
       <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="increaseQtt">
+        style="margin: 0;" @click="deleteCommande">
         <ion-icon color="danger" :src="getIcon('close')"/>
       </ion-button>
     </div>
-  </div>
+  </ion-col>
 </template>
 
 <script >
@@ -44,6 +44,10 @@ export default {
   methods: {
     enableEdition(){
       if(this.item.quantite!=0) this.editable=true
+    },
+    deleteCommande(){
+      if(confirm("Voulez-vous anuller cette vente?")){
+      }
     }
   },
   computed:{
@@ -63,7 +67,7 @@ export default {
 <style scoped>
 .parent{
   display: flex;
-  margin: 0 10px 15px 10px;
+  margin: 0 10px 5px 10px;
 }
 .item{
   flex-grow: 1;

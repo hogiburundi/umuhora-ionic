@@ -35,7 +35,7 @@
       </ion-popover>
     </ion-header>
     <ion-content>
-      <div @touchend="toggleFab">
+      <div>
         <ion-router-outlet/>
         <ion-fab-button class="todo-fab" @click="startScan" v-show="fab_shown">
           <ion-icon :src="getIcon('qrCode')"></ion-icon>
@@ -63,7 +63,7 @@
     <DialogAchat :active="achat_shown" @close="closeDialog"
       :item="active_stock_item"/>
     <ion-searchbar show-cancel-button="always" debounce="500" id="search"
-      @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
+      @ionCancel="closeSearch($event)" @ionInput="search($event.target.value)"/>
   </ion-page>
 </template>
 
