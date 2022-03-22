@@ -50,13 +50,13 @@ export default {
   data(){
     return {
       date_shown:false, stocks:this.$store.state.stocks,
-      perte_shown:false, active_item:null
+      perte_shown:false, active_item:null,
     }
   },
   watch:{
     "$store.state.stocks"(new_val){
       this.stocks = new_val
-    }
+    },
   },
   methods:{
     perdre(item){

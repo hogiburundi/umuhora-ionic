@@ -55,16 +55,29 @@ export default {
       this.$emit("close")
     },
     postStock(){
-      let data = {
+      let created = {
         quantite_actuelle:this.qtt,
         date_expiration:!!this.date?this.date:undefined,
         prix_total:this.prix_vente,
         produit:this.item.id,
         user: this.active_user.id,
         kiosk:this.getActiveKiosk().id,
-        date:new Date()
+        date:new Date().toISOString()
       }
-      this.$store.state.creaded_stocks.push(data)
+      let new_stock = {
+        id: -1,
+        quantite_initiale: this.qtt,
+        quantite_actuelle: this.qtt,
+        date: created.date,
+        date_expiration: created.date_expiration,
+        prix_unitaire: created.prix_total/this.qtt,
+        prix_total: created.prix_total,
+        updated_at: created.date,
+        produit: JSON.parse(JSON.stringify(this.item)),
+        user: this.active_user.username,
+        created:created
+      }
+      this.$store.state.stocks.unshift(new_stock)
       this.item.quantite += parseInt(this.item.quantite) + parseInt(this.qtt)
       this.close()
     },
