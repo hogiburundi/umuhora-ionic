@@ -32,7 +32,7 @@
         </ion-button>
       </div>
       <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="" v-else>
+        style="margin: 0;" @click="perdre" v-else>
         <ion-icon :src="getIcon('removeCircleOutline')"/>
       </ion-button>
     </div>
@@ -61,6 +61,9 @@ export default {
 
       }
     },
+    perdre(){
+      this.$emit("perte")
+    }
   }
 };
 </script>

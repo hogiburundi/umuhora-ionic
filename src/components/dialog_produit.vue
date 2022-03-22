@@ -19,7 +19,7 @@
         </ion-item>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">rapport</ion-label>
-          <ion-input type=text placeholder="rapport" value=1 :value="rapport"
+          <ion-input type=number placeholder="rapport" value=1 :value="rapport"
             @IonChange="rapport=$event.target.value" clearInput/>
         </ion-item>
         <ion-item class="ion-no-padding">

@@ -21,7 +21,7 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <StatStockItem v-for="stock in stocks" :item="stock"/>
+        <StatStockItem v-for="stock in stocks" :item="stock" @perte="perdre(stock)"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -36,18 +36,21 @@
   <DialogDateFilter :active="date_shown" @close="date_shown=false"/>
   <ion-searchbar show-cancel-button="always" debounce="500" id="search_st"
     @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
+  <DialogPerte :active="perte_shown" :item="active_item" @close="closeDialog"/>
 </ion-page>
 </template>
 
 <script>
 import StatStockItem from "../components/stat_stock_item"
 import DialogDateFilter from "../components/dialog_date_filter"
+import DialogPerte from "../components/dialog_perte"
 
 export default {
-  components:{StatStockItem, DialogDateFilter},
+  components:{StatStockItem, DialogDateFilter, DialogPerte},
   data(){
     return {
-      date_shown:false, stocks:this.$store.state.stocks
+      date_shown:false, stocks:this.$store.state.stocks,
+      perte_shown:false, active_item:null
     }
   },
   watch:{
@@ -56,6 +59,14 @@ export default {
     }
   },
   methods:{
+    perdre(item){
+      this.perte_shown = true
+      this.active_item = item
+      console.log(item)
+    },
+    closeDialog(){
+      this.perte_shown = false
+    },
     showDateDialog(){
       this.date_shown = true
     },
