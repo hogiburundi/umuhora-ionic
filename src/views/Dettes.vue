@@ -21,7 +21,8 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <DetteItem v-for="commande in commandes" :item="commande"/>
+        <DetteItem v-for="commande in commandes" :item="commande"
+          @pay="makePay(commande)" @payments="showPayments(commande)"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -48,18 +49,21 @@
   <DialogDateFilter :active="date_shown" @close="date_shown=false"/>
   <ion-searchbar show-cancel-button="always" debounce="500" id="search_det"
     @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
+  <DialogPay :item="active_item" :active="pay_shown" @close="closeDialogs"/>
 </ion-page>
 </template>
 <script>
 import DetteItem from "../components/dette_item"
 import DialogDateFilter from "../components/dialog_date_filter"
+import DialogPay from "../components/dialog_pay"
 
 export default {
-  components:{DetteItem, DialogDateFilter},
+  components:{DetteItem, DialogDateFilter, DialogPay},
   data(){
     return {
       commandes:this.$store.state.commandes.filter(x => x.prix>x.payee),
-      date_shown:false,
+      date_shown:false, payments_shown:false, pay_shown:false,
+      active_item:null
     }
   },
   watch:{
@@ -68,6 +72,19 @@ export default {
     }
   },
   methods:{
+    makePay(item){
+      this.active_item = item
+      this.pay_shown = true
+    },
+    showPayments(item){
+      this.active_item = item
+      this.payments_shown = true
+    },
+    closeDialogs(){
+      this.active_item = null
+      this.payments_shown = false
+      this.pay_shown = false
+    },
     showDateDialog(){
       this.date_shown = true
     },

@@ -1,5 +1,5 @@
 <template>
-  <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
+  <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
       <b>No. {{item.id}} du {{ datetime(item.date) }}</b>
       <div class="inline">
@@ -23,15 +23,15 @@
     </div>
     <div>
       <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="">
+        style="margin: 0;" @click="pay">
         <ion-icon :src="getIcon('checkmarkDone')"/>
       </ion-button>
       <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="">
+        style="margin: 0;" @click="payments">
         <ion-icon :src="getIcon('documentText')"/>
       </ion-button>
     </div>
-  </div>
+  </ion-col>
 </template>
 
 <script >
@@ -41,33 +41,22 @@ export default {
   },
   data(){
     return {
-      cart : this.$store.state.cart,
-      editable:false
     }
   },
   methods: {
-    enableEdition(){
-      if(this.item.quantite!=0) this.editable=true
-    }
+    pay(){
+      this.$emit("pay")
+    },
+    payments(){
+      this.$emit("payments")
+    },
   },
-  computed:{
-    qtt:{
-      get(){
-        return 0
-        // return this.cart.getQuantite(this.item.id);
-      },
-      set(value){
-        if(value.length==0) return;
-        this.cart.add(this.item, value);
-      }
-    }
-  }
 };
 </script>
 <style scoped>
 .parent{
   display: flex;
-  margin: 0 10px 15px 10px;
+  margin: 0 0 5px 10px;
 }
 .item{
   flex-grow: 1;
