@@ -47,6 +47,18 @@ export default {
     },
     deleteCommande(){
       if(confirm("Voulez-vous anuller cette vente?")){
+        let index = this.$store.state.commandes.indexOf(this.item)
+        if(index>=0){
+          this.$store.state.commandes.splice(index, 1)
+          let data = {
+            id:this.item.id,
+            user:this.active_user.id
+          }
+          this.$store.state.deleted_commandes.add(data)
+          console.log(this.$store.state.deleted_commandes)
+        } else {
+          console.error(`erreur de suppression de la commande ${this.item}`)
+        }
       }
     }
   },
