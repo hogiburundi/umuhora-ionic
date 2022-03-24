@@ -15,11 +15,11 @@
     </div>
     <div v-if="!item.validated_by">
       <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="validateStock">
+        style="margin: 0;" @click="validatePerte">
         <ion-icon slot="icon-only" :src="getIcon('checkmarkDone')"/>
       </ion-button>
       <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="deleteStock">
+        style="margin: 0;" @click="deletePerte">
         <ion-icon slot="icon-only" color="danger" :src="getIcon('close')"/>
       </ion-button>
     </div>
@@ -43,7 +43,7 @@ export default {
     enableEdition(){
       if(this.item.quantite!=0) this.editable=true
     },
-    validateStock(){
+    validatePerte(){
       if(confirm("êtes-vous sur de vouloir valider cette perte?")){
         this.item.validated_by = this.active_user
         let data = {
@@ -53,7 +53,7 @@ export default {
         this.$store.state.validated_pertes.add(data)
       }
     },
-    deleteStock(){
+    deletePerte(){
       if(confirm("êtes-vous sur de vouloir supprimer cette perte?")){
         let index = this.$store.state.pertes.indexOf(this.item)
         if(index>=0){

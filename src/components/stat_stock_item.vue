@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="inline">
-      <div class="inline" v-if="!item.validated_by">
+      <ion-col class="inline" v-if="!item.validated_by">
         <ion-button size="small" expand="full" fill="clear"
           style="margin: 0;" @click="validateStock">
           <ion-icon slot="icon-only" :src="getIcon('checkmarkDone')"/>
@@ -30,7 +30,7 @@
           style="margin: 0;" @click="deleteStock">
           <ion-icon slot="icon-only" color="danger" :src="getIcon('close')"/>
         </ion-button>
-      </div>
+      </ion-col>
       <ion-button size="small" expand="full" fill="clear"
         style="margin: 0;" @click="perdre" v-else>
         <ion-icon slot="icon-only" :src="getIcon('removeCircleOutline')"/>
@@ -53,12 +53,33 @@ export default {
   methods:{
     validateStock(){
       if(confirm("êtes-vous sur de vouloir valider ce stock?")){
-
+        if(!!this.item.id || this.item.id < 0){
+          console.error(`seul les stocks provenant du serveur peuvent être validés`)
+          return
+        }
+        this.item.validated_by = this.active_user
+        let data = {
+          id:this.item.id,
+          user:this.active_user.id
+        }
+        this.$store.state.validated_stocks.add(data)
       }
     },
     deleteStock(){
       if(confirm("êtes-vous sur de vouloir supprimer ce stock?")){
-
+        let index = this.$store.state.stocks.indexOf(this.item)
+        if(index>=0){
+          this.$store.state.stocks.splice(index, 1)
+          if(!!this.item.id){
+            let data = {
+              id:this.item.id,
+              user:this.active_user.id
+            }
+            this.$store.state.deleted_stocks.add(data)
+          }
+        } else {
+          console.error(`erreur de suppression du stock ${this.item}`)
+        }
       }
     },
     perdre(){
