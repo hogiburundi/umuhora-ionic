@@ -29,6 +29,13 @@
             :value="tel" @IonChange="setTel($event.target.value)" clearInput/>
         </ion-item>
       </ion-col>
+      <div class="clients" v-if="nom.length>0 || tel.length>0">
+        <h4 v-if="found_clients">Les clients trouvés</h4>
+        <div class="client" v-for="client in found_clients">
+          <input type="radio" :value="client" :id="client.tel" v-model="active_client">
+          <label :for="client.tel">{{client.nom}} {{client.tel}}</label>
+        </div>
+      </div>
     </ion-content>
     <ion-footer>
       <div class="payment">
@@ -54,7 +61,8 @@ export default {
   components:{ CartItem },
   data(){
     return {
-      nom:"", tel:"", paid:this.$store.state.cart.getTotal()
+      nom:"", tel:"", paid:this.$store.state.cart.getTotal(),
+      active_client:null, found_clients:[]
     }
   },
   computed:{
@@ -71,6 +79,12 @@ export default {
       handler(new_val){
         this.paid = this.cart.getTotal()
       }
+    },
+    active_client(new_val){
+      if(new_val){
+        this.nom = new_val.nom
+        this.tel = new_val.tel
+      }
     }
   },
   methods:{
@@ -86,6 +100,12 @@ export default {
       this.searchFor(value)
     },
     searchFor(keyword){
+      if(nom.length == 0 && tel.length == 0){
+        this.found_clients = []
+      }
+      this.found_clients = this.$store.state.clients.filter(x => {
+        x.nom.includes(keyword) || x.tel.includes(keyword)
+      })
     },
     submitVente(){
       let client_infos_are_correct = (this.tel.length>=7)&&(this.nom.length>=3)
@@ -99,7 +119,11 @@ export default {
       let items = [];
       let client;
       if(client_infos_are_correct){
-        client = {"nom":this.nom, "tel":this.tel}
+        client = {
+          "nom":this.nom,
+          "tel":this.tel
+        }
+        this.$store.state.clients.push(client)
       }
       for(let item of this.cart.content){
         items.unshift({"produit":item.product.id, "quantite":item.quantite})
@@ -124,30 +148,15 @@ export default {
       this.$store.state.created_commandes.push(data)
       this.$router.push("/")
     }
+  },
+  mounted(){
+    // if(this.$store.state.clients.length<1){
+    //   this.fetchData()
+    // }
   }
 }
 </script>
 <style scoped>
-.search{
-  margin-top: 5px;
-  display: flex;
-  align-items: flex-start;
-}
-.search input{
-  border-radius: 10px 0 0 10px;
-  height: 35px;
-  border: 2px solid var(--ion-color-primary);
-  padding: 5px 10px;
-  flex-grow: 1;
-}
-.search button{
-  border-radius: 0 10px 10px 0;
-  height: 35px;
-  background: var(--ion-color-primary);
-  color: white;
-  padding: 0 20px;
-  margin-left: -2px;
-}
 .payment{
   display: flex;
   justify-content: center;
@@ -171,5 +180,13 @@ export default {
 }
 .item-native{
   padding-left: 0!important;
+}
+.client{
+  display: flex;
+  align-items: center; 
+  margin-bottom: 5px; 
+}
+.client>*{
+  margin-right: 5px;
 }
 </style>

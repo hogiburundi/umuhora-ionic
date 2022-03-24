@@ -15,11 +15,9 @@ export default createStore({
     stocks:[], deleted_stocks:new Set(), validated_stocks:new Set(),
     pertes:[], deleted_pertes:new Set(), validated_pertes:new Set(),
     produits:[],
-    stats_prod:[],
     clients:[],
+    stats_prod:[],
     stats_client:[],
-    commande:{infos:{}},
-    alert:{type:"", message:"Bienvenue"},
     roles:["owner", "gerant", "vendeur"],
     active_kiosk:null,
     cart:new Object({

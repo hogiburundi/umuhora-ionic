@@ -41,11 +41,11 @@ export default {
   components:{StatClientItem},
   data(){
     return {
-      clients:this.$store.state.clients
+      clients:this.$store.state.stats_clients
     }
   },
   watch:{
-    "$store.state.clients"(new_val){
+    "$store.state.stats_clients"(new_val){
       this.clients = new_val
     }
   },
@@ -59,14 +59,14 @@ export default {
       link = this.url+`/commande/stats/?kiosk=${kiosk_id}`;
       axios.get(link, this.headers)
       .then((response) => {
-        this.$store.state.clients.push(...response.data)
+        this.$store.state.stats_clients.push(...response.data)
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.fetchData)
       });
     },
   },
   mounted(){
-    if(this.$store.state.clients.length<1){
+    if(this.$store.state.stats_clients.length<1){
       this.fetchData()
     }
   }
