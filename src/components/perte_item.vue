@@ -2,10 +2,10 @@
   <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
       <div class="inline">
-        <div class="group">
+        <div>
           <b style="margin-right: 3px;">3</b> {{ item.stock }}
         </div>
-        <div>{{ money(item.prix) }} FBU</div>
+        <div style="white-space: nowrap;">{{ money(item.prix) }} FBU</div>
       </div>
       <div class="group">
         <div>{{ item.user }}</div>

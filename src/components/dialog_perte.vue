@@ -4,14 +4,14 @@
       <h3>Perte de {{ item.produit.nom }}</h3>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">quantite</ion-label>
-          <ion-input type=number placeholder="quantite" value=1 :value="quantite"
-            @IonChange="quantite=$event.target.value" clearInput/>
+          <ion-input type=number placeholder="quantite" :value="qtt"
+            @IonChange="qtt=$event.target.value" clearInput/>
         </ion-item>
-        <ion-item class="ion-no-padding">
-          <ion-label position="floating">Motif</ion-label>
-          <ion-textarea placeholder="Insiguro itomoye y'ukuntu vyagenze"
-            @IonChange="unite_entrante=$event.target.value"/>
-        </ion-item>
+        <div class="field">
+          <label>Motif</label>
+          <textarea placeholder="Insiguro itomoye y'ukuntu vyagenze"
+            v-model="details"/>
+        </div>
       <ion-col class="options">
         <ion-button fill=clear color="medium" @click="close">
           ANULLER
@@ -30,8 +30,7 @@ export default {
   },
   data(){
     return {
-      nom : "", unite_entrante : "", unite : "", rapport : "",
-      prix_vente : "",
+      qtt:"", details:""
     }
   },
   methods: {
@@ -39,26 +38,36 @@ export default {
       this.$emit("close")
     },
     save(){
+      if(!this.qtt || this.qtt > this.item.quantite_actuelle){
+        console.error("iyo quantité ntishoboka")
+        return;
+      }
+      if(this.details.length < 32){
+        console.log(this.details)
+        console.error("insiguro muriko muratanga ntihagije")
+        return;
+      }
       let data = {
-        nom: this.nom,
-        unite_entrante: this.unite_entrante,
-        unite: this.unite,
-        rapport: this.rapport,
-        prix_vente: this.prix_vente,
+        id: -1,
+        quantite: this.qtt,
+        date: new Date(),
+        details: this.details,
+        updated_at: new Date(),
+        stock: `${this.item.produit.nom} du ${new Date(this.item.date).toLocaleDateString()}`,
+        kiosk: 1,
+        user: this.active_user.username,
+        validated_by: null,
+        prix: this.item.prix_unitaire*this.qtt,
+        created:{
+          quantite: this.qtt,
+          details: this.details,
+          stock: this.item.id
+        },
         user: this.active_user.id,
         kiosk: this.getActiveKiosk().id
       }
-      if(!this.item){
-        this.$store.state.produits.push(data)
-        this.$store.state.created_produits.push(data)
-      } else {
-        for(let key of Object.keys(data)){
-          this.item[key] = data[key]
-        }
-        if(!!this.item.id){
-          this.$store.state.updated_produits_ids.add(this.item.id)
-        }
-      }
+      this.$store.state.pertes.push(data)
+      this.item.quantite_actuelle -= this.qtt
       this.close()
     }
   }
@@ -70,5 +79,8 @@ export default {
 }
 .ion-padding{
   padding-bottom: 5px;
+}
+.field{
+  margin-top: 10px;
 }
 </style>
