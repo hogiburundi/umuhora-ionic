@@ -63,8 +63,8 @@ export default {
           details: this.details,
           stock: this.item.id
         },
-        user: this.active_user.id,
-        kiosk: this.getActiveKiosk().id
+        user_id: this.active_user.id,
+        kiosk_id: this.getActiveKiosk().id
       }
       this.$store.state.pertes.push(data)
       this.item.quantite_actuelle -= this.qtt

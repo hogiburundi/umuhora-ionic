@@ -75,7 +75,9 @@ export default {
         updated_at: created.date,
         produit: JSON.parse(JSON.stringify(this.item)),
         user: this.active_user.username,
-        created:created
+        created:created,
+        user_id: this.active_user.id,
+        kiosk_id: this.getActiveKiosk().id
       }
       this.$store.state.stocks.unshift(new_stock)
       this.item.quantite += parseInt(this.item.quantite) + parseInt(this.qtt)

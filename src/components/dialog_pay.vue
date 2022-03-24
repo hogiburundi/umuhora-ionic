@@ -48,6 +48,11 @@ export default {
   watch:{
     payee(new_val){
       this.ingaru = new_val - this.ideni
+    },
+    item(new_val){
+      if(!!new_val){
+        this.payee = new_val.prix - new_val.payee
+      }
     }
   },
   methods: {
@@ -55,7 +60,30 @@ export default {
       this.$emit("close")
     },
     save(){
-
+      if(!this.payee || this.payee <= 10){
+        console.error("iyo mahera ni make cane ntibishoboka")
+        return;
+      }
+      let data = {
+        id: -1,
+        client: this.item.client,
+        montant: this.payee,
+        date: null,
+        details: "",
+        updated_at: null,
+        commande: this.item.id,
+        user: this.active_user.username,
+        created:{
+          montant: this.payee,
+          details: "",
+          commande: this.item.id
+        },
+        user_id: this.active_user.id,
+        kiosk_id: this.getActiveKiosk().id
+      }
+      this.$store.state.payments.push(data)
+      this.item.payee += this.payee
+      this.close()
     }
   }
 };

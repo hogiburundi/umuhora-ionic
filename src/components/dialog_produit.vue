@@ -77,8 +77,8 @@ export default {
         unite: this.unite,
         rapport: this.rapport,
         prix_vente: this.prix_vente,
-        user: this.active_user.id,
-        kiosk: this.getActiveKiosk().id
+        user_id: this.active_user.id,
+        kiosk_id: this.getActiveKiosk().id
       }
       if(!this.item){
         this.$store.state.produits.push(data)
