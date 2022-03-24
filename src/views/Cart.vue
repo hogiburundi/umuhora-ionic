@@ -30,7 +30,7 @@
         </ion-item>
       </ion-col>
       <div class="clients" v-if="nom.length>0 || tel.length>0">
-        <h4 v-if="found_clients">Les clients trouvés</h4>
+        <h4 v-show="found_clients.length>0">Les clients trouvés</h4>
         <div class="client" v-for="client in found_clients">
           <input type="radio" :value="client" :id="client.tel" v-model="active_client">
           <label :for="client.tel">{{client.nom}} {{client.tel}}</label>
@@ -62,7 +62,7 @@ export default {
   data(){
     return {
       nom:"", tel:"", paid:this.$store.state.cart.getTotal(),
-      active_client:null, found_clients:[]
+      active_client:null, found_clients:this.$store.state.clients
     }
   },
   computed:{
@@ -85,7 +85,7 @@ export default {
         this.nom = new_val.nom
         this.tel = new_val.tel
       }
-    }
+    },
   },
   methods:{
     clearCart(){
@@ -100,12 +100,14 @@ export default {
       this.searchFor(value)
     },
     searchFor(keyword){
-      if(nom.length == 0 && tel.length == 0){
+      if(this.nom.length == 0 && this.tel.length == 0){
         this.found_clients = []
+        return
       }
       this.found_clients = this.$store.state.clients.filter(x => {
-        x.nom.includes(keyword) || x.tel.includes(keyword)
+        return x.nom.includes(this.nom) || x.tel.includes(this.tel)
       })
+      this.active_client = null
     },
     submitVente(){
       let client_infos_are_correct = (this.tel.length>=7)&&(this.nom.length>=3)
@@ -147,12 +149,36 @@ export default {
       this.cart.content = []
       this.$store.state.created_commandes.push(data)
       this.$router.push("/")
+    },
+    fetchData(){
+      let link = ""
+      if(this.getActiveKiosk()==null){
+        return
+      }
+      let kiosk_id = this.getActiveKiosk().id
+      if(!this.next){
+        link = this.url+`/client/?kiosk=${kiosk_id}`;
+      } else {
+        link = this.next
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        this.$store.state.clients.push(...response.data.results)
+        if(response.data.next.length > 0){
+          this.next = response.data.next
+          this.fetchData()
+        } else {
+          this.next = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.fetchData)
+      });
     }
   },
   mounted(){
-    // if(this.$store.state.clients.length<1){
-    //   this.fetchData()
-    // }
+    if(this.$store.state.clients.length<1){
+      this.fetchData()
+    }
   }
 }
 </script>
