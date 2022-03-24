@@ -119,7 +119,7 @@ export default {
       }
       let data = {};
       let items = [];
-      let client;
+      let client = null;
       if(client_infos_are_correct){
         client = {
           "nom":this.nom,
@@ -136,18 +136,32 @@ export default {
       }
       let payee = this.paid<=this.cart.getTotal()?this.paid:this.cart.getTotal()
       data = {
-        "payee":payee,
-        "client": client,
-        "ventes":items,
-        "user":this.active_user.id,
-        "date":new Date(),
-        "kiosk":this.getActiveKiosk().id
+        payee:payee,
+        client: client,
+        ventes:items,
+        user:this.active_user.id,
+        date:new Date(),
+        kiosk:this.getActiveKiosk().id
       };
+      let command = {
+        id: -1,
+        prix: this.cart.getTotal(),
+        prix_achat: null,
+        date: new Date(),
+        payee: payee,
+        updated_at: new Date(),
+        user: this.active_user.username,
+        kiosk: this.getActiveKiosk().id,
+        client: client,
+        created:data,
+        user_id: this.active_user.id,
+        kiosk_id: this.getActiveKiosk().id
+      }
       for(let item of this.cart.content){
         item.product.quantite -= item.quantite
       }
+      this.$store.state.commandes.push(command)
       this.cart.content = []
-      this.$store.state.created_commandes.push(data)
       this.$router.push("/")
     },
     fetchData(){
