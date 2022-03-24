@@ -45,6 +45,10 @@ export default {
     },
     validatePerte(){
       if(confirm("êtes-vous sur de vouloir valider cette perte?")){
+        if(!this.item.id || this.item.id < 0){
+          console.error(`seul les pertes provenant du serveur peuvent être validés`)
+          return
+        }
         this.item.validated_by = this.active_user
         let data = {
           id:this.item.id,
@@ -58,11 +62,13 @@ export default {
         let index = this.$store.state.pertes.indexOf(this.item)
         if(index>=0){
           this.$store.state.pertes.splice(index, 1)
-          let data = {
-            id:this.item.id,
-            user:this.active_user.id
+          if(!!this.item.id){
+            let data = {
+              id:this.item.id,
+              user:this.active_user.id
+            }
+            this.$store.state.deleted_pertes.add(data)
           }
-          this.$store.state.deleted_pertes.add(data)
         } else {
           console.error(`erreur de suppression de la perte ${this.item}`)
         }

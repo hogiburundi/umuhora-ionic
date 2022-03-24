@@ -53,7 +53,7 @@ export default {
   methods:{
     validateStock(){
       if(confirm("êtes-vous sur de vouloir valider ce stock?")){
-        if(!!this.item.id || this.item.id < 0){
+        if(!this.item.id || this.item.id < 0){
           console.error(`seul les stocks provenant du serveur peuvent être validés`)
           return
         }
