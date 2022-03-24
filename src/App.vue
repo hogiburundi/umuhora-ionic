@@ -91,7 +91,127 @@ export default {
       } else {
         localStorage.removeItem('active_kiosk')
       }
-    }
+    },
+    "$store.state.commandes":{
+      deep:true,
+      handler(new_val){
+        if(new_val){
+          localStorage.setItem("commandes", JSON.stringify(new_val))
+        }else{
+          localStorage.removeItem("commandes")
+        }
+      }
+    },
+    "$store.state.payments":{
+      deep:true,
+      handler(new_val){
+        if(new_val){
+          localStorage.setItem("payments", JSON.stringify(new_val))
+        }else{
+          localStorage.removeItem("payments")
+        }
+      }
+    },
+    "$store.state.stocks":{
+      deep:true,
+      handler(new_val){
+        if(new_val){
+          localStorage.setItem("stocks", JSON.stringify(new_val))
+        }else{
+          localStorage.removeItem("stocks")
+        }
+      }
+    },
+    "$store.state.pertes":{
+      deep:true,
+      handler(new_val){
+        if(new_val){
+          localStorage.setItem("pertes", JSON.stringify(new_val))
+        }else{
+          localStorage.removeItem("pertes")
+        }
+      }
+    },
+    "$store.state.produits":{
+      deep:true,
+      handler(new_val){
+        if(new_val){
+          localStorage.setItem("produits", JSON.stringify(new_val))
+        }else{
+          localStorage.removeItem("produits")
+        }
+      }
+    },
+    "$store.state.clients":{
+      deep:true,
+      handler(new_val){
+        if(new_val){
+          localStorage.setItem("clients", JSON.stringify(new_val))
+        }else{
+          localStorage.removeItem("clients")
+        }
+      }
+    },
+    "$store.state.deleted_commandes":{
+      deep:true,
+      handler(new_val){
+        if(!!new_val){
+          localStorage.setItem("deleted_commandes", JSON.stringify(new_val))
+        } else {
+          localStorage.removeItem("deleted_commandes")
+        }
+      }
+    },
+    "$store.state.deleted_payments":{
+      deep:true,
+      handler(new_val){
+        if(!!new_val){
+          localStorage.setItem("deleted_payments", JSON.stringify(new_val))
+        } else {
+          localStorage.removeItem("deleted_payments")
+        }
+      }
+    },
+    "$store.state.deleted_stocks":{
+      deep:true,
+      handler(new_val){
+        if(!!new_val){
+          localStorage.setItem("deleted_stocks", JSON.stringify(new_val))
+        } else {
+          localStorage.removeItem("deleted_stocks")
+        }
+      }
+    },
+    "$store.state.validated_stocks":{
+      deep:true,
+      handler(new_val){
+        if(!!new_val){
+          localStorage.setItem("validated_stocks", JSON.stringify(new_val))
+        } else {
+          localStorage.removeItem("validated_stocks")
+        }
+      }
+    },
+    "$store.state.deleted_pertes":{
+      deep:true,
+      handler(new_val){
+        if(!!new_val){
+          localStorage.setItem("deleted_pertes", JSON.stringify(new_val))
+        } else {
+          localStorage.removeItem("deleted_pertes")
+        }
+      }
+    },
+    "$store.state.validated_pertes":{
+      deep:true,
+      handler(new_val){
+        if(!!new_val){
+          localStorage.setItem("validated_pertes", JSON.stringify(new_val))
+        } else {
+          localStorage.removeItem("validated_pertes")
+        }
+      }
+    },
   },
   mounted(){
     var user = JSON.parse(localStorage.getItem('user'));
@@ -107,16 +227,6 @@ export default {
     logout(){
       this.$store.state.active_kiosk = null
       this.$store.state.user = null
-      this.$store.state.notifs = []
-      this.$store.state.attributions = []
-      this.$store.state.versements = []
-      this.$store.state.commandes = []
-      this.$store.state.produits = []
-      this.$store.state.payments = []
-      this.$store.state.stocks = []
-      this.$store.state.pertes = []
-      this.$store.state.stats_prod = []
-      this.$store.state.stats_client = []
     },
     openWhatsapp(){
     },
