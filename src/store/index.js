@@ -13,7 +13,7 @@ export default createStore({
     commandes:[], deleted_commandes:new Set(),
     payments:[], deleted_payments:new Set(),
     stocks:[], deleted_stocks:new Set(), validated_stocks:new Set(),
-    pertes:[], deleted_pertes:new Set(),
+    pertes:[], deleted_pertes:new Set(), validated_pertes:new Set(),
     produits:[],
     stats_prod:[],
     clients:[],

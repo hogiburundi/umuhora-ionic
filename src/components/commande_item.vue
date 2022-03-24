@@ -55,7 +55,6 @@ export default {
             user:this.active_user.id
           }
           this.$store.state.deleted_commandes.add(data)
-          console.log(this.$store.state.deleted_commandes)
         } else {
           console.error(`erreur de suppression de la commande ${this.item}`)
         }
