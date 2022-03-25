@@ -31,12 +31,12 @@ export default {
   components:{PerteItem},
   data(){
     return {
-      pertes:this.$store.state.pertes
+      pertes:Array.from(this.$store.state.pertes)
     }
   },
   watch:{
     "$store.state.pertes"(new_val){
-      this.pertes = new_val
+      this.pertes = Array.from(new_val)
     }
   },
   methods:{
@@ -53,7 +53,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.$store.state.pertes.push(...response.data.results)
+        response.data.results.forEach(x => this.$store.state.pertes.add(x))
         if(response.data.next.length > 0){
           this.next = response.data.next
           this.fetchData()
@@ -66,7 +66,7 @@ export default {
     },
   },
   mounted(){
-    if(this.$store.state.pertes.length<1){
+    if(this.$store.state.pertes.size<1){
       this.fetchData()
     }
   },
