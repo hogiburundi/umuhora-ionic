@@ -4,23 +4,23 @@
       <h3>Synchronisation</h3>
       <div class="line">
         <div class="key">validation pertes</div>
-        <div>{{ valid_pertes.size }}/{{ valid_pertes_count }}</div>
+        <div>{{ valid_pertes_count-valid_pertes.size }}/{{ valid_pertes_count }}</div>
       </div>
       <div class="line">
         <div class="key">validation stocks</div>
-        <div>{{ valid_stocks.size }}/{{ valid_stocks_count }}</div>
+        <div>{{ valid_stocks_count-valid_stocks.size }}/{{ valid_stocks_count }}</div>
       </div>
       <div class="line">
         <div class="key">suppression commandes</div>
-        <div>{{ deleted_commandes.size }}/{{ deleted_commandes_count }}</div>
+        <div>{{ deleted_commandes_count-deleted_commandes.size }}/{{ deleted_commandes_count }}</div>
       </div>
       <div class="line">
         <div class="key">suppression stocks</div>
-        <div>{{ deleted_stocks.size }}/{{ deleted_stocks_count }}</div>
+        <div>{{ deleted_stocks_count-deleted_stocks.size }}/{{ deleted_stocks_count }}</div>
       </div>
       <div class="line">
         <div class="key">suppression pertes</div>
-        <div>{{ deleted_pertes.size }}/{{ deleted_pertes_count }}</div>
+        <div>{{ deleted_pertes_count-deleted_pertes.size }}/{{ deleted_pertes_count }}</div>
       </div>
       <div class="line">
         <div class="key">reception commandes</div>
@@ -132,19 +132,38 @@ export default {
       this.kiosk_id = this.getActiveKiosk().id
     },
     validPertes(){
-
+      if(this.valid_pertes.size > 0){
+        let item = Array.from(valid_pertes)[0]
+        axios.get(`${this.url}/perte/${item}/valider/`, this.headers)
+        .then((response) => {
+          valid_pertes.delete(item)
+          this.valid_pertes()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.validPertes)
+        });
+      } else {
+        this.validStocks()
+      }
     },
     validStocks(){
-
+      if(this.valid_stocks.size > 0){
+        let item = Array.from(valid_stocks)[0]
+        axios.get(`${this.url}/perte/${item}/valider/`, this.headers)
+        .then((response) => {
+          valid_stocks.delete(item)
+          this.valid_stocks()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.validStocks)
+        });
+      } else {
+        this.delCommandes()
+      }
     },
     delCommandes(){
-
     },
     delStocks(){
-
     },
     delPertes(){
-
     },
     getCommandes(){
       if(!this.next_commandes){
