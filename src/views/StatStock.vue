@@ -49,13 +49,13 @@ export default {
   components:{StatStockItem, DialogDateFilter, DialogPerte},
   data(){
     return {
-      date_shown:false, stocks:this.$store.state.stocks,
+      date_shown:false, stocks:Array.from(this.$store.state.stocks),
       perte_shown:false, active_item:null,
     }
   },
   watch:{
     "$store.state.stocks"(new_val){
-      this.stocks = new_val
+      this.stocks = Array.from(new_val)
     },
   },
   methods:{
@@ -90,7 +90,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.$store.state.stocks.push(...response.data.results)
+        response.data.results.forEach(x => this.$store.state.stocks.add(x))
         if(response.data.next.length > 0){
           this.next = response.data.next
           this.fetchData()
@@ -103,7 +103,7 @@ export default {
     },
   },
   mounted(){
-    if(this.$store.state.stocks.length<1){
+    if(this.$store.state.stocks.size<1){
       this.fetchData()
     }
   },
