@@ -28,7 +28,7 @@ export default {
   },
   computed:{
     payments(){
-      return this.$store.state.payments.filter(x => x.commande==this.item.id)
+      return Array.from(this.$store.state.payments).filter(x => x.commande==this.item.id)
     }
   },
   methods: {

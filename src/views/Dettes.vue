@@ -63,14 +63,14 @@ export default {
   components:{DetteItem, DialogDateFilter, DialogPay, DialogPayments},
   data(){
     return {
-      commandes:this.$store.state.commandes.filter(x => x.prix>x.payee),
+      commandes:Array.from(this.$store.state.commandes).filter(x => x.prix>x.payee),
       date_shown:false, payments_shown:false, pay_shown:false,
       active_item:null
     }
   },
   watch:{
     "$store.state.commandes"(new_val){
-      this.commandes = new_val.filter(x => x.prix>x.payee)
+      this.commandes = Array.from(new_val).filter(x => x.prix>x.payee)
     }
   },
   methods:{
@@ -110,7 +110,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.$store.state.commandes.push(...response.data.results)
+        response.data.results.forEach(x => this.$store.state.commandes.add(x))
         if(response.data.next.length > 0){
           this.next = response.data.next
           this.fetchData()
@@ -134,7 +134,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.$store.state.payments.push(...response.data.results)
+        response.data.results.forEach(x => this.$store.state.payments.add(x))
         if(response.data.next.length > 0){
           this.next = response.data.next
           this.fetchPayments()
@@ -147,10 +147,10 @@ export default {
     },
   },
   mounted(){
-    if(this.$store.state.commandes.length<1){
+    if(this.$store.state.commandes.size<1){
       this.fetchData()
     }
-    if(this.$store.state.payments.length<1){
+    if(this.$store.state.payments.size<1){
       this.fetchPayments()
     }
   },
