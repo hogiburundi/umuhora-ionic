@@ -15,13 +15,13 @@ import StockItem from "../components/stock_item"
 export default {
   components:{ StockItem },
   data(){
-    return {
-      produits:this.$store.state.produits,
+    return  {
+      produits:Array.from(this.$store.state.produits)
     }
   },
   watch:{
     "$store.state.produits"(new_val){
-      this.produits = this.$store.state.produits
+      this.produits = Array.from(new_val)
     }
   },
   methods:{
@@ -50,7 +50,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.$store.state.produits.push(...response.data.results)
+        response.data.results.forEach(x => this.$store.state.produits.add(x))
         if(response.data.next.length > 0){
           this.next = response.data.next
           this.fetchData()
@@ -63,7 +63,7 @@ export default {
     },
   },
   mounted(){
-    if(this.$store.state.produits.length<1){
+    if(this.$store.state.produits.size<1){
       this.fetchData()
     }
   },
