@@ -58,12 +58,12 @@ export default {
   components:{ CommandeItem, DialogDateFilter},
   data(){
     return {
-      date_shown:false, commandes:this.$store.state.commandes
+      date_shown:false, commandes:Array.from(this.$store.state.commandes)
     }
   },
   watch:{
     "$store.state.commandes"(new_val){
-      this.commandes = new_val
+      this.commandes = Array.from(new_val)
     }
   },
   methods:{
@@ -90,7 +90,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.$store.state.commandes.push(...response.data.results)
+        response.data.results.forEach(x => this.$store.state.commandes.add(x))
         if(response.data.next.length > 0){
           this.next = response.data.next
           this.fetchData()
@@ -103,7 +103,7 @@ export default {
     },
   },
   mounted(){
-    if(this.$store.state.commandes.length<1){
+    if(this.$store.state.commandes.size<1){
       this.fetchData()
     }
   },
