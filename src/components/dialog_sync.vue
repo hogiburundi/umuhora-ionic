@@ -137,7 +137,7 @@ export default {
         axios.get(`${this.url}/perte/${item}/valider/`, this.headers)
         .then((response) => {
           valid_pertes.delete(item)
-          this.valid_pertes()
+          this.validPertes()
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, this.validPertes)
         });
@@ -148,10 +148,10 @@ export default {
     validStocks(){
       if(this.valid_stocks.size > 0){
         let item = Array.from(valid_stocks)[0]
-        axios.get(`${this.url}/perte/${item}/valider/`, this.headers)
+        axios.get(`${this.url}/stock/${item}/valider/`, this.headers)
         .then((response) => {
           valid_stocks.delete(item)
-          this.valid_stocks()
+          this.validStocks()
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, this.validStocks)
         });
@@ -160,10 +160,46 @@ export default {
       }
     },
     delCommandes(){
+      if(this.deleted_commandes.size > 0){
+        let item = Array.from(deleted_commandes)[0]
+        axios.remove(`${this.url}/perte/${item}/`, this.headers)
+        .then((response) => {
+          deleted_commandes.delete(item)
+          this.delCommandes()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.delCommandes)
+        });
+      } else {
+        this.delStocks()
+      }
     },
     delStocks(){
+      if(this.deleted_stocks.size > 0){
+        let item = Array.from(deleted_stocks)[0]
+        axios.remove(`${this.url}/stock/${item}/`, this.headers)
+        .then((response) => {
+          deleted_stocks.delete(item)
+          this.delStocks()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.delStocks)
+        });
+      } else {
+        this.delPertes()
+      }
     },
     delPertes(){
+      if(this.deleted_pertes.size > 0){
+        let item = Array.from(deleted_pertes)[0]
+        axios.remove(`${this.url}/perte/${item}/`, this.headers)
+        .then((response) => {
+          deleted_pertes.delete(item)
+          this.delPertes()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.delPertes)
+        });
+      } else {
+        this.getCommandes()
+      }
     },
     getCommandes(){
       if(!this.next_commandes){
@@ -175,11 +211,12 @@ export default {
       .then((response) => {
         response.data.results.forEach(x => this.$store.state.commandes.add(x))
         count_commandes += response.data.results.length
-        if(response.data.next.length > 0){
+        if(!!response.data.next){
           this.next_commandes = response.data.next
-          this.fetchCommandes()
+          this.getCommandes()
         } else {
           this.next_commandes = null
+          this.getPayments()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getCommandes)
@@ -195,11 +232,12 @@ export default {
       .then((response) => {
         response.data.results.forEach(x => this.$store.state.payments.add(x))
         count_payments += response.data.results.length
-        if(response.data.next.length > 0){
+        if(!!response.data.next){
           this.next_payments = response.data.next
-          this.fetchPayments()
+          this.getPayments()
         } else {
           this.next_payments = null
+          this.getProduits()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getPayments)
@@ -215,11 +253,12 @@ export default {
       .then((response) => {
         response.data.results.forEach(x => this.$store.state.produits.add(x))
         count_produits += response.data.results.length
-        if(response.data.next.length > 0){
+        if(!!response.data.next){
           this.next_produits = response.data.next
-          this.fetchStocks()
+          this.getProduits()
         } else {
           this.next_produits = null
+          this.getPertes()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getProduits)
@@ -235,11 +274,12 @@ export default {
       .then((response) => {
         response.data.results.forEach(x => this.$store.state.pertes.add(x))
         count_pertes += response.data.results.length
-        if(response.data.next.length > 0){
+        if(!!response.data.next){
           this.next_pertes = response.data.next
-          this.fetchPerte()
+          this.getPertes()
         } else {
           this.next_pertes = null
+          this.getStocks()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getPertes)
@@ -255,14 +295,15 @@ export default {
       .then((response) => {
         response.data.results.forEach(x => this.$store.state.stocks.add(x))
         count_stocks += response.data.results.length
-        if(response.data.next.length > 0){
+        if(!!response.data.next){
           this.next_stocks = response.data.next
-          this.fetchStocks()
+          this.getStocks()
         } else {
           this.next_stocks = null
+          postCommandes
         }
       }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.fetchStocks)
+        this.displayErrorOrRefreshToken(error, this.getStocks)
       });
     },
     postCommandes(){
