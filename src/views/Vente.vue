@@ -12,7 +12,7 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      produits:this.$store.state.produits.filter(x => x.quantite>0)
+      produits:Array.from(this.$store.state.produits).filter(x => x.quantite>0)
     }
   },
   watch:{
@@ -20,7 +20,7 @@ export default {
       this.fetchData()
     },
     "$store.state.produits"(new_val){
-      this.produits = new_val.filter(x => x.quantite>0)
+      this.produits = Array.from(new_val).filter(x => x.quantite>0)
     }
   },
   components:{VenteItem},
@@ -38,7 +38,9 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.$store.state.produits.push(...response.data.results)
+        response.data.results.forEach(x => {
+          this.$store.state.produits.add(x)
+        })
         if(response.data.next.length > 0){
           this.next = response.data.next
           this.fetchData()
@@ -51,7 +53,7 @@ export default {
     },
   },
   mounted(){
-    if(this.$store.state.produits.length<1){
+    if(this.$store.state.produits.size<1){
       this.fetchData()
     }
   },
