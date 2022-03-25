@@ -64,7 +64,7 @@
       </div>
       <ion-col class="options">
         <ion-button fill=clear color="medium" @click="close">ANULLER</ion-button>
-        <ion-button fill=clear @click="">COMMENCER</ion-button>
+        <ion-button fill=clear @click="fetch">COMMENCER</ion-button>
       </ion-col>
     </div>
   </div>
@@ -74,20 +74,26 @@
 export default {
   props: {
     active:{
-      type:Boolean, required:true
+      type:Boolean, required:true, kiosk_id:-1
     },
   },
   data(){
     return {
-      count_commandes: 0,count_payments: 0,count_stocks: 0,
-      count_pertes: 0,count_produits: 0, valid_pertes_count:0,
-      valid_pertes:new Set(), valid_stocks_count:0, valid_stocks:new Set(),
-      deleted_commandes_count:0, deleted_commandes:new Set(),
-      deleted_stocks_count:0, deleted_stocks:new Set(), deleted_pertes_count:0,
-      deleted_pertes:new Set(), created_commandes_count:0, created_commandes:[],
-      created_payments_count:0, created_payments:[], created_stocks_count:0,
-      created_stocks:[], created_pertes_count:0, created_pertes:[],
-      created_produits_count:0, created_produits:[]
+      count_commandes: 0, count_payments: 0, count_stocks: 0, 
+      count_pertes: 0, count_produits: 0, valid_pertes_count:0,
+
+      next_commandes: null, next_payments: null, next_stocks: null,
+      next_pertes: null, next_produits: null,
+
+      valid_stocks_count:0, deleted_commandes_count:0, deleted_stocks_count:0,
+      deleted_pertes_count:0, created_commandes_count:0, created_payments_count:0,
+      created_stocks_count:0, created_pertes_count:0, created_produits_count:0,
+
+      valid_pertes:new Set(),  valid_stocks:new Set(), deleted_commandes:new Set(),
+      deleted_stocks:new Set(), deleted_pertes:new Set(),
+
+      created_commandes:[], created_payments:[], created_stocks:[],
+      created_pertes:[], created_produits:[]
     }
   },
   watch:{
@@ -102,21 +108,28 @@ export default {
       this.deleted_stocks_count = this.deleted_stocks.size
       this.deleted_pertes = this.$store.state.deleted_pertes
       this.deleted_pertes_count = this.deleted_pertes.size
-      this.created_commandes = this.$store.state.commandes.filter(x => !!x.created)
+      this.created_commandes = Array.from(this.$store.state.commandes).filter(x => !!x.created)
       this.created_commandes_count = this.created_commandes.length
-      this.created_payments = this.$store.state.payments.filter(x => !!x.created)
+      this.created_payments = Array.from(this.$store.state.payments).filter(x => !!x.created)
       this.created_payments_count = this.created_payments.length
-      this.created_stocks = this.$store.state.stocks.filter(x => !!x.created)
+      this.created_stocks = Array.from(this.$store.state.stocks).filter(x => !!x.created)
       this.created_stocks_count = this.created_stocks.length
-      this.created_pertes = this.$store.state.pertes.filter(x => !!x.created)
+      this.created_pertes = Array.from(this.$store.state.pertes).filter(x => !!x.created)
       this.created_pertes_count = this.created_pertes.length
-      this.created_produits = this.$store.state.produits.filter(x => !!x.created)
+      this.created_produits = Array.from(this.$store.state.produits).filter(x => !!x.created)
       this.created_produits_count = this.created_produits.length
     }
   },
   methods: {
     close(){
       this.$emit("close")
+    },
+    fetch(){
+      let link = ""
+      if(this.getActiveKiosk()==null){
+        return
+      }
+      this.kiosk_id = this.getActiveKiosk().id
     },
     validPertes(){
 
@@ -134,19 +147,104 @@ export default {
 
     },
     getCommandes(){
-
+      if(!this.next_commandes){
+        link = this.url+`/commande/?kiosk=${this.kiosk_id}`;
+      } else {
+        link = this.next_commandes
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        response.data.results.forEach(x => this.$store.state.commandes.add(x))
+        count_commandes += response.data.results.length
+        if(response.data.next.length > 0){
+          this.next_commandes = response.data.next
+          this.fetchCommandes()
+        } else {
+          this.next_commandes = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.getCommandes)
+      });
     },
     getPayments(){
-
-    },
-    getStocks(){
-
-    },
-    getPertes(){
-
+      if(!this.next_payments){
+        link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}`;
+      } else {
+        link = this.next_payments
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        response.data.results.forEach(x => this.$store.state.payments.add(x))
+        count_payments += response.data.results.length
+        if(response.data.next.length > 0){
+          this.next_payments = response.data.next
+          this.fetchPayments()
+        } else {
+          this.next_payments = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.getPayments)
+      });
     },
     getProduits(){
-
+      if(!this.next_produits){
+        link = this.url+`/produit/?kiosk=${this.kiosk_id}`;
+      } else {
+        link = this.next_produits
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        response.data.results.forEach(x => this.$store.state.produits.add(x))
+        count_produits += response.data.results.length
+        if(response.data.next.length > 0){
+          this.next_produits = response.data.next
+          this.fetchStocks()
+        } else {
+          this.next_produits = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.getProduits)
+      });
+    },
+    getPertes(){
+      if(!this.next_pertes){
+        link = this.url+`/perte/?kiosk=${this.kiosk_id}`;
+      } else {
+        link = this.next_pertes
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        response.data.results.forEach(x => this.$store.state.pertes.add(x))
+        count_pertes += response.data.results.length
+        if(response.data.next.length > 0){
+          this.next_pertes = response.data.next
+          this.fetchPerte()
+        } else {
+          this.next_pertes = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.getPertes)
+      });
+    },
+    getStocks(){
+      if(!this.next_stocks){
+        link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
+      } else {
+        link = this.next_stocks
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        response.data.results.forEach(x => this.$store.state.stocks.add(x))
+        count_stocks += response.data.results.length
+        if(response.data.next.length > 0){
+          this.next_stocks = response.data.next
+          this.fetchStocks()
+        } else {
+          this.next_stocks = null
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.fetchStocks)
+      });
     },
     postCommandes(){
 

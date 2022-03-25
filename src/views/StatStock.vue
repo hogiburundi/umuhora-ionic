@@ -77,35 +77,6 @@ export default {
       let search_view = document.getElementById("search_st")
       search_view.classList.add("shown")
     },
-    fetchData(){
-      let link = ""
-      if(this.getActiveKiosk()==null){
-        return
-      }
-      let kiosk_id = this.getActiveKiosk().id
-      if(!this.next){
-        link = this.url+`/stock/?kiosk=${kiosk_id}`;
-      } else {
-        link = this.next
-      }
-      axios.get(link, this.headers)
-      .then((response) => {
-        response.data.results.forEach(x => this.$store.state.stocks.add(x))
-        if(response.data.next.length > 0){
-          this.next = response.data.next
-          this.fetchData()
-        } else {
-          this.next = null
-        }
-      }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.fetchData)
-      });
-    },
-  },
-  mounted(){
-    if(this.$store.state.stocks.size<1){
-      this.fetchData()
-    }
   },
 }
 </script>

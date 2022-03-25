@@ -97,62 +97,8 @@ export default {
       let search_view = document.getElementById("search_det")
       search_view.classList.add("shown")
     },
-    fetchData(){
-      let link = ""
-      if(this.getActiveKiosk()==null){
-        return
-      }
-      let kiosk_id = this.getActiveKiosk().id
-      if(!this.next){
-        link = this.url+`/commande/?kiosk=${kiosk_id}`;
-      } else {
-        link = this.next
-      }
-      axios.get(link, this.headers)
-      .then((response) => {
-        response.data.results.forEach(x => this.$store.state.commandes.add(x))
-        if(response.data.next.length > 0){
-          this.next = response.data.next
-          this.fetchData()
-        } else {
-          this.next = null
-        }
-      }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.fetchData)
-      });
-    },
-    fetchPayments(){
-      let link = ""
-      if(this.getActiveKiosk()==null){
-        return
-      }
-      let kiosk_id = this.getActiveKiosk().id
-      if(!this.next){
-        link = this.url+`/payment/?commande__kiosk=${kiosk_id}`;
-      } else {
-        link = this.next
-      }
-      axios.get(link, this.headers)
-      .then((response) => {
-        response.data.results.forEach(x => this.$store.state.payments.add(x))
-        if(response.data.next.length > 0){
-          this.next = response.data.next
-          this.fetchPayments()
-        } else {
-          this.next = null
-        }
-      }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.fetchData)
-      });
-    },
   },
   mounted(){
-    if(this.$store.state.commandes.size<1){
-      this.fetchData()
-    }
-    if(this.$store.state.payments.size<1){
-      this.fetchPayments()
-    }
   },
 }
 </script>

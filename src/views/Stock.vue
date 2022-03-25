@@ -37,35 +37,8 @@ export default {
       this.$store.state.active_stock_item = item
       this.$store.state.dialog_achat_shown = true
     },
-    fetchData(){
-      let link = ""
-      if(this.getActiveKiosk()==null){
-        return
-      }
-      let kiosk_id = this.getActiveKiosk().id
-      if(!this.next){
-        link = this.url+`/produit/?kiosk=${kiosk_id}`;
-      } else {
-        link = this.next
-      }
-      axios.get(link, this.headers)
-      .then((response) => {
-        response.data.results.forEach(x => this.$store.state.produits.add(x))
-        if(response.data.next.length > 0){
-          this.next = response.data.next
-          this.fetchData()
-        } else {
-          this.next = null
-        }
-      }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.fetchData)
-      });
-    },
   },
   mounted(){
-    if(this.$store.state.produits.size<1){
-      this.fetchData()
-    }
   },
 }
 </script>

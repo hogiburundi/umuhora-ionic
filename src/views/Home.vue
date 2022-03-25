@@ -140,13 +140,6 @@ export default {
     }
   },
   mounted(){
-    const searchbar = document.querySelector('ion-searchbar');
-
-    searchbar.addEventListener('ionInput', handleInput);
-
-    function handleInput(event) {
-      console.log("event.target.value")
-    }
   }
 }
 </script>
