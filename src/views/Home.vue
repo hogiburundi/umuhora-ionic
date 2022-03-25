@@ -67,7 +67,7 @@
         </ion-tab-button>
       </ion-tab-bar>
     </ion-footer>
-    <ion-searchbar show-cancel-button="always" debounce="500" id="search"
+    <ion-searchbar show-cancel-button="always" debounce="0" id="search"
       @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
     <DialogProduit :active="produit_shown" @close="closeDialog"
       :item="active_stock_item"/>
@@ -137,6 +137,15 @@ export default {
       window.current_event = window.setTimeout(() => {
         vue.fab_shown = false
       }, 5000)
+    }
+  },
+  mounted(){
+    const searchbar = document.querySelector('ion-searchbar');
+
+    searchbar.addEventListener('ionInput', handleInput);
+
+    function handleInput(event) {
+      console.log("event.target.value")
     }
   }
 }
