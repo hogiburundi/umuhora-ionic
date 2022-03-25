@@ -28,8 +28,17 @@
       <ion-popover trigger="menu-toggler" dismiss-on-select="true" show-backdrop="false">
         <ion-content>
           <ion-list lines="none">
-            <ion-item button size="small">Notifications</ion-item>
-            <ion-item button size="small">Synchroniser</ion-item>
+            <ion-item button size="small">
+              <ion-label>Notifications</ion-label>
+              <ion-icon :icon="getIcon('notificationsOutline')"/>
+              <ion-badge color="danger" class="notif">
+                {{ $store.state.cart.content.length }}
+              </ion-badge>
+            </ion-item>
+            <ion-item button size="small" @click="showSync">
+              <ion-label>Synchroniser</ion-label>
+              <ion-icon :icon="getIcon('sync')"/>
+            </ion-item>
           </ion-list>
         </ion-content>
       </ion-popover>
@@ -58,27 +67,29 @@
         </ion-tab-button>
       </ion-tab-bar>
     </ion-footer>
-    <DialogProduit :active="produit_shown" @close="closeDialog"
-      :item="active_stock_item"/>
-    <DialogAchat :active="achat_shown" @close="closeDialog"
-      :item="active_stock_item"/>
     <ion-searchbar show-cancel-button="always" debounce="500" id="search"
       @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
+    <DialogProduit :active="produit_shown" @close="closeDialog"
+      :item="active_stock_item"/>
+    <DialogSync :active="sync_shown" @close="closeDialog"/>
+    <DialogAchat :active="achat_shown" @close="closeDialog"
+      :item="active_stock_item"/>
   </ion-page>
 </template>
 
 <script>
 import DialogProduit from "../components/dialog_produit"
 import DialogAchat from "../components/dialog_achat"
+import DialogSync from "../components/dialog_sync"
 import { Camera } from '@capacitor/camera';
 
 export default {
-  components:{ DialogProduit, DialogAchat },
+  components:{ DialogProduit, DialogAchat, DialogSync },
   data(){
     return {
       menu_shown:false, produit_shown:false, achat_shown:false,
       active_stock_item:null, produit_shown: false, achat_shown:false,
-      fab_shown:true
+      fab_shown:true, sync_shown:false
     }
   },
   watch:{
@@ -100,16 +111,21 @@ export default {
       this.$store.state.dialog_produit_shown = false
       this.$store.state.dialog_achat_shown = false
       this.$store.state.active_stock_item = null
+      this.sync_shown = false
     },
     startScan(){
       Camera.requestPermissions()
     },
     closeSearch(event){
+      console.log('Close')
       event.target.classList.remove("shown")
     },
     showSearch(){
       let search_view = document.getElementById("search")
       search_view.classList.add("shown")
+    },
+    showSync(){
+      this.sync_shown=true
     },
     search(keyword){
       console.log(keyword)
@@ -138,6 +154,12 @@ ion-badge{
   position: absolute;
   top: -5px;
   right: -7px;
+  font-size: .8em;
+}
+ion-badge.notif{
+  position: absolute;
+  top: 5px;
+  right: 20px;
   font-size: .8em;
 }
 </style>
