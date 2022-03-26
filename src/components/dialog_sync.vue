@@ -281,7 +281,7 @@ export default {
       this.sending_commandes = true
       if(!this.in_action) return
       if(this.created_commandes.size > 0){
-        let item = Array.from(created_commandes)[0]
+        let item = Array.from(this.created_commandes)[0]
         axios.post(this.url+`/commande/`, item.created, this.headers)
         .then((response) => {
           this.created_commandes.delete(item)
@@ -300,7 +300,7 @@ export default {
       this.sending_payments = true
       if(!this.in_action) return
       if(this.created_payments.size > 0){
-        let item = Array.from(created_payments)[0]
+        let item = Array.from(this.created_payments)[0]
         axios.post(this.url+`/payment/`, item.created, this.headers)
         .then((response) => {
           this.created_payments.delete(item)
@@ -319,7 +319,7 @@ export default {
       this.sending_stocks = true
       if(!this.in_action) return
       if(this.created_stocks.size > 0){
-        let item = Array.from(created_stocks)[0]
+        let item = Array.from(this.created_stocks)[0]
         axios.post(this.url+`/stock/`, item.created, this.headers)
         .then((response) => {
           this.created_stocks.delete(item)
@@ -338,7 +338,7 @@ export default {
       this.sending_pertes = true
       if(!this.in_action) return
       if(this.created_pertes.size > 0){
-        let item = Array.from(created_pertes)[0]
+        let item = Array.from(this.created_pertes)[0]
         axios.post(this.url+`/perte/`, item.created, this.headers)
         .then((response) => {
           this.created_pertes.delete(item)
@@ -357,7 +357,7 @@ export default {
       this.sending_produits = true
       if(!this.in_action) return
       if(this.created_produits.size > 0){
-        let item = Array.from(created_produits)[0]
+        let item = Array.from(this.created_produits)[0]
         axios.post(this.url+`/produit/`, item.created, this.headers)
         .then((response) => {
           this.created_produits.delete(item)

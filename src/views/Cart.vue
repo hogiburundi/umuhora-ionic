@@ -160,7 +160,7 @@ export default {
       for(let item of this.cart.content){
         item.product.quantite -= item.quantite
       }
-      this.$store.state.commandes.push(command)
+      this.$store.state.commandes.add(command)
       this.cart.content = []
       this.$router.push("/")
     },
