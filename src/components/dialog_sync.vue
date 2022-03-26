@@ -103,8 +103,13 @@ export default {
   },
   data(){
     return {
-      in_action:false, count_commandes: 0, count_payments: 0, count_stocks: 0, 
-      count_pertes: 0, count_produits: 0, valid_pertes_count:0,
+      in_action:false,
+
+      count_stocks: 0, count_pertes: 0, count_produits: 0, valid_stocks_count: 0,
+      valid_pertes_count: 0, deleted_commandes_count: 0, deleted_stocks_count: 0,
+      deleted_pertes_count: 0, created_commandes_count: 0, created_payments_count: 0,
+      created_stocks_count: 0, created_pertes_count: 0, created_produits_count: 0,
+      count_commandes: 0, count_payments: 0,
 
       next_commandes: null, next_payments: null, next_stocks: null,
       next_pertes: null, next_produits: null,
@@ -114,10 +119,6 @@ export default {
       receiving_payments: false,receiving_stocks: false,receiving_pertes: false,
       receiving_produits: false,sending_commandes: false,sending_payments: false,
       sending_stocks: false,sending_pertes: false,sending_produits: false,
-
-      valid_stocks_count:0, deleted_commandes_count:0, deleted_stocks_count:0,
-      deleted_pertes_count:0, created_commandes_count:0, created_payments_count:0,
-      created_stocks_count:0, created_pertes_count:0, created_produits_count:0,
 
       valid_pertes:new Set(),  valid_stocks:new Set(), deleted_commandes:new Set(),
       deleted_stocks:new Set(), deleted_pertes:new Set(),
@@ -129,11 +130,21 @@ export default {
   watch:{
     active(new_val){
       if(new_val){
-        this.created_commandes_count = 0
-        this.created_payments_count = 0
-        this.created_stocks_count = 0
-        this.created_pertes_count = 0
-        this.created_produits_count = 0
+        this.count_stocks= 0
+        this.count_pertes= 0
+        this.count_produits= 0
+        this.valid_stocks_count= 0
+        this.valid_pertes_count= 0
+        this.deleted_commandes_count= 0
+        this.deleted_stocks_count= 0
+        this.deleted_pertes_count= 0
+        this.created_commandes_count= 0
+        this.created_payments_count= 0
+        this.created_stocks_count= 0
+        this.created_pertes_count= 0
+        this.created_produits_count= 0
+        this.count_commandes= 0
+        this.count_payments= 0
         
         this.validating_pertes= false
         this.validating_stocks= false
@@ -282,13 +293,13 @@ export default {
       let link;
       this.sending_commandes = true
       if(!this.in_action) return
-      if(this.created_commandes.size > 0){
+      if(this.created_commandes.length > 0){
         let item = Array.from(this.created_commandes)[0]
         axios.post(this.url+`/commande/`, item.created, this.headers)
         .then((response) => {
-          this.created_commandes.delete(item)
-          this.$store.state.commandes.delete(item)
-          this.$store.state.commandes.add(response.data)
+          this.created_commandes.splice(this.created_commandes.indexOf(item), 1)
+          delete(this.$store.state.commandes[item.id])
+          this.$store.state.commandes[response.data.id] = response.data
           this.postCommandes()
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, this.postCommandes)
@@ -301,13 +312,13 @@ export default {
       let link;
       this.sending_payments = true
       if(!this.in_action) return
-      if(this.created_payments.size > 0){
+      if(this.created_payments.length > 0){
         let item = Array.from(this.created_payments)[0]
         axios.post(this.url+`/payment/`, item.created, this.headers)
         .then((response) => {
-          this.created_payments.delete(item)
-          this.$store.state.payments.delete(item)
-          this.$store.state.payments.add(response.data)
+          this.created_payments.splice(this.created_payments.indexOf(item), 1)
+          delete(this.$store.state.payments[item.id])
+          this.$store.state.payments[response.data.id] = response.data
           this.postPayments()
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, this.postPayments)
@@ -320,13 +331,13 @@ export default {
       let link;
       this.sending_stocks = true
       if(!this.in_action) return
-      if(this.created_stocks.size > 0){
+      if(this.created_stocks.length > 0){
         let item = Array.from(this.created_stocks)[0]
         axios.post(this.url+`/stock/`, item.created, this.headers)
         .then((response) => {
-          this.created_stocks.delete(item)
-          this.$store.state.stocks.delete(item)
-          this.$store.state.stocks.add(response.data)
+          this.created_stocks.splice(this.created_stocks.indexOf(item), 1)
+          delete(this.$store.state.stocks[item.id])
+          this.$store.state.stocks[response.data.id] = response.data
           this.postStocks()
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, this.postStocks)
@@ -339,13 +350,13 @@ export default {
       let link;
       this.sending_pertes = true
       if(!this.in_action) return
-      if(this.created_pertes.size > 0){
+      if(this.created_pertes.length > 0){
         let item = Array.from(this.created_pertes)[0]
         axios.post(this.url+`/perte/`, item.created, this.headers)
         .then((response) => {
-          this.created_pertes.delete(item)
-          this.$store.state.pertes.delete(item)
-          this.$store.state.pertes.add(response.data)
+          this.created_pertes.splice(this.created_pertes.indexOf(item), 1)
+          delete(this.$store.state.pertes[item.id])
+          this.$store.state.pertes[response.data.id] = response.data
           this.postPertes()
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, this.postPertes)
@@ -358,13 +369,13 @@ export default {
       let link;
       this.sending_produits = true
       if(!this.in_action) return
-      if(this.created_produits.size > 0){
+      if(this.created_produits.length > 0){
         let item = Array.from(this.created_produits)[0]
         axios.post(this.url+`/produit/`, item.created, this.headers)
         .then((response) => {
-          this.created_produits.delete(item)
-          this.$store.state.produits.delete(item)
-          this.$store.state.produits.add(response.data)
+          this.created_produits.splice(this.created_produits.indexOf(item), 1)
+          delete(this.$store.state.produits[item.id])
+          this.$store.state.produits[response.data.id] = response.data
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, this.postProduits)
         });
