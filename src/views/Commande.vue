@@ -58,12 +58,12 @@ export default {
   components:{ CommandeItem, DialogDateFilter},
   data(){
     return {
-      date_shown:false, commandes:Array.from(this.$store.state.commandes)
+      date_shown:false, commandes:Object.values(this.$store.state.commandes)
     }
   },
   watch:{
     "$store.state.commandes"(new_val){
-      this.commandes = Array.from(new_val)
+      this.commandes = Object.values(new_val)
     }
   },
   methods:{

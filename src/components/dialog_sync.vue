@@ -161,15 +161,15 @@ export default {
         this.deleted_stocks_count = this.deleted_stocks.size
         this.deleted_pertes = this.$store.state.deleted_pertes
         this.deleted_pertes_count = this.deleted_pertes.size
-        this.created_commandes = Array.from(this.$store.state.commandes).filter(x => !!x.created)
+        this.created_commandes = Object.values(this.$store.state.commandes).filter(x => !!x.created)
         this.created_commandes_count = this.created_commandes.length
-        this.created_payments = Array.from(this.$store.state.payments).filter(x => !!x.created)
+        this.created_payments = Object.values(this.$store.state.payments).filter(x => !!x.created)
         this.created_payments_count = this.created_payments.length
-        this.created_stocks = Array.from(this.$store.state.stocks).filter(x => !!x.created)
+        this.created_stocks = Object.values(this.$store.state.stocks).filter(x => !!x.created)
         this.created_stocks_count = this.created_stocks.length
-        this.created_pertes = Array.from(this.$store.state.pertes).filter(x => !!x.created)
+        this.created_pertes = Object.values(this.$store.state.pertes).filter(x => !!x.created)
         this.created_pertes_count = this.created_pertes.length
-        this.created_produits = Array.from(this.$store.state.produits).filter(x => !!x.created)
+        this.created_produits = Object.values(this.$store.state.produits).filter(x => !!x.created)
         this.created_produits_count = this.created_produits.length
       }
     }
@@ -381,7 +381,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.commandes.add(x))
+        response.data.results.forEach(x => this.$store.state.commandes[x.id]=x)
         this.count_commandes += response.data.results.length
         if(!!response.data.next){
           this.next_commandes = response.data.next
@@ -405,7 +405,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.payments.add(x))
+        response.data.results.forEach(x => this.$store.state.payments[x.id]=x)
         this.count_payments += response.data.results.length
         if(!!response.data.next){
           this.next_payments = response.data.next
@@ -429,7 +429,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.produits.add(x))
+        response.data.results.forEach(x => this.$store.state.produits[x.id]=x)
         this.count_produits += response.data.results.length
         if(!!response.data.next){
           this.next_produits = response.data.next
@@ -453,7 +453,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.pertes.add(x))
+        response.data.results.forEach(x => this.$store.state.pertes[x.id]=x)
         this.count_pertes += response.data.results.length
         if(!!response.data.next){
           this.next_pertes = response.data.next
@@ -477,7 +477,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.stocks.add(x))
+        response.data.results.forEach(x => this.$store.state.stocks[x.id]=x)
         this.count_stocks += response.data.results.length
         if(!!response.data.next){
           this.next_stocks = response.data.next

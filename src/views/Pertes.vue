@@ -31,12 +31,12 @@ export default {
   components:{PerteItem},
   data(){
     return {
-      pertes:Array.from(this.$store.state.pertes)
+      pertes:Object.values(this.$store.state.pertes)
     }
   },
   watch:{
     "$store.state.pertes"(new_val){
-      this.pertes = Array.from(new_val)
+      this.pertes = Object.values(new_val)
     }
   },
   methods:{

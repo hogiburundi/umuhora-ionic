@@ -160,7 +160,8 @@ export default {
       for(let item of this.cart.content){
         item.product.quantite -= item.quantite
       }
-      this.$store.state.commandes.add(command)
+      let size = Object.keys(this.$store.state.commandes).length + 1
+      this.$store.state.commandes[-size] = command
       this.cart.content = []
       this.$router.push("/")
     },

@@ -63,14 +63,14 @@ export default {
   components:{DetteItem, DialogDateFilter, DialogPay, DialogPayments},
   data(){
     return {
-      commandes:Array.from(this.$store.state.commandes).filter(x => x.prix>x.payee),
+      commandes:Object.values(this.$store.state.commandes).filter(x => x.prix>x.payee),
       date_shown:false, payments_shown:false, pay_shown:false,
       active_item:null
     }
   },
   watch:{
     "$store.state.commandes"(new_val){
-      this.commandes = Array.from(new_val).filter(x => x.prix>x.payee)
+      this.commandes = Object.values(new_val).filter(x => x.prix>x.payee)
     }
   },
   methods:{

@@ -49,13 +49,13 @@ export default {
   components:{StatStockItem, DialogDateFilter, DialogPerte},
   data(){
     return {
-      date_shown:false, stocks:Array.from(this.$store.state.stocks),
+      date_shown:false, stocks:Object.values(this.$store.state.stocks),
       perte_shown:false, active_item:null,
     }
   },
   watch:{
     "$store.state.stocks"(new_val){
-      this.stocks = Array.from(new_val)
+      this.stocks = Object.values(new_val)
     },
   },
   methods:{

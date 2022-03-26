@@ -16,12 +16,12 @@ export default {
   components:{ StockItem },
   data(){
     return  {
-      produits:Array.from(this.$store.state.produits)
+      produits:Object.values(this.$store.state.produits)
     }
   },
   watch:{
     "$store.state.produits"(new_val){
-      this.produits = Array.from(new_val)
+      this.produits = Object.values(new_val)
     }
   },
   methods:{

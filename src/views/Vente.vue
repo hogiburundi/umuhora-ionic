@@ -12,15 +12,12 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      produits:Array.from(this.$store.state.produits).filter(x => x.quantite>0)
+      produits:Object.values(this.$store.state.produits).filter(x => x.quantite>0)
     }
   },
   watch:{
-    "$store.state.active_kiosk"(new_val){
-      this.fetchData()
-    },
     "$store.state.produits"(new_val){
-      this.produits = Array.from(new_val).filter(x => x.quantite>0)
+      this.produits = Object.values(new_val).filter(x => x.quantite>0)
     }
   },
   components:{VenteItem},
