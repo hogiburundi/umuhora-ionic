@@ -35,8 +35,11 @@ export default {
     }
   },
   watch:{
-    "$store.state.pertes"(new_val){
-      this.pertes = Object.values(new_val)
+    "$store.state.pertes":{
+      deep:true,
+      handle(new_val){
+        this.pertes = Object.values(new_val)
+      }
     }
   },
   methods:{

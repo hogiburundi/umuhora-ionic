@@ -16,8 +16,11 @@ export default {
     }
   },
   watch:{
-    "$store.state.produits"(new_val){
-      this.produits = Object.values(new_val).filter(x => x.quantite>0)
+    "$store.state.produits":{
+      deep:true,
+      handler(new_val){
+        this.produits = Object.values(new_val).filter(x => x.quantite>0)
+      }
     }
   },
   components:{VenteItem},

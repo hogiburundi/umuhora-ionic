@@ -20,8 +20,11 @@ export default {
     }
   },
   watch:{
-    "$store.state.produits"(new_val){
-      this.produits = Object.values(new_val)
+    "$store.state.produits":{
+      deep:true,
+      handler(new_val){
+        this.produits = Object.values(new_val)
+      }
     }
   },
   methods:{

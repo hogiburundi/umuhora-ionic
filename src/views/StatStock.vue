@@ -54,8 +54,11 @@ export default {
     }
   },
   watch:{
-    "$store.state.stocks"(new_val){
-      this.stocks = Object.values(new_val)
+    "$store.state.stocks":{
+      deep:true,
+      handler(new_val){
+        this.stocks = Object.values(new_val)
+      }
     },
   },
   methods:{

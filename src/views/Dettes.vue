@@ -69,8 +69,11 @@ export default {
     }
   },
   watch:{
-    "$store.state.commandes"(new_val){
-      this.commandes = Object.values(new_val).filter(x => x.prix>x.payee)
+    "$store.state.commandes":{
+      deep:true,
+      handler(new_val){
+        this.commandes = Object.values(new_val).filter(x => x.prix>x.payee)
+      }
     }
   },
   methods:{
