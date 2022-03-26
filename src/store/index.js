@@ -12,7 +12,7 @@ export default createStore({
     commandes:{}, deleted_commandes:{},
     stocks:{}, deleted_stocks:new Set(), validated_stocks:new Set(),
     pertes:{}, deleted_pertes:new Set(), validated_pertes:new Set(),
-    produits:{}, updated_produits:new Set(),
+    produits:{},
     payments:{},
     clients:{},
     versements:[],

@@ -47,8 +47,9 @@ export default {
         console.error("insiguro muriko muratanga ntihagije")
         return;
       }
+      let id = -1 * (this.$store.state.pertes.length + 1)
       let data = {
-        id: -1,
+        id: id,
         quantite: this.qtt,
         date: new Date(),
         details: this.details,
@@ -66,7 +67,7 @@ export default {
         user_id: this.active_user.id,
         kiosk_id: this.getActiveKiosk().id
       }
-      this.$store.state.pertes.push(data)
+      this.$store.state.pertes[id] = data
       this.item.quantite_actuelle -= this.qtt
       this.close()
     }

@@ -64,8 +64,9 @@ export default {
         console.error("iyo mahera ni make cane ntibishoboka")
         return;
       }
+      let id = -1 * (Object.keys(this.$store.state.payments).length+1)
       let data = {
-        id: -1,
+        id: id,
         client: this.item.client,
         montant: this.payee,
         date: null,
@@ -81,7 +82,7 @@ export default {
         user_id: this.active_user.id,
         kiosk_id: this.getActiveKiosk().id
       }
-      this.$store.state.payments.push(data)
+      this.$store.state.payments[id] = data
       this.item.payee += this.payee
       this.close()
     }

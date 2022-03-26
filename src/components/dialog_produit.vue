@@ -24,7 +24,7 @@
         </ion-item>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">prix de vente</ion-label>
-          <ion-input type=text placeholder="prix de vente" :value="prix_vente"
+          <ion-input type=number placeholder="prix de vente" :value="prix_vente"
             @IonChange="prix_vente=$event.target.value" clearInput/>
         </ion-item>
       <ion-col class="options">
@@ -81,15 +81,15 @@ export default {
         kiosk_id: this.getActiveKiosk().id
       }
       if(!this.item){
-        this.$store.state.produits.push(data)
-        this.$store.state.created_produits.push(data)
+        let id = -1*(Object.keys(this.$store.state.produits).length + 1)
+        data.created = JSON.parse(JSON.stringify(data))
+        data.id = id
+        this.$store.state.produits[id] = data
       } else {
         for(let key of Object.keys(data)){
           this.item[key] = data[key]
         }
-        if(!!this.item.id){
-          this.$store.state.updated_produits_ids.add(this.item.id)
-        }
+        this.item.updated = data
       }
       this.close()
     }

@@ -62,8 +62,11 @@ export default {
     }
   },
   watch:{
-    "$store.state.commandes"(new_val){
-      this.commandes = Object.values(new_val)
+    "$store.state.commandes":{
+      deep:true,
+      handler(new_val){
+        this.commandes = Object.values(new_val)
+      }
     }
   },
   methods:{

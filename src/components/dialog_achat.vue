@@ -64,8 +64,9 @@ export default {
         kiosk:this.getActiveKiosk().id,
         date:new Date().toISOString()
       }
+      let id = -1*(Object.keys(this.$store.state.stocks).length + 1)
       let new_stock = {
-        id: -1,
+        id: id,
         quantite_initiale: this.qtt,
         quantite_actuelle: this.qtt,
         date: created.date,
@@ -79,7 +80,7 @@ export default {
         user_id: this.active_user.id,
         kiosk_id: this.getActiveKiosk().id
       }
-      this.$store.state.stocks.unshift(new_stock)
+      this.$store.state.stocks[id] = new_stock
       this.item.quantite += parseInt(this.item.quantite) + parseInt(this.qtt)
       this.close()
     },
