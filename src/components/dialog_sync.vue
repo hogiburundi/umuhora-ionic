@@ -2,69 +2,93 @@
   <div class="dialog" v-if="active">
     <div class="body ion-padding">
       <h3>Synchronisation</h3>
-      <div class="line">
+      <div class="line" :class="{'active':validating_pertes}">
         <div class="key">validation pertes</div>
-        <div>{{ valid_pertes_count-valid_pertes.size }}/{{ valid_pertes_count }}</div>
+        <div>
+          {{ valid_pertes_count-valid_pertes.size }}/{{ valid_pertes_count }}
+        </div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':validating_stocks}">
         <div class="key">validation stocks</div>
-        <div>{{ valid_stocks_count-valid_stocks.size }}/{{ valid_stocks_count }}</div>
+        <div>
+          {{ valid_stocks_count-valid_stocks.size }}/{{ valid_stocks_count }}
+        </div>
       </div>
-      <div class="line">
-        <div class="key">suppression commandes</div>
-        <div>{{ deleted_commandes_count-deleted_commandes.size }}/{{ deleted_commandes_count }}</div>
+      <div class="line" :class="{'active':deleting_commandes}">
+        <div class="key">suppression payments</div>
+        <div>
+          {{ deleted_commandes_count-deleted_commandes.size }}/{{ deleted_commandes_count }}
+        </div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':deleting_stocks}">
         <div class="key">suppression stocks</div>
-        <div>{{ deleted_stocks_count-deleted_stocks.size }}/{{ deleted_stocks_count }}</div>
+        <div>
+          {{ deleted_stocks_count-deleted_stocks.size }}/{{ deleted_stocks_count }}
+        </div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':deleting_pertes}">
         <div class="key">suppression pertes</div>
-        <div>{{ deleted_pertes_count-deleted_pertes.size }}/{{ deleted_pertes_count }}</div>
+        <div>
+          {{ deleted_pertes_count-deleted_pertes.size }}/{{ deleted_pertes_count }}
+        </div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':receiving_commandes}">
         <div class="key">reception commandes</div>
         <div>{{ count_commandes }}</div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':receiving_payments}">
         <div class="key">reception payments</div>
         <div>{{ count_payments }}</div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':receiving_stocks}">
         <div class="key">reception stocks</div>
         <div>{{ count_stocks }}</div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':receiving_pertes}">
         <div class="key">reception pertes</div>
         <div>{{ count_pertes }}</div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':receiving_produits}">
         <div class="key">reception produits</div>
         <div>{{ count_produits }}</div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':sending_commandes}">
         <div class="key">envoie commandes</div>
-        <div>{{ created_commandes.length }}/{{ created_commandes_count }}</div>
+        <div>
+          {{ created_commandes_count - created_commandes.length }}/{{ created_commandes_count }}
+        </div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':sending_payments}">
         <div class="key">envoie payments</div>
-        <div>{{ created_payments.length }}/{{ created_payments_count }}</div>
+        <div>
+          {{ created_payments_count - created_payments.length }}/{{ created_payments_count }}
+        </div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':sending_stocks}">
         <div class="key">envoie stocks</div>
-        <div>{{ created_stocks.length }}/{{ created_stocks_count }}</div>
+        <div>
+          {{ created_stocks_count - created_stocks.length }}/{{ created_stocks_count }}
+        </div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':sending_pertes}">
         <div class="key">envoie pertes</div>
-        <div>{{ created_pertes.length }}/{{ created_pertes_count }}</div>
+        <div>
+          {{ created_pertes_count - created_pertes.length }}/{{ created_pertes_count }}
+        </div>
       </div>
-      <div class="line">
+      <div class="line" :class="{'active':sending_produits}">
         <div class="key">envoie produits</div>
-        <div>{{ created_produits.length }}/{{ created_produits_count }}</div>
+        <div>
+          {{ created_produits_count - created_produits.length }}/{{ created_produits_count }}
+        </div>
       </div>
       <ion-col class="options">
-        <ion-button fill=clear color="medium" @click="close">ANULLER</ion-button>
-        <ion-button fill=clear @click="fetch">COMMENCER</ion-button>
+        <ion-button fill=clear color="medium" @click="stopper">
+          ANULLER
+        </ion-button>
+        <ion-button fill=clear @click="fetch"  v-if="!in_action">
+          COMMENCER
+        </ion-button>
       </ion-col>
     </div>
   </div>
@@ -79,11 +103,17 @@ export default {
   },
   data(){
     return {
-      count_commandes: 0, count_payments: 0, count_stocks: 0, 
+      in_action:false, count_commandes: 0, count_payments: 0, count_stocks: 0, 
       count_pertes: 0, count_produits: 0, valid_pertes_count:0,
 
       next_commandes: null, next_payments: null, next_stocks: null,
       next_pertes: null, next_produits: null,
+
+      validating_pertes: false,validating_stocks: false,deleting_commandes: false,
+      deleting_stocks: false,deleting_pertes: false,receiving_commandes: false,
+      receiving_payments: false,receiving_stocks: false,receiving_pertes: false,
+      receiving_produits: false,sending_commandes: false,sending_payments: false,
+      sending_stocks: false,sending_pertes: false,sending_produits: false,
 
       valid_stocks_count:0, deleted_commandes_count:0, deleted_stocks_count:0,
       deleted_pertes_count:0, created_commandes_count:0, created_payments_count:0,
@@ -121,8 +151,12 @@ export default {
     }
   },
   methods: {
-    close(){
-      this.$emit("close")
+    stopper(){
+      if(this.in_action){
+        this.in_action = false
+      } else {
+        this.$emit("close")
+      }
     },
     fetch(){
       let link = ""
@@ -130,8 +164,13 @@ export default {
         return
       }
       this.kiosk_id = this.getActiveKiosk().id
+      this.in_action = true
+      this.validPertes()
     },
     validPertes(){
+      let link;
+      this.validating_pertes = true
+      if(!this.in_action) return
       if(this.valid_pertes.size > 0){
         let item = Array.from(valid_pertes)[0]
         axios.get(`${this.url}/perte/${item}/valider/`, this.headers)
@@ -146,6 +185,9 @@ export default {
       }
     },
     validStocks(){
+      let link;
+      this.validating_stocks = true
+      if(!this.in_action) return
       if(this.valid_stocks.size > 0){
         let item = Array.from(valid_stocks)[0]
         axios.get(`${this.url}/stock/${item}/valider/`, this.headers)
@@ -160,9 +202,12 @@ export default {
       }
     },
     delCommandes(){
+      let link;
+      this.deleting_commandes = true
+      if(!this.in_action) return
       if(this.deleted_commandes.size > 0){
         let item = Array.from(deleted_commandes)[0]
-        axios.remove(`${this.url}/perte/${item}/`, this.headers)
+        axios.delete(`${this.url}/perte/${item}/`, this.headers)
         .then((response) => {
           deleted_commandes.delete(item)
           this.delCommandes()
@@ -174,9 +219,12 @@ export default {
       }
     },
     delStocks(){
+      let link;
+      this.deleting_stocks = true
+      if(!this.in_action) return
       if(this.deleted_stocks.size > 0){
         let item = Array.from(deleted_stocks)[0]
-        axios.remove(`${this.url}/stock/${item}/`, this.headers)
+        axios.delete(`${this.url}/stock/${item}/`, this.headers)
         .then((response) => {
           deleted_stocks.delete(item)
           this.delStocks()
@@ -188,9 +236,12 @@ export default {
       }
     },
     delPertes(){
+      let link;
+      this.deleting_pertes = true
+      if(!this.in_action) return
       if(this.deleted_pertes.size > 0){
         let item = Array.from(deleted_pertes)[0]
-        axios.remove(`${this.url}/perte/${item}/`, this.headers)
+        axios.delete(`${this.url}/perte/${item}/`, this.headers)
         .then((response) => {
           deleted_pertes.delete(item)
           this.delPertes()
@@ -202,6 +253,9 @@ export default {
       }
     },
     getCommandes(){
+      let link;
+      this.receiving_commandes = true
+      if(!this.in_action) return
       if(!this.next_commandes){
         link = this.url+`/commande/?kiosk=${this.kiosk_id}`;
       } else {
@@ -223,6 +277,9 @@ export default {
       });
     },
     getPayments(){
+      let link;
+      this.receiving_payments = true
+      if(!this.in_action) return
       if(!this.next_payments){
         link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}`;
       } else {
@@ -244,6 +301,9 @@ export default {
       });
     },
     getProduits(){
+      let link;
+      this.receiving_stocks = true
+      if(!this.in_action) return
       if(!this.next_produits){
         link = this.url+`/produit/?kiosk=${this.kiosk_id}`;
       } else {
@@ -265,6 +325,9 @@ export default {
       });
     },
     getPertes(){
+      let link;
+      this.receiving_pertes = true
+      if(!this.in_action) return
       if(!this.next_pertes){
         link = this.url+`/perte/?kiosk=${this.kiosk_id}`;
       } else {
@@ -286,6 +349,9 @@ export default {
       });
     },
     getStocks(){
+      let link;
+      this.receiving_produits = true
+      if(!this.in_action) return
       if(!this.next_stocks){
         link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
       } else {
@@ -300,26 +366,104 @@ export default {
           this.getStocks()
         } else {
           this.next_stocks = null
-          postCommandes
+          this.postCommandes()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getStocks)
       });
     },
     postCommandes(){
-
+      let link;
+      this.sending_commandes = true
+      if(!this.in_action) return
+      if(this.created_commandes.size > 0){
+        let item = Array.from(created_commandes)[0]
+        axios.post(this.url+`/commande/`, item.created, this.headers)
+        .then((response) => {
+          this.created_commandes.delete(item)
+          this.$store.state.commandes.delete(item)
+          this.$store.state.commandes.add(response.data)
+          this.postCommandes()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.postCommandes)
+        });
+      } else {
+        this.postPayments()
+      }
     },
     postPayments(){
-
+      let link;
+      this.sending_payments = true
+      if(!this.in_action) return
+      if(this.created_payments.size > 0){
+        let item = Array.from(created_payments)[0]
+        axios.post(this.url+`/payment/`, item.created, this.headers)
+        .then((response) => {
+          this.created_payments.delete(item)
+          this.$store.state.payments.delete(item)
+          this.$store.state.payments.add(response.data)
+          this.postPayments()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.postPayments)
+        });
+      } else {
+        this.postStocks()
+      }
     },
     postStocks(){
-
+      let link;
+      this.sending_stocks = true
+      if(!this.in_action) return
+      if(this.created_stocks.size > 0){
+        let item = Array.from(created_stocks)[0]
+        axios.post(this.url+`/stock/`, item.created, this.headers)
+        .then((response) => {
+          this.created_stocks.delete(item)
+          this.$store.state.stocks.delete(item)
+          this.$store.state.stocks.add(response.data)
+          this.postStocks()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.postStocks)
+        });
+      } else {
+        this.postPertes()
+      }
     },
     postPertes(){
-
+      let link;
+      this.sending_pertes = true
+      if(!this.in_action) return
+      if(this.created_pertes.size > 0){
+        let item = Array.from(created_pertes)[0]
+        axios.post(this.url+`/perte/`, item.created, this.headers)
+        .then((response) => {
+          this.created_pertes.delete(item)
+          this.$store.state.pertes.delete(item)
+          this.$store.state.pertes.add(response.data)
+          this.postPertes()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.postPertes)
+        });
+      } else {
+        this.postProduits()
+      }
     },
     postProduits(){
-
+      let link;
+      this.sending_produits = true
+      if(!this.in_action) return
+      if(this.created_produits.size > 0){
+        let item = Array.from(created_produits)[0]
+        axios.post(this.url+`/produit/`, item.created, this.headers)
+        .then((response) => {
+          this.created_produits.delete(item)
+          this.$store.state.produits.delete(item)
+          this.$store.state.produits.add(response.data)
+          this.postProduits()
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, this.postProduits)
+        });
+      }
     },
   }
 };
@@ -332,5 +476,8 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
+}
+.active{
+  font-weight: 700;
 }
 </style>
