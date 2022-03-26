@@ -156,7 +156,7 @@ export default {
       deep:true,
       handler(new_val){
         if(!!new_val){
-          localStorage.setItem("deleted_commandes", JSON.stringify(new_val))
+          localStorage.setItem("deleted_commandes", JSON.stringify(Array.from(new_val)))
         } else {
           localStorage.removeItem("deleted_commandes")
         }
@@ -166,7 +166,7 @@ export default {
       deep:true,
       handler(new_val){
         if(!!new_val){
-          localStorage.setItem("deleted_payments", JSON.stringify(new_val))
+          localStorage.setItem("deleted_payments", JSON.stringify(Array.from(new_val)))
         } else {
           localStorage.removeItem("deleted_payments")
         }
@@ -176,7 +176,7 @@ export default {
       deep:true,
       handler(new_val){
         if(!!new_val){
-          localStorage.setItem("deleted_stocks", JSON.stringify(new_val))
+          localStorage.setItem("deleted_stocks", JSON.stringify(Array.from(new_val)))
         } else {
           localStorage.removeItem("deleted_stocks")
         }
@@ -186,7 +186,7 @@ export default {
       deep:true,
       handler(new_val){
         if(!!new_val){
-          localStorage.setItem("validated_stocks", JSON.stringify(new_val))
+          localStorage.setItem("validated_stocks", JSON.stringify(Array.from(new_val)))
         } else {
           localStorage.removeItem("validated_stocks")
         }
@@ -196,7 +196,7 @@ export default {
       deep:true,
       handler(new_val){
         if(!!new_val){
-          localStorage.setItem("deleted_pertes", JSON.stringify(new_val))
+          localStorage.setItem("deleted_pertes", JSON.stringify(Array.from(new_val)))
         } else {
           localStorage.removeItem("deleted_pertes")
         }
@@ -206,7 +206,7 @@ export default {
       deep:true,
       handler(new_val){
         if(!!new_val){
-          localStorage.setItem("validated_pertes", JSON.stringify(new_val))
+          localStorage.setItem("validated_pertes", JSON.stringify(Array.from(new_val)))
         } else {
           localStorage.removeItem("validated_pertes")
         }
@@ -222,12 +222,13 @@ export default {
     var pertes = JSON.parse(localStorage.getItem('pertes'))
     var produits = JSON.parse(localStorage.getItem('produits'))
     var clients = JSON.parse(localStorage.getItem('clients'))
-    var deleted_commandes = JSON.parse(localStorage.getItem('deleted_commandes'))
-    var deleted_payments = JSON.parse(localStorage.getItem('deleted_payments'))
-    var deleted_stocks = JSON.parse(localStorage.getItem('deleted_stocks'))
-    var validated_stocks = JSON.parse(localStorage.getItem('validated_stocks'))
-    var deleted_pertes = JSON.parse(localStorage.getItem('deleted_pertes'))
-    var validated_pertes = JSON.parse(localStorage.getItem('validated_pertes'))
+
+    var deleted_commandes = new Set(JSON.parse(localStorage.getItem('deleted_commandes')))
+    var deleted_payments = new Set(JSON.parse(localStorage.getItem('deleted_payments')))
+    var deleted_stocks = new Set(JSON.parse(localStorage.getItem('deleted_stocks')))
+    var validated_stocks = new Set(JSON.parse(localStorage.getItem('validated_stocks')))
+    var deleted_pertes = new Set(JSON.parse(localStorage.getItem('deleted_pertes')))
+    var validated_pertes = new Set(JSON.parse(localStorage.getItem('validated_pertes')))
 
     if(user) this.$store.state.user = user;
     if(active_kiosk) this.$store.state.active_kiosk = active_kiosk;
@@ -237,6 +238,7 @@ export default {
     if(pertes) this.$store.state.pertes = pertes
     if(produits) this.$store.state.produits = produits
     if(clients) this.$store.state.clients = clients
+
     if(deleted_commandes) this.$store.state.deleted_commandes = deleted_commandes
     if(deleted_payments) this.$store.state.deleted_payments = deleted_payments
     if(deleted_stocks) this.$store.state.deleted_stocks = deleted_stocks

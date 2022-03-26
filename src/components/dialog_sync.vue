@@ -152,15 +152,17 @@ export default {
         this.sending_produits= false
 
         this.valid_pertes = this.$store.state.validated_pertes
-        this.valid_pertes_count = this.valid_pertes.size
         this.valid_stocks = this.$store.state.validated_stocks
-        this.valid_stocks_count = this.valid_stocks.size
         this.deleted_commandes = this.$store.state.deleted_commandes
-        this.deleted_commandes_count = this.deleted_commandes.size
         this.deleted_stocks = this.$store.state.deleted_stocks
-        this.deleted_stocks_count = this.deleted_stocks.size
         this.deleted_pertes = this.$store.state.deleted_pertes
+
+        this.valid_pertes_count = this.valid_pertes.size
+        this.valid_stocks_count = this.valid_stocks.size
+        this.deleted_commandes_count = this.deleted_commandes.size
+        this.deleted_stocks_count = this.deleted_stocks.size
         this.deleted_pertes_count = this.deleted_pertes.size
+
         this.created_commandes = Object.values(this.$store.state.commandes).filter(x => !!x.created)
         this.created_commandes_count = this.created_commandes.length
         this.created_payments = Object.values(this.$store.state.payments).filter(x => !!x.created)
