@@ -294,22 +294,22 @@ export default {
       let link;
       this.sending_commandes = true
       if(!this.in_action) return
-      if(Object.keys(this.created_commandes.length) > 0){
-        let item_id = Object.keys(this.created_commandes)[0]
-        let item = this.created_commandes[item_id]
-        if(!item){
-          delete(this.created_commandes[item_id])
+      if(this.created_commandes.length > 0){
+        let item = this.created_commandes[0]
+        if(!item.created){
+          this.created_commandes.splice(0, 1)
           this.postCommandes()
           return
         }
         axios.post(this.url+`/commande/`, item.created, this.headers)
         .then((response) => {
-          delete(this.$store.state.commandes[item_id])
+          this.created_commandes.splice(0, 1)
+          delete(this.$store.state.commandes[item.id])
           this.$store.state.commandes[response.data.id] = response.data
           this.postCommandes()
         }).catch((error) => {
-          if(error.response.status == 400){
-            delete(this.created_commandes[item_id])
+          if(!!error.response && error.response.status == 400){
+            this.created_commandes.splice(0, 1)
             this.postCommandes()
           } else{
             this.displayErrorOrRefreshToken(error, this.postCommandes)
@@ -323,22 +323,22 @@ export default {
       let link;
       this.sending_payments = true
       if(!this.in_action) return
-      if(Object.keys(this.created_payments.length) > 0){
-        let item_id = Object.keys(this.created_payments)[0]
-        let item = this.created_payments[item_id]
-        if(!item){
-          delete(this.created_payments[item_id])
+      if(this.created_payments.length > 0){
+        let item = this.created_payments[0]
+        if(!item.created){
+          this.created_payments.splice(0, 1)
           this.postPayments()
           return
         }
         axios.post(this.url+`/payment/`, item.created, this.headers)
         .then((response) => {
-          delete(this.$store.state.payments[item_id])
+          this.created_payments.splice(0, 1)
+          delete(this.$store.state.payments[item.id])
           this.$store.state.payments[response.data.id] = response.data
           this.postPayments()
         }).catch((error) => {
-          if(error.response.status == 400){
-            delete(this.created_payments[item_id])
+          if(!!error.response && error.response.status == 400){
+            this.created_payments.splice(0, 1)
             this.postPayments()
           } else{
             this.displayErrorOrRefreshToken(error, this.postPayments)
@@ -352,22 +352,22 @@ export default {
       let link;
       this.sending_stocks = true
       if(!this.in_action) return
-      if(Object.keys(this.created_stocks.length) > 0){
-        let item_id = Object.keys(this.created_stocks)[0]
-        let item = this.created_stocks[item_id]
-        if(!item){
-          delete(this.created_stocks[item_id])
+      if(this.created_stocks.length > 0){
+        let item = this.created_stocks[0]
+        if(!item.created){
+          this.created_stocks.splice(0, 1)
           this.postStocks()
           return
         }
         axios.post(this.url+`/stock/`, item.created, this.headers)
         .then((response) => {
-          delete(this.$store.state.stocks[item_id])
+          this.created_stocks.splice(0, 1)
+          delete(this.$store.state.stocks[item.id])
           this.$store.state.stocks[response.data.id] = response.data
           this.postStocks()
         }).catch((error) => {
-          if(error.response.status == 400){
-            delete(this.$store.state.stocks[item_id])
+          if(!!error.response && error.response.status == 400){
+            this.created_stocks.splice(0, 1)
             this.postStocks()
           }
           this.displayErrorOrRefreshToken(error, this.postStocks)
@@ -380,22 +380,22 @@ export default {
       let link;
       this.sending_pertes = true
       if(!this.in_action) return
-      if(Object.keys(this.created_pertes.length) > 0){
-        let item_id = Object.keys(this.created_pertes)[0]
-        let item = this.created_pertes[item_id]
-        if(!item){
-          delete(this.created_pertes[item_id])
+      if(this.created_pertes.length > 0){
+        let item = this.created_pertes[0]
+        if(!item.created){
+          this.created_pertes.splice(0, 1)
           this.postPertes()
           return
         }
         axios.post(this.url+`/perte/`, item.created, this.headers)
         .then((response) => {
-          delete(this.$store.state.pertes[item_id])
+          this.created_pertes.splice(0, 1)
+          delete(this.$store.state.pertes[item.id])
           this.$store.state.pertes[response.data.id] = response.data
           this.postPertes()
         }).catch((error) => {
-          if(error.response.status == 400){
-            delete(this.$store.state.pertes[item_id])
+          if(!!error.response && error.response.status == 400){
+            this.created_pertes.splice(0, 1)
             this.postPertes()
           }
           this.displayErrorOrRefreshToken(error, this.postPertes)
@@ -408,22 +408,22 @@ export default {
       let link;
       this.sending_produits = true
       if(!this.in_action) return
-      if(Object.keys(this.created_produits.length) > 0){
-        let item_id = Object.keys(this.created_produits)[0]
-        let item = this.created_produits[item_id]
-        if(!item){
-          delete(this.created_produits[item_id])
+      if(this.created_produits.length > 0){
+        let item = this.created_produits[0]
+        if(!item.created){
+          this.created_produits.splice(0, 1)
           this.postProduits()
           return
         }
         axios.post(this.url+`/produit/`, item.created, this.headers)
         .then((response) => {
-          delete(this.$store.state.produits[item_id])
+          this.created_produits.splice(0, 1)
+          delete(this.$store.state.produits[item.id])
           this.$store.state.produits[response.data.id] = response.data
           this.postProduits()
         }).catch((error) => {
-          if(error.response.status == 400){
-            delete(this.created_produits[item_id])
+          if(!!error.response && error.response.status == 400){
+            this.created_produits.splice(0, 1)
             this.postProduits()
           } else{
             this.displayErrorOrRefreshToken(error, this.postProduits)
