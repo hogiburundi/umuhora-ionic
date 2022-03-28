@@ -59,19 +59,8 @@ export default {
     },
     deletePerte(){
       if(confirm("êtes-vous sur de vouloir supprimer cette perte?")){
-        let index = this.$store.state.pertes.indexOf(this.item)
-        if(index>=0){
-          this.$store.state.pertes.splice(index, 1)
-          if(!!this.item.id){
-            let data = {
-              id:this.item.id,
-              user:this.active_user.id
-            }
-            this.$store.state.deleted_pertes.add(data)
-          }
-        } else {
-          console.error(`erreur de suppression de la perte ${this.item}`)
-        }
+        this.$store.state.deleted_pertes.add(this.item.id)
+        delete(this.$store.state.pertes[this.item.id])
       }
     },
   },
