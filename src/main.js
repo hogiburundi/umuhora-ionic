@@ -8,7 +8,7 @@ import {
   IonInput, IonItem, IonButton, IonButtons, IonCol, IonContent, IonTabButton,
   IonTabBar, IonTitle, IonToolbar, IonHeader, IonMenuButton, IonFabButton,
   IonList, IonMenu, IonToggle, IonFooter, IonItemDivider, IonPopover, IonBadge,
-  IonSearchbar
+  IonSearchbar, IonSelectOption, IonSelect, IonText, IonDatetime
 } from '@ionic/vue';
 import '@ionic/core/css/ionic.bundle.css'
 import * as allIcons from "ionicons/icons";
@@ -44,6 +44,10 @@ app.component("IonItemDivider", IonItemDivider)
 app.component("IonPopover", IonPopover)
 app.component("IonBadge", IonBadge)
 app.component("IonSearchbar", IonSearchbar)
+app.component("IonSelectOption", IonSelectOption)
+app.component("IonSelect", IonSelect)
+app.component("IonText", IonText)
+app.component("IonDatetime", IonDatetime)
 
 app.mixin({
   methods: {

@@ -425,34 +425,34 @@ export default {
           this.getPayments()
         } else {
           this.next_payments = null
-          this.getProduits()
+          this.getStocks()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getPayments)
       });
     },
-    getProduits(){
+    getStocks(){
       let link;
       this.receiving_stocks = true
       if(!this.in_action) return
-      if(!this.next_produits){
-        link = this.url+`/produit/?kiosk=${this.kiosk_id}`;
+      if(!this.next_stocks){
+        link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
       } else {
-        link = this.next_produits
+        link = this.next_stocks
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.produits[x.id]=x)
-        this.count_produits += response.data.results.length
+        response.data.results.forEach(x => this.$store.state.stocks[x.id]=x)
+        this.count_stocks += response.data.results.length
         if(!!response.data.next){
-          this.next_produits = response.data.next
-          this.getProduits()
+          this.next_stocks = response.data.next
+          this.getPertes()
         } else {
-          this.next_produits = null
+          this.next_stocks = null
           this.getPertes()
         }
       }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.getProduits)
+        this.displayErrorOrRefreshToken(error, this.getStocks)
       });
     },
     getPertes(){
@@ -473,34 +473,34 @@ export default {
           this.getPertes()
         } else {
           this.next_pertes = null
-          this.getStocks()
+          this.getProduits()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getPertes)
       });
     },
-    getStocks(){
+    getProduits(){
       let link;
       this.receiving_produits = true
       if(!this.in_action) return
-      if(!this.next_stocks){
-        link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
+      if(!this.next_produits){
+        link = this.url+`/produit/?kiosk=${this.kiosk_id}`;
       } else {
-        link = this.next_stocks
+        link = this.next_produits
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.stocks[x.id]=x)
-        this.count_stocks += response.data.results.length
+        response.data.results.forEach(x => this.$store.state.produits[x.id]=x)
+        this.count_produits += response.data.results.length
         if(!!response.data.next){
-          this.next_stocks = response.data.next
-          this.getStocks()
+          this.next_produits = response.data.next
+          this.getProduits()
         } else {
-          this.next_stocks = null
+          this.next_produits = null
           this.in_action = false
         }
       }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.getStocks)
+        this.displayErrorOrRefreshToken(error, this.getProduits)
       });
     },
   }
