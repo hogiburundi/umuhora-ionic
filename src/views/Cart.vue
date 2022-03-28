@@ -143,8 +143,9 @@ export default {
         date:new Date(),
         kiosk:this.getActiveKiosk().id
       };
+      let id = -1 * (Object.keys(this.$store.state.commandes).length + 1)
       let command = {
-        id: -1,
+        id: id,
         prix: this.cart.getTotal(),
         prix_achat: null,
         date: new Date(),
@@ -160,8 +161,7 @@ export default {
       for(let item of this.cart.content){
         item.product.quantite -= item.quantite
       }
-      let size = Object.keys(this.$store.state.commandes).length + 1
-      this.$store.state.commandes[-size] = command
+      this.$store.state.commandes[id] = command
       this.cart.content = []
       this.$router.push("/")
     },
