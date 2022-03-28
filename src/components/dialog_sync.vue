@@ -243,13 +243,14 @@ export default {
       this.deleting_commandes = true
       if(!this.in_action) return
       if(this.deleted_commandes.size > 0){
-        let item = Array.from(deleted_commandes)[0]
-        axios.delete(`${this.url}/perte/${item}/`, this.headers)
+        let item = Array.from(this.deleted_commandes)[0]
+        axios.delete(`${this.url}/commande/${item}/`, this.headers)
         .then((response) => {
-          deleted_commandes.delete(item)
           this.delCommandes()
         }).catch((error) => {
-          this.displayErrorOrRefreshToken(error, this.delCommandes)
+          console.error(error.response.data)
+          this.deleted_commandes.delete(item)
+          this.delCommandes()
         });
       } else {
         this.delStocks()
@@ -260,10 +261,10 @@ export default {
       this.deleting_stocks = true
       if(!this.in_action) return
       if(this.deleted_stocks.size > 0){
-        let item = Array.from(deleted_stocks)[0]
+        let item = Array.from(this.deleted_stocks)[0]
         axios.delete(`${this.url}/stock/${item}/`, this.headers)
         .then((response) => {
-          deleted_stocks.delete(item)
+          this.deleted_stocks.delete(item)
           this.delStocks()
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, this.delStocks)
@@ -277,10 +278,10 @@ export default {
       this.deleting_pertes = true
       if(!this.in_action) return
       if(this.deleted_pertes.size > 0){
-        let item = Array.from(deleted_pertes)[0]
+        let item = Array.from(this.deleted_pertes)[0]
         axios.delete(`${this.url}/perte/${item}/`, this.headers)
         .then((response) => {
-          deleted_pertes.delete(item)
+          this.deleted_pertes.delete(item)
           this.delPertes()
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, this.delPertes)
@@ -293,18 +294,26 @@ export default {
       let link;
       this.sending_commandes = true
       if(!this.in_action) return
-      if(this.created_commandes.length > 0){
+      if(Object.keys(this.created_commandes.length) > 0){
         let item_id = Object.keys(this.created_commandes)[0]
         let item = this.created_commandes[item_id]
+        if(!item){
+          delete(this.created_commandes[item_id])
+          this.postCommandes()
+          return
+        }
         axios.post(this.url+`/commande/`, item.created, this.headers)
         .then((response) => {
-          console.log("item_id", item_id)
-          console.log("item", item)
           delete(this.$store.state.commandes[item_id])
           this.$store.state.commandes[response.data.id] = response.data
           this.postCommandes()
         }).catch((error) => {
-          this.displayErrorOrRefreshToken(error, this.postCommandes)
+          if(error.response.status == 400){
+            delete(this.created_commandes[item_id])
+            this.postCommandes()
+          } else{
+            this.displayErrorOrRefreshToken(error, this.postCommandes)
+          }
         });
       } else {
         this.postPayments()
@@ -314,18 +323,26 @@ export default {
       let link;
       this.sending_payments = true
       if(!this.in_action) return
-      if(this.created_payments.length > 0){
+      if(Object.keys(this.created_payments.length) > 0){
         let item_id = Object.keys(this.created_payments)[0]
         let item = this.created_payments[item_id]
+        if(!item){
+          delete(this.created_payments[item_id])
+          this.postPayments()
+          return
+        }
         axios.post(this.url+`/payment/`, item.created, this.headers)
         .then((response) => {
-          console.log("item_id", item_id)
-          console.log("item", item)
           delete(this.$store.state.payments[item_id])
           this.$store.state.payments[response.data.id] = response.data
           this.postPayments()
         }).catch((error) => {
-          this.displayErrorOrRefreshToken(error, this.postPayments)
+          if(error.response.status == 400){
+            delete(this.created_payments[item_id])
+            this.postPayments()
+          } else{
+            this.displayErrorOrRefreshToken(error, this.postPayments)
+          }
         });
       } else {
         this.postStocks()
@@ -335,17 +352,24 @@ export default {
       let link;
       this.sending_stocks = true
       if(!this.in_action) return
-      if(this.created_stocks.length > 0){
+      if(Object.keys(this.created_stocks.length) > 0){
         let item_id = Object.keys(this.created_stocks)[0]
         let item = this.created_stocks[item_id]
+        if(!item){
+          delete(this.created_stocks[item_id])
+          this.postStocks()
+          return
+        }
         axios.post(this.url+`/stock/`, item.created, this.headers)
         .then((response) => {
-          console.log("item_id", item_id)
-          console.log("item", item)
           delete(this.$store.state.stocks[item_id])
           this.$store.state.stocks[response.data.id] = response.data
           this.postStocks()
         }).catch((error) => {
+          if(error.response.status == 400){
+            delete(this.$store.state.stocks[item_id])
+            this.postStocks()
+          }
           this.displayErrorOrRefreshToken(error, this.postStocks)
         });
       } else {
@@ -356,17 +380,24 @@ export default {
       let link;
       this.sending_pertes = true
       if(!this.in_action) return
-      if(this.created_pertes.length > 0){
+      if(Object.keys(this.created_pertes.length) > 0){
         let item_id = Object.keys(this.created_pertes)[0]
         let item = this.created_pertes[item_id]
+        if(!item){
+          delete(this.created_pertes[item_id])
+          this.postPertes()
+          return
+        }
         axios.post(this.url+`/perte/`, item.created, this.headers)
         .then((response) => {
-          console.log("item_id", item_id)
-          console.log("item", item)
           delete(this.$store.state.pertes[item_id])
           this.$store.state.pertes[response.data.id] = response.data
           this.postPertes()
         }).catch((error) => {
+          if(error.response.status == 400){
+            delete(this.$store.state.pertes[item_id])
+            this.postPertes()
+          }
           this.displayErrorOrRefreshToken(error, this.postPertes)
         });
       } else {
@@ -377,17 +408,26 @@ export default {
       let link;
       this.sending_produits = true
       if(!this.in_action) return
-      if(this.created_produits.length > 0){
+      if(Object.keys(this.created_produits.length) > 0){
         let item_id = Object.keys(this.created_produits)[0]
         let item = this.created_produits[item_id]
+        if(!item){
+          delete(this.created_produits[item_id])
+          this.postProduits()
+          return
+        }
         axios.post(this.url+`/produit/`, item.created, this.headers)
         .then((response) => {
-          console.log("item_id", item_id)
-          console.log("item", item)
           delete(this.$store.state.produits[item_id])
           this.$store.state.produits[response.data.id] = response.data
+          this.postProduits()
         }).catch((error) => {
-          this.displayErrorOrRefreshToken(error, this.postProduits)
+          if(error.response.status == 400){
+            delete(this.created_produits[item_id])
+            this.postProduits()
+          } else{
+            this.displayErrorOrRefreshToken(error, this.postProduits)
+          }
         });
       } else {
         this.getCommandes()
