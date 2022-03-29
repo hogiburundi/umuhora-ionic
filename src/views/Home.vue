@@ -67,7 +67,9 @@
         </ion-tab-button>
       </ion-tab-bar>
     </ion-footer>
-    <ion-searchbar show-cancel-button="always" debounce="0" id="search"
+    <ion-searchbar show-cancel-button="always" debounce="0"
+      class="sc-ion-searchbar-md-h sc-ion-searchbar-md-s md searchbar-left-aligned searchbar-should-show-clear searchbar-should-show-cancel"
+      :class="{'shown':search_shown}"
       @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
     <DialogProduit :active="produit_shown" @close="closeDialog"
       :item="active_stock_item"/>
@@ -89,7 +91,7 @@ export default {
     return {
       menu_shown:false, produit_shown:false, achat_shown:false,
       active_stock_item:null, produit_shown: false, achat_shown:false,
-      fab_shown:true, sync_shown:false
+      fab_shown:true, sync_shown:false, search_shown:false
     }
   },
   watch:{
@@ -117,18 +119,16 @@ export default {
       Camera.requestPermissions()
     },
     closeSearch(event){
-      console.log('Close')
-      event.target.classList.remove("shown")
+      this.search_shown = false
     },
     showSearch(){
-      let search_view = document.getElementById("search")
-      search_view.classList.add("shown")
+      this.search_shown = true
     },
     showSync(){
       this.sync_shown=true
     },
     search(keyword){
-      console.log(keyword)
+      this.$store.state.home_keyword = keyword.toLowerCase()
     },
     toggleFab(){
       let vue = this

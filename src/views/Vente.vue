@@ -21,6 +21,10 @@ export default {
       handler(new_val){
         this.produits = Object.values(new_val).filter(x => x.quantite>0)
       }
+    },
+    "$store.state.home_keyword"(new_val){
+      if(this.$route.path != "/home/vente") return
+      this.produits = Object.values(this.$store.state.produits).filter(x => x.quantite>0 && x.nom.toLowerCase().includes(new_val))
     }
   },
   components:{VenteItem},

@@ -25,6 +25,10 @@ export default {
       handler(new_val){
         this.produits = Object.values(new_val)
       }
+    },
+    "$store.state.home_keyword"(new_val){
+      if(this.$route.path != "/home/stock") return
+      this.produits = Object.values(this.$store.state.produits).filter(x => x.nom.toLowerCase().includes(new_val))
     }
   },
   methods:{
