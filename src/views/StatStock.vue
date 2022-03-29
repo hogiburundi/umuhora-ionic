@@ -80,6 +80,11 @@ export default {
       let search_view = document.getElementById("search_st")
       search_view.classList.add("shown")
     },
+    search(keyword){
+      this.stocks = Object.values(this.$store.state.stocks).filter(x => {
+        return JSON.stringify(x).toLowerCase().includes(keyword)
+      })
+    }
   },
 }
 </script>

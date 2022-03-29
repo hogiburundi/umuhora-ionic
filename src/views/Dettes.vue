@@ -100,6 +100,11 @@ export default {
       let search_view = document.getElementById("search_det")
       search_view.classList.add("shown")
     },
+    search(keyword){
+      this.commandes = Object.values(this.$store.state.commandes).filter(x => {
+        return JSON.stringify(x).toLowerCase().includes(keyword)
+      })
+    }
   },
   mounted(){
   },
