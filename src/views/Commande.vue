@@ -96,7 +96,7 @@ ion-footer{
   justify-content: space-between;
   padding: 5px 10px;
 }
-.group{
-  display: flex;
+.group>*{
+  display: inline-block;
 }
 </style>

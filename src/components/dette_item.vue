@@ -4,16 +4,16 @@
       <b>No. {{item.id}} du {{ datetime(item.date) }}</b>
       <div class="inline">
         <div class="group">
-          <div class="key">Montant: </div>
-          <div>{{ money(item.prix) }}</div>
+          <span class="key">Montant: </span>
+          <span>{{ money(item.prix) }}</span>
         </div>
         <div class="group">
           <div class="key">Payée: </div>
           <div>{{ item.payee }}</div>
         </div>
         <div class="group">
-          <div class="key">Reste: </div>
-          <div>{{ item.prix - item.payee }}</div>
+          <span class="key">Reste: </span>
+          <span>{{ item.prix - item.payee }}</span>
         </div>
       </div>
       <div class="group">
@@ -65,9 +65,8 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.group{
-  display: flex;
-  align-items: baseline;
+.group>*{
+  display: inline-block;
 }
 .key{
   font-size: .8em;
