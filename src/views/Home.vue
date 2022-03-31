@@ -84,7 +84,7 @@ import DialogProduit from "../components/dialog_produit"
 import DialogAchat from "../components/dialog_achat"
 import DialogSync from "../components/dialog_sync"
 import { Camera } from '@capacitor/camera';
-import QrScanner from '../plugins'
+import CustomPlugins from '../plugins'
 
 export default {
   components:{ DialogProduit, DialogAchat, DialogSync },
@@ -118,7 +118,7 @@ export default {
     },
     startScan(){
       Camera.requestPermissions()
-      QrScanner.startScan().then((result) => {
+      CustomPlugins.startScan().then((result) => {
         let item = this.$store.state.produits[result.value.toString()]
         console.log("===============", JSON.stringify(item))
         if(item.quantite > 0){

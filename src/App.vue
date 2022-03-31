@@ -41,7 +41,7 @@
           </ion-list>
           <ion-list lines="none">
             <ion-item-divider>Autres</ion-item-divider>
-            <ion-item button @click="openWhatsapp()">
+            <ion-item button @click="openWhatsapp">
               <ion-icon :src="getIcon('logoWhatsapp')"/>
               <ion-label>Demander l'aide</ion-label>
             </ion-item>
@@ -57,6 +57,7 @@
 import { useIonRouter, menuController } from '@ionic/vue';
 import LoginForm from "./components/login_form"
 import KioskChooser from "./components/kiosk_chooser"
+import CustomPlugins from './plugins'
 
 export default {
   components: { LoginForm, KioskChooser },
@@ -252,6 +253,7 @@ export default {
       this.$store.state.user = null
     },
     openWhatsapp(){
+      CustomPlugins.openWhatsapp()
     },
     doThings(event){
       menuController.close();

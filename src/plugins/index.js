@@ -1,5 +1,5 @@
 import { registerPlugin } from '@capacitor/core';
 
-const QrScanner = registerPlugin('QrScanner');
+const CustomPlugins = registerPlugin('CustomPlugins');
 
-export default QrScanner;
+export default CustomPlugins;

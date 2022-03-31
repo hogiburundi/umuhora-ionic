@@ -78,9 +78,8 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.group{
-  display: flex;
-  align-items: baseline;
+.group>*{
+  display: inline-block;
 }
 .key{
   font-size: .8em;

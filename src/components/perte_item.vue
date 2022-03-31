@@ -5,7 +5,7 @@
         <div>
           <b style="margin-right: 3px;">3</b> {{ item.stock }}
         </div>
-        <div style="white-space: nowrap;">{{ money(item.prix) }} FBU</div>
+        <div style="white-space: nowrap;"><b>{{ money(item.prix) }} FBU</b></div>
       </div>
       <div class="group">
         <div>{{ item.user }}</div>
@@ -90,9 +90,8 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.group{
-  display: flex;
-  align-items: baseline;
+.group>*{
+  display: inline-block;
 }
 .group>div{
   margin-right: 10px;

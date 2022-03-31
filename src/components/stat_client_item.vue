@@ -68,12 +68,14 @@ export default {
   display: flex;
   justify-content: flex-start;
 }
+.group>*{
+  display: inline-block;
+}
 .group{
-  display: flex;
-  align-items: baseline;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 .key{
   margin-right: 2px;
+  font-size: .8em;
 }
 </style>

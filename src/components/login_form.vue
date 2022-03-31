@@ -20,7 +20,7 @@
       </ion-col>
       <div>
         Mot de passe oublié?
-        <a>
+        <a @click="openWhatsapp">
           Demandez de l'aide
           <ion-icon :src="getIcon('logoWhatsapp')"></ion-icon>
         </a>
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import CustomPlugins from '../plugins'
+
 export default {
   data(){
     return {
@@ -55,6 +57,9 @@ export default {
         console.log(error)
         this.logs = error.response.data
       })
+    },
+    openWhatsapp(){
+      CustomPlugins.openWhatsapp()
     }
   }
 }
