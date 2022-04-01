@@ -21,7 +21,8 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <CommandeItem v-for="commande in commandes" :item="commande"/>
+        <CommandeItem v-for="commande in commandes" :item="commande"
+          @click="displayFacture(commande)"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -48,17 +49,63 @@
   <DialogDateFilter :active="date_shown" @close="date_shown=false"/>
   <ion-searchbar show-cancel-button="always" debounce="500" id="search_com"
     @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
+<div class="invoice" id="invoice">
+  <center class="header">
+      <img width=100 :src="getActiveKiosk().logo" style="display:block" />
+      <div v-if="active_commande">
+        Facture no. {{active_commande.id}} du {{datetime(active_commande.date)}}<br>
+      </div>
+      <div style="text-align: left; display: inline-block;">
+          RC 23606/20<br />
+          NIF 4001409707
+      </div>
+      <div>
+        {{ getActiveKiosk().tel }}<br />
+        {{ getActiveKiosk().nom }}<br />
+        {{ getActiveKiosk().details }}
+      </div>
+      <div v-if="active_commande"><b>{{ active_commande.client }}</b></div>
+  </center>
+  <table style="width:100%;">
+    <tbody v-if="active_commande">
+      <tr style="border-bottom: 1px solid #aaa;text-align: left;">
+        <th>Article</th>
+        <th style="">P.U.</th>
+        <th>Qt.</th>
+        <th style="text-align: right;">Total</th>
+      </tr>
+      <tr style="text-align: left;" v-for="item in active_commande.ventes">
+        <td>{{ item.produit }}</td>
+        <td>{{ item.prix_unitaire }} Fbu</td>
+        <td>x {{ item.quantite }}</td>
+        <td style="text-align: right;">{{ item.prix_total }} Fbu</td>
+      </tr>
+      <tr style="border-top: 1px solid #aaa;text-align: left;">
+        <th colspan="3">Total</th>
+        <th style="text-align: right;"><b>{{ money(active_commande.prix) }} Fbu</b></th>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin:10px" v-if="active_commande">
+      Caissier: {{ active_commande.user }}
+  </div>
+  <center>
+    <strong>Murakoze, Merci, Thank you!</strong>
+  </center>
+</div>
 </ion-page>
 </template>
 <script>
 import CommandeItem from "../components/commande_item"
 import DialogDateFilter from "../components/dialog_date_filter"
+import CustomPlugins from '../plugins'
 
 export default {
   components:{ CommandeItem, DialogDateFilter},
   data(){
     return {
-      date_shown:false, commandes:Object.values(this.$store.state.commandes)
+      date_shown:false, commandes:Object.values(this.$store.state.commandes),
+      active_commande:null
     }
   },
   watch:{
@@ -84,6 +131,16 @@ export default {
       this.commandes = Object.values(this.$store.state.commandes).filter(x => {
         return JSON.stringify(x).toLowerCase().includes(keyword)
       })
+    },
+    displayFacture(commande){
+      axios.get(this.url+`/commande/${commande.id}/`, this.headers)
+      .then((response) => {
+        this.active_commande = response.data
+        let invoice = document.getElementById("invoice")
+        CustomPlugins.launchPrint({"html":invoice.innerHTML})
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, () => this.displayFacture(commande))
+      });
     }
   },
   mounted(){
@@ -98,5 +155,8 @@ ion-footer{
 }
 .group>*{
   display: inline-block;
+}
+.invoice{
+  display: none;
 }
 </style>

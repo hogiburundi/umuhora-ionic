@@ -1,6 +1,6 @@
 <template>
   <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
-    <div class="item">
+    <div class="item" @click="$emit('click')">
       <b>No. {{item.id}} du {{ datetime(item.date) }}</b>
       <div class="inline">
         <div class="group">
