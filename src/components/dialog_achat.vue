@@ -1,6 +1,6 @@
 <template>
   <div class="dialog" v-if="active">
-    <div class="body ion-padding">
+    <ion-col class="body ion-padding">
       <h3>Achat {{ item.nom }}</h3>
       <ion-item class="ion-no-padding">
         <ion-label position="floating">Quantité</ion-label>
@@ -15,17 +15,19 @@
         <ion-input type=number placeholder="Prix d'achat"
           @IonChange="prix_vente=$event.target.value" clearInput/>
       </ion-item>
-      <div class="field">
-        <label for="du">Date d'expiration</label>
-        <input type="date" id="du">
-      </div>
+      <ion-item class="ion-no-padding" :class="{'active':du_shown}" button @click="showDu">
+        <ion-label for="du">À partir du</ion-label>
+        <ion-text slot=end>{{ datetime(du) }}</ion-text>
+      </ion-item>
+      <ion-datetime @ionChange="choosedDu" presentation="time-date"
+        :value="du" v-if="du_shown"/>
       <ion-col class="options">
         <ion-button fill=clear color="medium" @click="close">
           ANULLER
         </ion-button>
         <ion-button fill=clear @click="postStock">VALIDER</ion-button>
       </ion-col>
-    </div>
+    </ion-col>
   </div>
 </template>
 
@@ -37,7 +39,8 @@ export default {
   },
   data(){
     return {
-      qtt:0, prix_vente:0, date:null, escompte:""
+      qtt:0, prix_vente:0, date:null, escompte:"", du_shown:false,
+      du:null
     }
   },
   watch:{
@@ -54,10 +57,17 @@ export default {
     close(){
       this.$emit("close")
     },
+    choosedDu(event){
+      this.du = event.target.value
+      this.du_shown = false
+    },
+    showDu(){
+      this.du_shown = !this.du_shown
+    },
     postStock(){
       let created = {
         quantite_actuelle:this.qtt,
-        date_expiration:!!this.date?this.date:undefined,
+        date_expiration:this.du,
         prix_total:this.prix_vente,
         produit:this.item.id,
         user: this.active_user.id,
@@ -96,5 +106,9 @@ export default {
 }
 .field{
   margin-top: 10px;
+}
+.active{
+  font-weight: 700;
+  color: var(--ion-color-primary);
 }
 </style>
