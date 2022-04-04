@@ -12,14 +12,18 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      produits:Object.values(this.$store.state.produits).filter(x => x.quantite>0)
+      produits:Object.values(this.$store.state.produits).filter(x => {
+        return x.quantite>0 
+      })
     }
   },
   watch:{
     "$store.state.produits":{
       deep:true,
       handler(new_val){
-        this.produits = Object.values(new_val).filter(x => x.quantite>0)
+        this.produits = Object.values(new_val).filter(x => {
+          return x.quantite>0 
+        })
       }
     },
     "$store.state.home_keyword"(new_val){

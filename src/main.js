@@ -115,6 +115,14 @@ app.mixin({
         { dateStyle: 'short', timeStyle: 'short' }
       ).format(date)
     },
+    date(x) {
+      if(!x) return "-"
+      let date = new Date(x);
+      return new Intl.DateTimeFormat(
+        'en-GB',
+        { dateStyle: 'short' }
+      ).format(date)
+    },
     displayErrorOrRefreshToken(error, callback){
       if(!!error.response){
         if(error.response.data.code == "token_not_valid"){ 

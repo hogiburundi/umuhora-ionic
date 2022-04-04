@@ -81,7 +81,7 @@ export default {
         kiosk_id: this.getActiveKiosk().id
       }
       this.$store.state.stocks[id] = new_stock
-      this.item.quantite += parseInt(this.item.quantite) + parseInt(this.qtt)
+      this.item.quantite = parseInt(this.item.quantite) + parseInt(this.qtt)
       this.close()
     },
   }

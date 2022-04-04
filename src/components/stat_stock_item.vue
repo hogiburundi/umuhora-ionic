@@ -2,9 +2,9 @@
 <div>
   <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
-      <div line="none">
+      <div class="between">
         <b style="margin-right:5px">{{ item.produit.nom }}</b>
-        <span> {{ datetime(item.date) }}</span>
+        <span> {{ date(item.date) }}</span>
       </div>
       <div class="inline">
         <div class="group">
@@ -114,5 +114,9 @@ export default {
   height: 1px;
   background-color: lightgray;
   margin: 0 20px;
+}
+.between{
+  display: flex;
+  justify-content: space-between;
 }
 </style>
