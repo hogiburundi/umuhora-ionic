@@ -28,21 +28,15 @@
     <ion-footer>
       <div class="group">
         <div>Montant: </div>
-        <div>{{ money(
-          commandes.reduce((acc, x) => acc+=x.prix, 0)
-        )}}</div>
+        <div>{{ money(prix)}}</div>
       </div>
       <div class="group">
         <div>Payée: </div>
-        <div>{{ money(
-          commandes.reduce((acc, x) => acc+=x.payee, 0)
-        )}}</div>
+        <div>{{ money(payee)}}</div>
       </div>
       <div class="group">
         <div>Reste: </div>
-        <div>{{ money(
-          commandes.reduce((acc, x) => acc+=x.prix-x.payee, 0)
-        )}}</div>
+        <div>{{ money(reste)}}</div>
       </div>
     </ion-footer>
   </ion-page>
@@ -105,7 +99,7 @@ export default {
   data(){
     return {
       date_shown:false, commandes:Object.values(this.$store.state.commandes),
-      active_commande:null
+      active_commande:null, montant:0, payee:0, reste:0
     }
   },
   watch:{
@@ -114,6 +108,16 @@ export default {
       handler(new_val){
         this.commandes = Object.values(new_val)
       }
+    },
+    commandes(new_val){
+      this.montant = 0;
+      this.payee = 0;
+      this.reste = 0;
+      new_val.forEach(x => {
+        this.montant += x.prix;
+        this.payee += x.payee;
+        this.reste += x.prix-x.payee;
+      })
     }
   },
   methods:{
@@ -144,6 +148,11 @@ export default {
     }
   },
   mounted(){
+    this.commandes.forEach(x => {
+      this.montant += x.prix;
+      this.payee += x.payee;
+      this.reste += x.prix-x.payee;
+    })
   },
 }
 </script>

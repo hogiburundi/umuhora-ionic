@@ -44,12 +44,7 @@
       </ion-popover>
     </ion-header>
     <ion-content>
-      <div @touchend="toggleFab">
-        <ion-router-outlet/>
-        <ion-fab-button class="todo-fab" @click="startScan" v-show="fab_shown">
-          <ion-icon :src="getIcon('qrCode')"></ion-icon>
-        </ion-fab-button>
-      </div>
+      <ion-router-outlet/>
     </ion-content>
     <ion-footer>
       <ion-tab-bar slot="bottom">
@@ -64,6 +59,10 @@
         <ion-tab-button tab="stats" href="/home/stats">
           <ion-icon :src="getIcon('statsChart')"></ion-icon>
           <ion-label>Statistiques</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="stats" @click="startScan">
+          <ion-icon :src="getIcon('qrCode')"></ion-icon>
+          <ion-label>Scan</ion-label>
         </ion-tab-button>
       </ion-tab-bar>
     </ion-footer>
@@ -92,7 +91,7 @@ export default {
     return {
       menu_shown:false, produit_shown:false, achat_shown:false,
       active_stock_item:null, produit_shown: false, achat_shown:false,
-      fab_shown:true, sync_shown:false, search_shown:false
+      sync_shown:false, search_shown:false
     }
   },
   watch:{
@@ -107,9 +106,6 @@ export default {
     }
   },
   methods:{
-    displayMenu(){
-      this.menu_shown=true
-    },
     closeDialog(){
       this.$store.state.dialog_produit_shown = false
       this.$store.state.dialog_achat_shown = false
