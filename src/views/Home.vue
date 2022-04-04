@@ -68,7 +68,7 @@
     </ion-footer>
     <ion-searchbar show-cancel-button="always" debounce="0"
       class="sc-ion-searchbar-md-h sc-ion-searchbar-md-s md searchbar-left-aligned searchbar-should-show-clear searchbar-should-show-cancel"
-      :class="{'shown':search_shown}"
+      :class="{'shown':search_shown}" id="searchbar"
       @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
     <DialogProduit :active="produit_shown" @close="closeDialog"
       :item="active_stock_item"/>
@@ -116,7 +116,6 @@ export default {
       Camera.requestPermissions()
       CustomPlugins.startScan().then((result) => {
         let item = this.$store.state.produits[result.value.toString()]
-        console.log("===============", JSON.stringify(item))
         if(item.quantite > 0){
           this.$store.state.cart.add(item)
         }
@@ -126,6 +125,8 @@ export default {
       this.search_shown = false
     },
     showSearch(){
+      let searchbar = document.getElementById("searchbar")
+      console.log(searchbar.innerHTML.substring(80, 280))
       this.search_shown = true
     },
     showSync(){

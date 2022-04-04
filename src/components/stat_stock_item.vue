@@ -1,4 +1,5 @@
 <template>
+<div>
   <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
       <div line="none">
@@ -37,6 +38,8 @@
       </ion-button>
     </div>
   </ion-col>
+  <div class="sep"></div>
+</div>
 </template>
 
 <script >
@@ -106,5 +109,10 @@ export default {
 .key{
   font-size: .8em;
   margin-right: 2px;
+}
+.sep{
+  height: 1px;
+  background-color: lightgray;
+  margin: 0 20px;
 }
 </style>

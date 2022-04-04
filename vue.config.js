@@ -1,19 +1,18 @@
 module.exports = {
+  filenameHashing: false,
   chainWebpack: config => {
-    config.resolve.alias.set('vue', '@vue/compat')
-
-    config.module
-      .rule('vue')
-      .use('vue-loader')
-      .tap(options => {
-        return {
-          ...options,
-          compilerOptions: {
-            compatConfig: {
-              MODE: 2
-            }
-          }
-        }
-      })
+    if(config.plugins.has('extract-css')) {
+      const extractCSSPlugin = config.plugin('extract-css')
+      extractCSSPlugin && extractCSSPlugin.tap(() => [{
+        filename: '[name].css',
+        chunkFilename: '[name].css'
+      }])
     }
+  },
+  configureWebpack: {
+    output: {
+      filename: '[name].js',
+      chunkFilename: '[name].js'
+    }
+  }
 }
