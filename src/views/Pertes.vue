@@ -31,7 +31,7 @@ export default {
   components:{PerteItem},
   data(){
     return {
-      pertes:Object.values(this.$store.state.pertes)
+      pertes:[]
     }
   },
   watch:{
@@ -45,6 +45,7 @@ export default {
   methods:{
   },
   mounted(){
+    this.pertes = Object.values(this.$store.state.pertes)
   },
 }
 </script>

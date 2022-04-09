@@ -62,7 +62,7 @@ export default {
   data(){
     return {
       nom:"", tel:"", paid:this.$store.state.cart.getTotal(),
-      active_client:null, found_clients:this.$store.state.clients
+      active_client:null, found_clients:[]
     }
   },
   computed:{
@@ -104,7 +104,8 @@ export default {
         this.found_clients = []
         return
       }
-      this.found_clients = this.$store.state.clients.filter(x => {
+      console.log(this.$store.state.clients)
+      this.found_clients = Object.values(this.$store.state.clients).filter(x => {
         return x.nom.includes(this.nom) || x.tel.includes(this.tel)
       })
       this.active_client = null

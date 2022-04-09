@@ -49,8 +49,7 @@ export default {
   components:{StatStockItem, DialogDateFilter, DialogPerte},
   data(){
     return {
-      date_shown:false, stocks:Object.values(this.$store.state.stocks),
-      perte_shown:false, active_item:null,
+      date_shown:false, stocks:[], perte_shown:false, active_item:null,
     }
   },
   watch:{
@@ -86,6 +85,9 @@ export default {
       })
     }
   },
+  mounted(){
+    this.stocks = Object.values(this.$store.state.stocks)
+  }
 }
 </script>
 <style scoped>

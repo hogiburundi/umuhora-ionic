@@ -16,7 +16,7 @@ export default {
   components:{ StockItem },
   data(){
     return  {
-      produits:Object.values(this.$store.state.produits)
+      produits:[]
     }
   },
   watch:{
@@ -46,6 +46,7 @@ export default {
     },
   },
   mounted(){
+    this.produits = Object.values(this.$store.state.produits)
   },
 }
 </script>

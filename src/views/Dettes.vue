@@ -63,8 +63,7 @@ export default {
   components:{DetteItem, DialogDateFilter, DialogPay, DialogPayments},
   data(){
     return {
-      commandes:Object.values(this.$store.state.commandes).filter(x => x.prix>x.payee),
-      date_shown:false, payments_shown:false, pay_shown:false,
+      commandes:[], date_shown:false, payments_shown:false, pay_shown:false,
       active_item:null
     }
   },
@@ -107,6 +106,7 @@ export default {
     }
   },
   mounted(){
+    this.commandes = Object.values(this.$store.state.commandes).filter(x => x.prix>x.payee)
   },
 }
 </script>

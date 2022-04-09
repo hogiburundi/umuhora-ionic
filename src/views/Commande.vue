@@ -98,7 +98,7 @@ export default {
   components:{ CommandeItem, DialogDateFilter},
   data(){
     return {
-      date_shown:false, commandes:Object.values(this.$store.state.commandes),
+      date_shown:false, commandes:[],
       active_commande:null, montant:0, payee:0, reste:0
     }
   },
@@ -148,6 +148,7 @@ export default {
     }
   },
   mounted(){
+    this.commandes = Object.values(this.$store.state.commandes)
     this.commandes.forEach(x => {
       this.montant += x.prix;
       this.payee += x.payee;

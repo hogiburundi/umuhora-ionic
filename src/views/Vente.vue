@@ -12,9 +12,7 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      produits:Object.values(this.$store.state.produits).filter(x => {
-        return x.quantite>0 
-      })
+      produits:[]
     }
   },
   watch:{
@@ -33,6 +31,11 @@ export default {
   },
   components:{VenteItem},
   methods:{
+  },
+  mounted(){
+    this.produits = Object.values(this.$store.state.produits).filter(x => {
+      return x.quantite>0 
+    })
   }
 }
 </script>

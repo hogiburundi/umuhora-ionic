@@ -16,7 +16,7 @@
           @IonChange="prix_vente=$event.target.value" clearInput/>
       </ion-item>
       <ion-item class="ion-no-padding" :class="{'active':du_shown}" button @click="showDu">
-        <ion-label for="du">À partir du</ion-label>
+        <ion-label for="du">Date d'expiration</ion-label>
         <ion-text slot=end>{{ datetime(du) }}</ion-text>
       </ion-item>
       <ion-datetime @ionChange="choosedDu" presentation="time-date"
@@ -25,7 +25,9 @@
         <ion-button fill=clear color="medium" @click="close">
           ANULLER
         </ion-button>
-        <ion-button fill=clear @click="postStock">VALIDER</ion-button>
+        <ion-button fill=clear @click="postStock" v-if="escompte>prix_vente">
+          VALIDER
+        </ion-button>
       </ion-col>
     </ion-col>
   </div>
