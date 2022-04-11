@@ -137,14 +137,20 @@ export default {
       })
     },
     displayFacture(commande){
-      axios.get(this.url+`/commande/${commande.id}/`, this.headers)
-      .then((response) => {
-        this.active_commande = response.data
+      if(commande.id > 0){
+        axios.get(this.url+`/commande/${commande.id}/`, this.headers)
+        .then((response) => {
+          this.active_commande = response.data
+          let invoice = document.getElementById("invoice")
+          CustomPlugins.launchPrint({"html":invoice.innerHTML})
+        }).catch((error) => {
+          this.displayErrorOrRefreshToken(error, () => this.displayFacture(commande))
+        });
+      } else {
+        this.active_commande = commande //ici il faut d'abord generer un deep_commande
         let invoice = document.getElementById("invoice")
         CustomPlugins.launchPrint({"html":invoice.innerHTML})
-      }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, () => this.displayFacture(commande))
-      });
+      }
     }
   },
   mounted(){

@@ -19,23 +19,26 @@ export default {
     "$store.state.produits":{
       deep:true,
       handler(new_val){
-        this.produits = Object.values(new_val).filter(x => {
-          return x.quantite>0 
-        })
+        this.produits = this.getCurrentProduit()
       }
     },
     "$store.state.home_keyword"(new_val){
       if(this.$route.path != "/home/vente") return
-      this.produits = Object.values(this.$store.state.produits).filter(x => x.quantite>0 && x.nom.toLowerCase().includes(new_val))
+      this.produits = this.getCurrentProduit().filter(x => {
+        return x.quantite>0 && x.nom.toLowerCase().includes(new_val)
+      })
     }
   },
   components:{VenteItem},
   methods:{
+    getCurrentProduit(){
+      return Object.values(this.$store.state.produits).filter(x => {
+        return x.quantite > 0 && x.kiosk == this.getActiveKiosk().id 
+      })
+    }
   },
   mounted(){
-    this.produits = Object.values(this.$store.state.produits).filter(x => {
-      return x.quantite>0 
-    })
+    this.produits = this.getCurrentProduit()
   }
 }
 </script>
