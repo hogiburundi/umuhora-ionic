@@ -66,9 +66,7 @@
         </ion-tab-button>
       </ion-tab-bar>
     </ion-footer>
-    <ion-searchbar show-cancel-button="always" debounce="0"
-      class="sc-ion-searchbar-md-h sc-ion-searchbar-md-s md searchbar-left-aligned searchbar-should-show-clear searchbar-should-show-cancel"
-      :class="{'shown':search_shown}" id="searchbar"
+    <ion-searchbar show-cancel-button="always" debounce="0" id="searchbar"
       @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
     <DialogProduit :active="produit_shown" @close="closeDialog"
       :item="active_stock_item"/>
@@ -122,12 +120,12 @@ export default {
       });
     },
     closeSearch(event){
-      this.search_shown = false
+      let searchbar = document.getElementById("searchbar")
+      searchbar.classList.remove("shown")
     },
     showSearch(){
       let searchbar = document.getElementById("searchbar")
-      console.log(searchbar.innerHTML.substring(80, 280))
-      this.search_shown = true
+      searchbar.classList.add("shown")
     },
     showSync(){
       this.sync_shown=true
