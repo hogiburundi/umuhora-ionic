@@ -47,8 +47,9 @@ export default {
       this.$store.state.dialog_achat_shown = true
     },
     getCurrentProduit(){
+      let c_k_id = this.getActiveKiosk().id
       return Object.values(this.$store.state.produits).filter(x => {
-        return x.kiosk == this.getActiveKiosk().id 
+        return x.kiosk == c_k_id
       })
     }
   },

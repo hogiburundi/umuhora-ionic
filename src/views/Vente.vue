@@ -32,8 +32,9 @@ export default {
   components:{VenteItem},
   methods:{
     getCurrentProduit(){
+      let c_k_id = this.getActiveKiosk().id
       return Object.values(this.$store.state.produits).filter(x => {
-        return x.quantite > 0 && x.kiosk == this.getActiveKiosk().id 
+        return x.quantite > 0 && x.kiosk == c_k_id
       })
     }
   },

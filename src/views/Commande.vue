@@ -106,7 +106,7 @@ export default {
     "$store.state.commandes":{
       deep:true,
       handler(new_val){
-        this.commandes = Object.values(new_val)
+        this.commandes = this.getCurrrentCommands()
       }
     },
     commandes(new_val){
@@ -151,10 +151,16 @@ export default {
         let invoice = document.getElementById("invoice")
         CustomPlugins.launchPrint({"html":invoice.innerHTML})
       }
+    },
+    getCurrrentCommands(){
+      let c_k_id = this.getActiveKiosk().id
+      return Object.values(this.$store.state.commandes).filter(x => {
+        return x.kiosk == c_k_id
+      }).sort((x, y) =>  Math.abs(y.id) - Math.abs(x.id))
     }
   },
   mounted(){
-    this.commandes = Object.values(this.$store.state.commandes)
+    this.commandes = this.getCurrrentCommands()
     this.commandes.forEach(x => {
       this.montant += x.prix;
       this.payee += x.payee;

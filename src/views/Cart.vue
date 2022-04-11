@@ -144,7 +144,7 @@ export default {
         date:new Date(),
         kiosk:this.getActiveKiosk().id
       };
-      let id = -1 * (Object.keys(this.$store.state.commandes).length + 1)
+      let id = this.generateId()
       let command = {
         id: id,
         prix: this.cart.getTotal(),
@@ -189,6 +189,10 @@ export default {
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.fetchData)
       });
+    },
+    generateId(){
+      let ids = Array.from(Object.values(this.$store.state.commandes), x => x.id)
+      return -1 * Math.max(...ids)+ 1
     }
   },
   mounted(){
