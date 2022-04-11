@@ -39,6 +39,18 @@
               <ion-label>Synchroniser</ion-label>
               <ion-icon :icon="getIcon('sync')"/>
             </ion-item>
+            <ion-item button routerLink="/profile">
+              <ion-label>Edition</ion-label>
+              <ion-icon :src="getIcon('personOutline')"/>
+            </ion-item>
+            <ion-item button @click="logout">
+              <ion-label>Deconnexion</ion-label>
+              <ion-icon :src="getIcon('logOutOutline')"/>
+            </ion-item>
+            <ion-item button @click="openWhatsapp">
+              <ion-label>Demander l'aide</ion-label>
+              <ion-icon :src="getIcon('logoWhatsapp')"/>
+            </ion-item>
           </ion-list>
         </ion-content>
       </ion-popover>
@@ -140,7 +152,10 @@ export default {
       window.current_event = window.setTimeout(() => {
         vue.fab_shown = false
       }, 5000)
-    }
+    },
+    openWhatsapp(){
+      CustomPlugins.openWhatsapp()
+    },
   },
   mounted(){
   }
