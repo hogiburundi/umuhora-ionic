@@ -209,13 +209,15 @@ export default {
       this.validating_pertes = true
       if(!this.in_action) return
       if(this.valid_pertes.size > 0){
-        let item = Array.from(valid_pertes)[0]
+        let item = Array.from(this.valid_pertes)[0]
         axios.get(`${this.url}/perte/${item}/valider/`, this.headers)
         .then((response) => {
-          valid_pertes.delete(item)
+          this.valid_pertes.delete(item)
           this.validPertes()
         }).catch((error) => {
-          this.displayErrorOrRefreshToken(error, this.validPertes)
+          this.displayErrorOrRefreshToken(error, null)
+          this.valid_pertes.delete(item)
+          this.validPertes()
         });
       } else {
         this.validStocks()
@@ -226,13 +228,15 @@ export default {
       this.validating_stocks = true
       if(!this.in_action) return
       if(this.valid_stocks.size > 0){
-        let item = Array.from(valid_stocks)[0]
-        axios.get(`${this.url}/stock/${item}/valider/`, this.headers)
+        let item = Array.from(this.valid_stocks)[0]
+        axios.get(`${this.url}/stock/${item.id}/valider/`, this.headers)
         .then((response) => {
-          valid_stocks.delete(item)
+          this.valid_stocks.delete(item)
           this.validStocks()
         }).catch((error) => {
-          this.displayErrorOrRefreshToken(error, this.validStocks)
+          this.displayErrorOrRefreshToken(error, null)
+          this.valid_stocks.delete(item)
+          this.validPertes()
         });
       } else {
         this.delCommandes()

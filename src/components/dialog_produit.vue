@@ -19,7 +19,7 @@
         </ion-item>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">rapport</ion-label>
-          <ion-input type=number placeholder="rapport" value=1 :value="rapport"
+          <ion-input type=number placeholder="rapport" :value="rapport"
             @IonChange="rapport=$event.target.value" clearInput/>
         </ion-item>
         <ion-item class="ion-no-padding">
@@ -55,14 +55,14 @@ export default {
         this.nom = ""
         this.unite_entrante = ""
         this.unite = ""
-        this.rapport = ""
+        this.rapport = 1
         this.prix_vente = ""
       }
     }
   },
   data(){
     return {
-      nom : "", unite_entrante : "", unite : "", rapport : "",
+      nom : "", unite_entrante : "", unite : "", rapport:1,
       prix_vente : "",
     }
   },
@@ -78,6 +78,7 @@ export default {
         rapport: this.rapport,
         prix_vente: this.prix_vente,
         user_id: this.active_user.id,
+        kiosk: this.getActiveKiosk().id,
         kiosk_id: this.getActiveKiosk().id
       }
       if(!this.item){

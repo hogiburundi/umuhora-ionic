@@ -23,7 +23,7 @@
     </div>
     <div class="inline" text-center button>
       <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click="deleteCommande">
+        style="margin: 0;" @click.stop="deleteCommande">
         <ion-icon color="danger" slot="icon-only" :src="getIcon('close')"/>
       </ion-button>
     </div>
@@ -31,6 +31,8 @@
 </template>
 
 <script >
+import { alertController } from '@ionic/vue';
+
 export default {
   props: {
     item:{type:Object, required:true}
@@ -46,10 +48,32 @@ export default {
       if(this.item.quantite!=0) this.editable=true
     },
     deleteCommande(){
-      if(confirm("Voulez-vous anuller cette vente?")){
-        this.$store.state.deleted_commandes.add(this.item.id)
-        delete(this.$store.state.commandes[this.item.id])
-      }
+      const alert = alertController.create({
+          header: 'Confirm!',
+          message: 'Message <strong>text</strong>!!!',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: blah => {
+                console.log('Confirm Cancel:', blah)
+              },
+            },
+            {
+              text: 'Okay',
+              handler: () => {
+                console.log('Confirm Okay')
+              },
+            },
+          ],
+        })
+      console.log(alert)
+        alert.present();
+      // if(confirm("Voulez-vous anuller cette vente?")){
+      //   this.$store.state.deleted_commandes.add(this.item.id)
+      //   delete(this.$store.state.commandes[this.item.id])
+      // }
     }
   },
   computed:{

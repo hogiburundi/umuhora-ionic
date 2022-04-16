@@ -32,6 +32,7 @@ export default {
   components:{VenteItem},
   methods:{
     getCurrentProduit(){
+      if(!this.getActiveKiosk()) return []
       let c_k_id = this.getActiveKiosk().id
       return Object.values(this.$store.state.produits).filter(x => {
         return x.quantite > 0 && x.kiosk == c_k_id

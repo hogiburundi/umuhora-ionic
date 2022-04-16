@@ -69,12 +69,12 @@ export default {
     postStock(){
       let created = {
         quantite_actuelle:this.qtt,
-        date_expiration:this.du,
+        date_expiration:!this.du?null:new Date(this.du).toISOString().split('T')[0],
         prix_total:this.prix_vente,
         produit:this.item.id,
         user: this.active_user.id,
         kiosk:this.getActiveKiosk().id,
-        date:new Date().toISOString()
+        date:new Date().toISOString().split('T')[0]
       }
       let id = -1*(Object.keys(this.$store.state.stocks).length + 1)
       let new_stock = {
