@@ -29,6 +29,7 @@
 </template>
 
 <script >
+import { alertController } from "@ionic/vue"
 export default {
   props: {
     item:{type:Object, required:true}
@@ -44,24 +45,55 @@ export default {
       if(this.item.quantite!=0) this.editable=true
     },
     validatePerte(){
-      if(confirm("êtes-vous sur de vouloir valider cette perte?")){
-        if(!this.item.id || this.item.id < 0){
-          console.error(`seul les pertes provenant du serveur peuvent être validés`)
-          return
-        }
-        this.item.validated_by = this.active_user
-        let data = {
-          id:this.item.id,
-          user:this.active_user.id
-        }
-        this.$store.state.validated_pertes.add(data)
-      }
+      alertController.create({
+        header: 'Attention!',
+        message: "êtes-vous sur de vouloir valider cette perte?",
+        buttons: [
+          {
+            text: 'laisser',
+            role: 'cancel'
+          },
+          {
+            text: 'OUI',
+            handler: () => {
+              if(!this.item.id || this.item.id < 0){
+                console.error(`seul les pertes provenant du serveur peuvent être validés`)
+                return
+              }
+              this.item.validated_by = this.active_user
+              let data = {
+                id:this.item.id,
+                user:this.active_user.id
+              }
+              this.$store.state.validated_pertes.add(data)
+            },
+          },
+        ],
+      }).then(res => {
+        res.present();
+      });
     },
     deletePerte(){
-      if(confirm("êtes-vous sur de vouloir supprimer cette perte?")){
-        this.$store.state.deleted_pertes.add(this.item.id)
-        delete(this.$store.state.pertes[this.item.id])
-      }
+      alertController.create({
+        header: 'Attention!',
+        message: "êtes-vous sur de vouloir supprimer cette perte?",
+        buttons: [
+          {
+            text: 'laisser',
+            role: 'cancel'
+          },
+          {
+            text: 'OUI',
+            handler: () => {
+              console.log(this.$store.state.pertes)
+              this.$store.state.deleted_pertes.add(this.item.id)
+              delete(this.$store.state.pertes[this.item.id])
+            },
+          },
+        ],
+      }).then(res => {
+        res.present();
+      });
     },
   },
   computed:{
