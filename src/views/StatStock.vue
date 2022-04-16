@@ -86,7 +86,10 @@ export default {
     }
   },
   mounted(){
-    this.stocks = Object.values(this.$store.state.stocks)
+    let c_k_id = this.getActiveKiosk().id
+    this.stocks = Object.values(this.$store.state.stocks).sort((x, y) => {
+      return Math.abs(y.id) - Math.abs(x.id)
+    })
   }
 }
 </script>

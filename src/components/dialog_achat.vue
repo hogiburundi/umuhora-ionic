@@ -66,6 +66,10 @@ export default {
     showDu(){
       this.du_shown = !this.du_shown
     },
+    generateId(){
+      let ids = Array.from(Object.values(this.$store.state.stocks), x => x.id)
+      return -1 * Math.max(...ids)+ 1
+    },
     postStock(){
       let created = {
         quantite_actuelle:this.qtt,
@@ -76,7 +80,7 @@ export default {
         kiosk:this.getActiveKiosk().id,
         date:new Date().toISOString().split('T')[0]
       }
-      let id = -1*(Object.keys(this.$store.state.stocks).length + 1)
+      let id = this.generateId()
       let new_stock = {
         id: id,
         quantite_initiale: this.qtt,
