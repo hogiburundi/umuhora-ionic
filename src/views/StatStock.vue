@@ -27,8 +27,8 @@
     <ion-footer>
       <div class="group">
         <div>Montant: </div>
-        <div>{{ money(
-          stocks.reduce((acc, x) => acc+=x.prix_total, 0)
+        <div>BIF {{ money(
+          stocks.reduce((acc, x) => acc+= parseInt(x.prix_total), 0)
         )}}</div>
       </div>
     </ion-footer>
