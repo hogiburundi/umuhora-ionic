@@ -59,8 +59,13 @@ export default {
           {
             text: 'OUI',
             handler: () => {
-              this.$store.state.deleted_commandes.add(this.item.id)
-              delete(this.$store.state.commandes[this.item.id])
+              let elapsed = (new Date() - new Date(this.item.date)) / (1000*60)
+              if(elapsed > 60){
+                console.error("deletion timed out ", elapsed)
+              } else {
+                this.$store.state.deleted_commandes.add(this.item.id)
+                delete(this.$store.state.commandes[this.item.id])
+              }
             },
           },
         ],
