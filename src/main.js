@@ -123,7 +123,7 @@ app.mixin({
         { dateStyle: 'short' }
       ).format(date)
     },
-    displayErrorOrRefreshToken(error, callback){
+    displayErrorOrRefreshToken(error, callback, elseCallback){
       if(!!error.response){
         if(error.response.data.code == "token_not_valid"){ 
           let refresh = this.$store.state.user.refresh
@@ -138,13 +138,11 @@ app.mixin({
           }).catch((error) => {
             this.$store.state.user = null;
             console.error(error)
-            this.$store.state.alert = {
-              type:"danger", message:this.cleanString(error.response.data)
-            }
           })
         } else {
-          this.$store.state.alert = {
-            type:"danger", message:this.cleanString(error.response.data)
+          console.error(error)
+          if(typeof(elseCallback) == 'function'){
+            elseCallback()
           }
         }
       }

@@ -215,9 +215,10 @@ export default {
           this.valid_pertes.delete(item)
           this.validPertes()
         }).catch((error) => {
-          this.displayErrorOrRefreshToken(error, null)
-          this.valid_pertes.delete(item)
-          this.validPertes()
+          this.displayErrorOrRefreshToken(error, this.validPertes, () => {
+            this.valid_pertes.delete(item)
+            this.validPertes()
+          })
         });
       } else {
         this.validStocks()
@@ -234,9 +235,10 @@ export default {
           this.valid_stocks.delete(item)
           this.validStocks()
         }).catch((error) => {
-          this.displayErrorOrRefreshToken(error, null)
-          this.valid_stocks.delete(item)
-          this.validPertes()
+          this.displayErrorOrRefreshToken(error, this.validStocks, () => {
+            this.valid_stocks.delete(item)
+            this.validStocks()
+          })
         });
       } else {
         this.delCommandes()
