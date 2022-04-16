@@ -48,32 +48,25 @@ export default {
       if(this.item.quantite!=0) this.editable=true
     },
     deleteCommande(){
-      const alert = alertController.create({
-          header: 'Confirm!',
-          message: 'Message <strong>text</strong>!!!',
-          buttons: [
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              cssClass: 'secondary',
-              handler: blah => {
-                console.log('Confirm Cancel:', blah)
-              },
+      alertController.create({
+        header: 'Attention!',
+        message: 'Voulez-vous vraiment supprimer cette commande?',
+        buttons: [
+          {
+            text: 'laisser',
+            role: 'cancel'
+          },
+          {
+            text: 'OUI',
+            handler: () => {
+              this.$store.state.deleted_commandes.add(this.item.id)
+              delete(this.$store.state.commandes[this.item.id])
             },
-            {
-              text: 'Okay',
-              handler: () => {
-                console.log('Confirm Okay')
-              },
-            },
-          ],
-        })
-      console.log(alert)
-        alert.present();
-      // if(confirm("Voulez-vous anuller cette vente?")){
-      //   this.$store.state.deleted_commandes.add(this.item.id)
-      //   delete(this.$store.state.commandes[this.item.id])
-      // }
+          },
+        ],
+      }).then(res => {
+        res.present();
+      });
     }
   },
   computed:{
