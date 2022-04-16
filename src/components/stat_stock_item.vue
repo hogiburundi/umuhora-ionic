@@ -43,6 +43,7 @@
 </template>
 
 <script >
+import { alertController } from '@ionic/vue'
 export default {
   props: {
     item:{type:Object, required:true}
@@ -55,18 +56,38 @@ export default {
   },
   methods:{
     validateStock(){
-      if(confirm("êtes-vous sur de vouloir valider ce stock?")){
-        if(!this.item.id || this.item.id < 0){
-          console.error(`seul les stocks provenant du serveur peuvent être validés`)
-          return
-        }
-        this.item.validated_by = this.active_user
-        let data = {
-          id:this.item.id,
-          user:this.active_user.id
-        }
-        this.$store.state.validated_stocks.add(data)
-      }
+      alertController.create({
+        header: 'Attention!',
+        message: 'êtes-vous sur de vouloir valider ce stock?',
+        buttons: [
+          {
+            text: 'laisser',
+            role: 'cancel'
+          },
+          {
+            text: 'OUI',
+            handler: () => {
+              let elapsed = (new Date() - new Date(this.item.updated_at)) / (1000*60)
+              if(elapsed > 120){
+                console.error("deletion timed out ", elapsed)
+              } else {
+                if(!this.item.id || this.item.id < 0){
+                  console.error(`seul les stocks provenant du serveur peuvent être validés`)
+                  return
+                }
+                this.item.validated_by = this.active_user
+                let data = {
+                  id:this.item.id,
+                  user:this.active_user.id
+                }
+                this.$store.state.validated_stocks.add(data)
+              }
+            },
+          },
+        ],
+      }).then(res => {
+        res.present();
+      });
     },
     deleteStock(){
       if(confirm("êtes-vous sur de vouloir supprimer ce stock?")){

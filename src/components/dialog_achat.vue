@@ -89,7 +89,7 @@ export default {
         date_expiration: created.date_expiration,
         prix_unitaire: created.prix_total/this.qtt,
         prix_total: created.prix_total,
-        updated_at: created.date,
+        updated_at: new Date().toISOString(),
         produit: JSON.parse(JSON.stringify(this.item)),
         user: this.active_user.username,
         created:created,
