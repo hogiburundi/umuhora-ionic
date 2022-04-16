@@ -67,21 +67,16 @@ export default {
           {
             text: 'OUI',
             handler: () => {
-              let elapsed = (new Date() - new Date(this.item.updated_at)) / (1000*60)
-              if(elapsed > 120){
-                console.error("deletion timed out ", elapsed)
-              } else {
-                if(!this.item.id || this.item.id < 0){
-                  console.error(`seul les stocks provenant du serveur peuvent être validés`)
-                  return
-                }
-                this.item.validated_by = this.active_user
-                let data = {
-                  id:this.item.id,
-                  user:this.active_user.id
-                }
-                this.$store.state.validated_stocks.add(data)
+              if(!this.item.id || this.item.id < 0){
+                console.error(`seul les stocks provenant du serveur peuvent être validés`)
+                return
               }
+              this.item.validated_by = this.active_user
+              let data = {
+                id:this.item.id,
+                user:this.active_user.id
+              }
+              this.$store.state.validated_stocks.add(data)
             },
           },
         ],
@@ -90,21 +85,41 @@ export default {
       });
     },
     deleteStock(){
-      if(confirm("êtes-vous sur de vouloir supprimer ce stock?")){
-        let index = this.$store.state.stocks.indexOf(this.item)
-        if(index>=0){
-          this.$store.state.stocks.splice(index, 1)
-          if(!!this.item.id){
-            let data = {
-              id:this.item.id,
-              user:this.active_user.id
-            }
-            this.$store.state.deleted_stocks.add(data)
-          }
-        } else {
-          console.error(`erreur de suppression du stock ${this.item}`)
-        }
-      }
+      alertController.create({
+        header: 'Attention!',
+        message: "êtes-vous sur de vouloir supprimer ce stock?",
+        buttons: [
+          {
+            text: 'laisser',
+            role: 'cancel'
+          },
+          {
+            text: 'OUI',
+            handler: () => {
+              let elapsed = (new Date() - new Date(this.item.updated_at)) / (1000*60)
+              if(elapsed > 120){
+                console.error("deletion timed out ", elapsed)
+              } else {
+                let index = this.$store.state.stocks.indexOf(this.item)
+                if(index>=0){
+                  this.$store.state.stocks.splice(index, 1)
+                  if(!!this.item.id){
+                    let data = {
+                      id:this.item.id,
+                      user:this.active_user.id
+                    }
+                    this.$store.state.deleted_stocks.add(data)
+                  }
+                } else {
+                  console.error(`erreur de suppression du stock ${this.item}`)
+                }
+              }
+            },
+          },
+        ],
+      }).then(res => {
+        res.present();
+      });
     },
     perdre(){
       this.$emit("perte")
