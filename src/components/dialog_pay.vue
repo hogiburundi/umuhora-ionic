@@ -59,12 +59,16 @@ export default {
     close(){
       this.$emit("close")
     },
+    generateId(){
+      let ids = Array.from(Object.values(this.$store.state.payments), x => Math.abs(x.id))
+      return -1 * (Math.max(...ids)+ 1)
+    },
     save(){
       if(!this.payee || this.payee <= 10){
         console.error("iyo mahera ni make cane ntibishoboka")
         return;
       }
-      let id = -1 * (Object.keys(this.$store.state.payments).length+1)
+      let id = this.generateId()
       let data = {
         id: id,
         client: this.item.client,

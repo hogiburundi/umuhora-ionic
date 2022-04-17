@@ -70,6 +70,10 @@ export default {
     close(){
       this.$emit("close")
     },
+    generateId(){
+      let ids = Array.from(Object.values(this.$store.state.produits), x => Math.abs(x.id))
+      return -1 * (Math.max(...ids)+ 1)
+    },
     save(){
       let data = {
         nom: this.nom,
@@ -82,7 +86,7 @@ export default {
         kiosk_id: this.getActiveKiosk().id
       }
       if(!this.item){
-        let id = -1*(Object.keys(this.$store.state.produits).length + 1)
+        let id = this.generateId()
         data.created = JSON.parse(JSON.stringify(data))
         data.id = id
         this.$store.state.produits[id] = data

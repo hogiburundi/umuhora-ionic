@@ -67,8 +67,8 @@ export default {
       this.du_shown = !this.du_shown
     },
     generateId(){
-      let ids = Array.from(Object.values(this.$store.state.stocks), x => x.id)
-      return -1 * Math.max(...ids)+ 1
+      let ids = Array.from(Object.values(this.$store.state.stocks), x => Math.abs(x.id))
+      return -1 * (Math.max(...ids)+ 1)
     },
     postStock(){
       let created = {

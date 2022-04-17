@@ -290,7 +290,10 @@ export default {
           this.deleted_pertes.delete(item)
           this.delPertes()
         }).catch((error) => {
-          this.displayErrorOrRefreshToken(error, this.delPertes)
+          this.displayErrorOrRefreshToken(error, this.delPertes, () => {
+            this.deleted_pertes.delete(item)
+            this.delPertes()
+          })
         });
       } else {
         this.postCommandes()

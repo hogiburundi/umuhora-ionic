@@ -37,17 +37,20 @@ export default {
     close(){
       this.$emit("close")
     },
+    generateId(){
+      let ids = Array.from(Object.values(this.$store.state.pertes), x => Math.abs(x.id))
+      return -1 * (Math.max(...ids)+ 1)
+    },
     save(){
       if(!this.qtt || this.qtt > this.item.quantite_actuelle){
         console.error("iyo quantité ntishoboka")
         return;
       }
       if(this.details.length < 32){
-        console.log(this.details)
         console.error("insiguro muriko muratanga ntihagije")
         return;
       }
-      let id = -1 * (this.$store.state.pertes.length + 1)
+      let id = this.generateId()
       let data = {
         id: id,
         quantite: this.qtt,

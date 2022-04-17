@@ -72,11 +72,10 @@
           <ion-icon :src="getIcon('statsChart')"></ion-icon>
           <ion-label>Statistiques</ion-label>
         </ion-tab-button>
-        <ion-tab-button tab="stats" @click="startScan">
-          <ion-icon :src="getIcon('qrCode')"></ion-icon>
-          <ion-label>Scan</ion-label>
-        </ion-tab-button>
       </ion-tab-bar>
+      <ion-button tab="stats" @click="startScan">
+        <ion-icon :src="getIcon('qrCode')"></ion-icon>
+      </ion-button>
     </ion-footer>
     <ion-searchbar show-cancel-button="always" debounce="0" id="searchbar"
       @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
@@ -156,6 +155,10 @@ export default {
     openWhatsapp(){
       CustomPlugins.openWhatsapp()
     },
+    logout(){
+      this.$store.state.active_kiosk = null
+      this.$store.state.user = null
+    },
   },
   mounted(){
   }
@@ -181,5 +184,13 @@ ion-badge.notif{
   top: 5px;
   right: 20px;
   font-size: .8em;
+}
+ion-tab-bar{
+  width: calc(100% - 50px);
+  display: inline-block;
+}
+ion-footer{
+  display: flex;
+  align-items: center;
 }
 </style>
