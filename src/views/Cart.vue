@@ -126,7 +126,7 @@ export default {
           "nom":this.nom,
           "tel":this.tel
         }
-        this.$store.state.clients.push(client)
+        this.$store.state.clients[this.tel] = client
       }
       for(let item of this.cart.content){
         items.unshift({"produit":item.product.id, "quantite":item.quantite})
