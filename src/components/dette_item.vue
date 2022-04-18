@@ -1,7 +1,7 @@
 <template>
   <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
-      <b>No. {{item.id}} du {{ datetime(item.date) }}</b>
+      <b>No. {{ Math.abs(item.id) }} du {{ datetime(item.date) }}</b>
       <div class="inline">
         <div class="group">
           <span class="key">Montant: </span>
@@ -18,7 +18,7 @@
       </div>
       <div class="group">
         <div class="key">Client: </div>
-        <div>{{ item.client }}</div>
+        <div>{{ item.id<0?`${item.client.nom} ${item.client.tel}`:item.client }}</div>
       </div>
     </div>
     <div>

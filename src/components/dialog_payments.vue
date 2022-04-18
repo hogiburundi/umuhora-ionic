@@ -28,7 +28,16 @@ export default {
   },
   computed:{
     payments(){
-      return Array.from(this.$store.state.payments).filter(x => x.commande==this.item.id)
+      if(this.item.id < 0){
+        return [{
+          date:this.item.date,
+          montant: this.item.payee,
+          user: this.item.user_id
+        }]
+      }
+      return Object.values(this.$store.state.payments).filter(x => {
+        return x.commande == this.item.id
+      })
     }
   },
   methods: {

@@ -44,7 +44,7 @@
         <ion-label>BIF</ion-label>
       </div>
       <div class="payment">
-        <ion-label>{{ ingaru<0?"ayo kugarura":"ideni rya" }}:</ion-label>
+        <ion-label>{{ ingaru<0?"A rendre":"Dette d'une somme de" }}:</ion-label>
         <b>{{ money(Math.abs(ingaru)) }}</b>
         <ion-label>BIF</ion-label>
       </div>
@@ -115,7 +115,7 @@ export default {
       let client_infos_are_correct = (this.tel.length>=7)&&(this.nom.length>=3)
       if(this.ingaru > 0){
         if(!client_infos_are_correct){
-          console.error("pour les dettes le client est obligatiore")
+          this.makeToast("Erreur", "pour les dettes le client est obligatiore")
           return;
         }
       }
