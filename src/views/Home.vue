@@ -66,7 +66,7 @@
         </ion-tab-button>
         <ion-tab-button tab="stock" href="/home/stock">
           <ion-icon :src="getIcon('basketOutline')"></ion-icon>
-          <ion-label>Stock</ion-label>
+          <ion-label>Produit</ion-label>
         </ion-tab-button>
         <ion-tab-button tab="stats" href="/home/stats">
           <ion-icon :src="getIcon('statsChart')"></ion-icon>

@@ -11,7 +11,9 @@
         la somme escomptée est {{ escompte }}
       </ion-label>
       <ion-item class="ion-no-padding">
-        <ion-label position="floating">Prix d'achat</ion-label>
+        <ion-label position="floating">
+          Prix d'achat <span>: {{ money(prix_vente) }} FBu</span>
+        </ion-label>
         <ion-input type=number placeholder="Prix d'achat"
           @IonChange="prix_vente=$event.target.value" clearInput/>
       </ion-item>
