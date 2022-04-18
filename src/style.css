@@ -77,7 +77,7 @@ ion-footer{
 }
 ion-searchbar{
   position: fixed!important;
-  z-index: 10;
+  z-index: 100;
   top: 0;
   right: 0; 
   transform: scaleX(0);
