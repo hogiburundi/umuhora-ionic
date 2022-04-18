@@ -10,7 +10,7 @@
         </ion-buttons>
         <ion-title>UMUHORA</ion-title>
         <ion-buttons slot="secondary">
-          <ion-button @click="showDateDialog">
+          <ion-button @ionClick="showDateDialog">
             <ion-icon slot="icon-only" :icon="getIcon('calendar')"/>
           </ion-button>
         </ion-buttons>
@@ -22,8 +22,9 @@
         <VersementItem v-for="versement in versements" :item="versement"/>
       </ion-col>
     </ion-content>
-    <ion-fab-button class="todo-fab" @click="">
-      <ion-icon :src="getIcon('walletOutline')"></ion-icon>
+    <ion-fab-button @click="verser">
+      <ion-spinner v-if="en_cours"/>
+      <ion-icon :src="getIcon('walletOutline')" v-else/>
     </ion-fab-button>
     <ion-footer>
       <div class="group" v-if="!today_vers">
@@ -65,7 +66,7 @@ export default {
   data(){
     return {
       date_shown:false, versements:this.$store.state.versements,
-      today_vers:null
+      today_vers:null, en_cours:false
     }
   },
   watch:{
@@ -112,6 +113,22 @@ export default {
         this.today_vers = response.data
       });
     },
+    verser(){
+      if(this.en_cours) return
+      this.en_cours = true
+      let kiosk_id = this.getActiveKiosk().id
+      let link = this.url+`/versement/`;
+      axios.post(link, this.today_vers, this.headers)
+      .then((response) => {
+        this.$store.state.versements.unshift(response.data)
+        this.en_cours = false
+      }).catch((error) => {
+        if(!!error.response){
+          this.makeToast("Erreur", error.response.data.status)
+        }
+        this.en_cours = false
+      });
+    }
   },
   mounted(){
     if(this.$store.state.versements.length<1){
@@ -134,5 +151,8 @@ ion-fab-button{
   position: fixed;
   right: 10px;
   bottom: 40px;
+}
+ion-spinner{
+  position: fixed;
 }
 </style>
