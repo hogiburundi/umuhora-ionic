@@ -43,11 +43,11 @@ export default {
     },
     save(){
       if(!this.qtt || this.qtt > this.item.quantite_actuelle){
-        console.error("iyo quantité ntishoboka")
+        this.makeToast("Erreur", "iyo quantité ntishoboka")
         return;
       }
       if(this.details.length < 32){
-        console.error("insiguro muriko muratanga ntihagije")
+        this.makeToast("Erreur", "insiguro ntihagije")
         return;
       }
       let id = this.generateId()

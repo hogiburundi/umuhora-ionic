@@ -61,7 +61,7 @@ export default {
             handler: () => {
               let elapsed = (new Date() - new Date(this.item.date)) / (1000*60)
               if(elapsed > 60){
-                console.error("deletion timed out ", elapsed)
+                this.makeToast("Erreur", "Le temps de suppression expirée")
               } else {
                 this.$store.state.deleted_commandes.add(this.item.id)
                 delete(this.$store.state.commandes[this.item.id])

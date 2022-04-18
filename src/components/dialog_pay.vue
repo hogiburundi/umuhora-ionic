@@ -65,7 +65,7 @@ export default {
     },
     save(){
       if(!this.payee || this.payee <= 10){
-        console.error("iyo mahera ni make cane ntibishoboka")
+        this.makeToast("Erreur", "Ayo mahera yarishwe ntashoboka")
         return;
       }
       let id = this.generateId()

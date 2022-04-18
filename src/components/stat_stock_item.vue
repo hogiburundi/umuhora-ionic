@@ -68,7 +68,7 @@ export default {
             text: 'OUI',
             handler: () => {
               if(!this.item.id || this.item.id < 0){
-                console.error(`seul les stocks provenant du serveur peuvent être validés`)
+                this.makeToast("Erreur", "ce stock n'est pas encore synchronisée")
                 return
               }
               this.item.validated_by = this.active_user
@@ -98,7 +98,7 @@ export default {
             handler: () => {
               let elapsed = (new Date() - new Date(this.item.updated_at)) / (1000*60)
               if(elapsed > 120){
-                console.error("deletion timed out ", elapsed)
+                this.makeToast("Erreur", "durrée de suppression écoulée")
               } else {
                 let index = this.$store.state.stocks.indexOf(this.item)
                 if(index>=0){
@@ -111,6 +111,7 @@ export default {
                     this.$store.state.deleted_stocks.add(data)
                   }
                 } else {
+                  this.makeToast("Erreur", "une erreur est survenue")
                   console.error(`erreur de suppression du stock ${this.item}`)
                 }
               }

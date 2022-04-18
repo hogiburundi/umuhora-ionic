@@ -8,7 +8,7 @@ import {
   IonInput, IonItem, IonButton, IonButtons, IonCol, IonContent, IonTabButton,
   IonTabBar, IonTitle, IonToolbar, IonHeader, IonMenuButton, IonFabButton,
   IonList, IonMenu, IonToggle, IonFooter, IonItemDivider, IonPopover, IonBadge,
-  IonSelectOption, IonSelect, IonText, IonDatetime
+  IonSelectOption, IonSelect, IonText, IonDatetime, toastController
 } from '@ionic/vue';
 import '@ionic/core/css/ionic.bundle.css'
 import * as allIcons from "ionicons/icons";
@@ -73,6 +73,22 @@ app.mixin({
       let cash = parseFloat(x).toFixed(0)
       if(!x) return "0";
       return cash.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    },
+    makeToast(title, message, duration=5000){
+      toastController.create({
+        header: title,
+        message: message,
+        icon: this.getIcon('informationCircleOutline'),
+        duration:duration,
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {}
+          }
+        ]
+      }).then(toast => {
+        toast.present();
+      });
     },
     cleanString(str){
       if (!str) return "";

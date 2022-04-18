@@ -57,7 +57,7 @@ export default {
             text: 'OUI',
             handler: () => {
               if(!this.item.id || this.item.id < 0){
-                console.error(`seul les pertes provenant du serveur peuvent être validés`)
+                this.makeToast("Erreur", "cette perte n'est pas encore synchronisée")
                 return
               }
               this.item.validated_by = this.active_user

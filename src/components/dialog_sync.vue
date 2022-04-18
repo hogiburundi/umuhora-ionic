@@ -254,7 +254,6 @@ export default {
         .then((response) => {
           this.delCommandes()
         }).catch((error) => {
-          console.error(error.response.data)
           this.deleted_commandes.delete(item)
           this.delCommandes()
         });

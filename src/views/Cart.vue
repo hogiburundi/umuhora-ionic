@@ -57,6 +57,7 @@
 </template>
 <script>
 import CartItem from "../components/cart_item"
+
 export default {
   components:{ CartItem },
   data(){
@@ -132,7 +133,7 @@ export default {
         items.unshift({"produit":item.product.id, "quantite":item.quantite})
       }
       if(items.length==0){
-        console.error("les ventes nulles ne sont pas plausible")
+        this.makeToast("Erreur", "les ventes nulles ne sont pas plausible")
         return;
       }
       let payee = this.paid<=this.cart.getTotal()?this.paid:this.cart.getTotal()
