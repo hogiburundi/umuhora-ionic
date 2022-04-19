@@ -71,7 +71,7 @@ export default {
     "$store.state.commandes":{
       deep:true,
       handler(new_val){
-        this.commandes = Object.values(new_val).filter(x => x.prix>x.payee)
+        this.commandes = this.getCurrrentCommands()
       }
     }
   },
@@ -103,10 +103,17 @@ export default {
       this.commandes = Object.values(this.$store.state.commandes).filter(x => {
         return x.prix > x.payee && JSON.stringify(x).toLowerCase().includes(keyword)
       })
+    },
+    getCurrrentCommands(){
+      console.log("filtering...")
+      let c_k_id = this.getActiveKiosk().id
+      return Object.values(this.$store.state.commandes).filter(x => {
+        return x.kiosk == c_k_id && x.prix > x.payee
+      }).sort((x, y) =>  Math.abs(y.id) - Math.abs(x.id))
     }
   },
   mounted(){
-    this.commandes = Object.values(this.$store.state.commandes).filter(x => x.prix>x.payee)
+    this.commandes = this.getCurrrentCommands()
   },
 }
 </script>

@@ -58,7 +58,9 @@
         {{ getActiveKiosk().nom }}<br />
         {{ getActiveKiosk().details }}
       </div>
-      <div v-if="active_commande"><b>{{ active_commande.client }}</b></div>
+      <div v-if="active_commande">
+        <b>{{ active_commande.id<0?`${active_commande.client.nom} ${active_commande.client.tel}`:active_commande.client }}</b>
+      </div>
   </center>
   <table style="width:100%;">
     <tbody v-if="active_commande">
@@ -138,21 +140,35 @@ export default {
     },
     displayFacture(commande){
       if(commande.id > 0){
+        this.makeToast(null, "téléchargement des ventes en cours...", 3000)
         axios.get(this.url+`/commande/${commande.id}/`, this.headers)
         .then((response) => {
           this.active_commande = response.data
+          console.log(this.active_commande)
           let invoice = document.getElementById("invoice")
           CustomPlugins.launchPrint({"html":invoice.innerHTML})
         }).catch((error) => {
           this.displayErrorOrRefreshToken(error, () => this.displayFacture(commande))
         });
       } else {
-        this.active_commande = commande //ici il faut d'abord generer un deep_commande
+        let ventes = []
+        let produit
+        for(let vente of commande.created.ventes){
+          produit = this.$store.state.produits[vente.produit]
+          ventes.push({
+            produit: produit.nom,
+            prix_unitaire: produit.prix_vente,
+            prix_total:produit.prix_vente * vente.quantite,
+          })
+        }
+        this.active_commande = commande
+        this.active_commande.ventes = ventes
         let invoice = document.getElementById("invoice")
         CustomPlugins.launchPrint({"html":invoice.innerHTML})
       }
     },
     getCurrrentCommands(){
+      console.log("filtering...")
       let c_k_id = this.getActiveKiosk().id
       return Object.values(this.$store.state.commandes).filter(x => {
         return x.kiosk == c_k_id
