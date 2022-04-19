@@ -101,7 +101,7 @@ export default {
     },
     search(keyword){
       this.commandes = Object.values(this.$store.state.commandes).filter(x => {
-        return JSON.stringify(x).toLowerCase().includes(keyword)
+        return x.prix > x.payee && JSON.stringify(x).toLowerCase().includes(keyword)
       })
     }
   },
