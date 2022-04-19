@@ -174,15 +174,27 @@ export default {
         this.deleted_stocks_count = this.deleted_stocks.size
         this.deleted_pertes_count = this.deleted_pertes.size
 
-        this.created_commandes = Object.values(this.$store.state.commandes).filter(x => !!x.created)
+        let kiosk_id = this.getActiveKiosk().id
+
+        this.created_commandes = Object.values(this.$store.state.commandes).filter(x => {
+          return x.kiosk_id == kiosk_id && !!x.created
+        })
         this.created_commandes_count = this.created_commandes.length
-        this.created_payments = Object.values(this.$store.state.payments).filter(x => !!x.created)
+        this.created_payments = Object.values(this.$store.state.payments).filter(x => {
+          return x.kiosk_id == kiosk_id && !!x.created
+        })
         this.created_payments_count = this.created_payments.length
-        this.created_stocks = Object.values(this.$store.state.stocks).filter(x => !!x.created)
+        this.created_stocks = Object.values(this.$store.state.stocks).filter(x => {
+          return x.kiosk_id == kiosk_id && !!x.created
+        })
         this.created_stocks_count = this.created_stocks.length
-        this.created_pertes = Object.values(this.$store.state.pertes).filter(x => !!x.created)
+        this.created_pertes = Object.values(this.$store.state.pertes).filter(x => {
+          return x.kiosk_id == kiosk_id && !!x.created
+        })
         this.created_pertes_count = this.created_pertes.length
-        this.created_produits = Object.values(this.$store.state.produits).filter(x => !!x.created)
+        this.created_produits = Object.values(this.$store.state.produits).filter(x => {
+          return x.kiosk_id == kiosk_id && !!x.created
+        })
         this.created_produits_count = this.created_produits.length
       }
     }
