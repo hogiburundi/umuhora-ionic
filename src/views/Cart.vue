@@ -105,9 +105,12 @@ export default {
         this.found_clients = []
         return
       }
-      console.log(this.$store.state.clients)
+      this.nom = this.nom.toLowerCase()
+      this.tel = this.tel.toLowerCase()
+
       this.found_clients = Object.values(this.$store.state.clients).filter(x => {
-        return x.nom.includes(this.nom) || x.tel.includes(this.tel)
+        return (this.nom.length>0 && x.nom.toLowerCase().includes(this.nom)) ||
+              (this.tel.length>0 && x.tel.toLowerCase().includes(this.tel))
       })
       this.active_client = null
     },
