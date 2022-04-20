@@ -458,7 +458,11 @@ export default {
       this.receiving_commandes = true
       if(!this.in_action) return
       if(!this.next_commandes){
-        link = this.url+`/commande/?kiosk=${this.kiosk_id}`;
+        let last_dates = Array.from(Object.values(this.$store.state.commandes), x => {
+          return new Date(x.updated_at).getTime()
+        })
+        let max_time = new Date(Math.max(...last_dates)).toISOString()
+        link = this.url+`/commande/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
       } else {
         link = this.next_commandes
       }
@@ -474,7 +478,7 @@ export default {
           this.getPayments()
         }
       }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.getCommandes)
+        this.displayErrorOrRefreshToken(error, this.getCommandes, this.getPayments)
       });
     },
     getPayments(){
@@ -482,7 +486,11 @@ export default {
       this.receiving_payments = true
       if(!this.in_action) return
       if(!this.next_payments){
-        link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}`;
+        let last_dates = Array.from(Object.values(this.$store.state.payments), x => {
+          return new Date(x.updated_at).getTime()
+        })
+        let max_time = new Date(Math.max(...last_dates)).toISOString()
+        link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
       } else {
         link = this.next_payments
       }
@@ -498,7 +506,7 @@ export default {
           this.getStocks()
         }
       }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.getPayments)
+        this.displayErrorOrRefreshToken(error, this.getPayments, this.getStocks)
       });
     },
     getStocks(){
@@ -506,7 +514,11 @@ export default {
       this.receiving_stocks = true
       if(!this.in_action) return
       if(!this.next_stocks){
-        link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
+        let last_dates = Array.from(Object.values(this.$store.state.stocks), x => {
+          return new Date(x.updated_at).getTime()
+        })
+        let max_time = new Date(Math.max(...last_dates)).toISOString()
+        link = this.url+`/stock/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
       } else {
         link = this.next_stocks
       }
@@ -522,7 +534,7 @@ export default {
           this.getPertes()
         }
       }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.getStocks)
+        this.displayErrorOrRefreshToken(error, this.getStocks, this.getPertes)
       });
     },
     getPertes(){
@@ -530,7 +542,11 @@ export default {
       this.receiving_pertes = true
       if(!this.in_action) return
       if(!this.next_pertes){
-        link = this.url+`/perte/?kiosk=${this.kiosk_id}`;
+        let last_dates = Array.from(Object.values(this.$store.state.pertes), x => {
+          return new Date(x.updated_at).getTime()
+        })
+        let max_time = new Date(Math.max(...last_dates)).toISOString()
+        link = this.url+`/perte/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
       } else {
         link = this.next_pertes
       }
@@ -546,7 +562,7 @@ export default {
           this.getProduits()
         }
       }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.getPertes)
+        this.displayErrorOrRefreshToken(error, this.getPertes, this.getProduits)
       });
     },
     getProduits(){
@@ -554,7 +570,11 @@ export default {
       this.receiving_produits = true
       if(!this.in_action) return
       if(!this.next_produits){
-        link = this.url+`/produit/?kiosk=${this.kiosk_id}`;
+        let last_dates = Array.from(Object.values(this.$store.state.produits), x => {
+          return new Date(x.updated_at).getTime()
+        })
+        let max_time = new Date(Math.max(...last_dates)).toISOString()
+        link = this.url+`/produit/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
       } else {
         link = this.next_produits
       }
