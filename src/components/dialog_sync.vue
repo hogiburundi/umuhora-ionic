@@ -82,6 +82,10 @@
         <div class="key">reception produits</div>
         <div>{{ count_produits }}</div>
       </div>
+      <div class="line" :class="{'active':receiving_clients}">
+        <div class="key">reception clients</div>
+        <div>{{ count_clients }}</div>
+      </div>
       <ion-col class="options">
         <ion-button fill=clear color="medium" @click="stopper">
           ANULLER
@@ -109,16 +113,17 @@ export default {
       valid_pertes_count: 0, deleted_commandes_count: 0, deleted_stocks_count: 0,
       deleted_pertes_count: 0, created_commandes_count: 0, created_payments_count: 0,
       created_stocks_count: 0, created_pertes_count: 0, created_produits_count: 0,
-      count_commandes: 0, count_payments: 0,
+      count_commandes: 0, count_payments: 0, count_clients: 0,
 
       next_commandes: null, next_payments: null, next_stocks: null,
-      next_pertes: null, next_produits: null,
+      next_pertes: null, next_produits: null, next_client:null,
 
       validating_pertes: false,validating_stocks: false,deleting_commandes: false,
       deleting_stocks: false,deleting_pertes: false,receiving_commandes: false,
       receiving_payments: false,receiving_stocks: false,receiving_pertes: false,
-      receiving_produits: false,sending_commandes: false,sending_payments: false,
-      sending_stocks: false,sending_pertes: false,sending_produits: false,
+      receiving_produits: false, receiving_clients: false,sending_commandes: false,
+      sending_payments: false, sending_stocks: false,sending_pertes: false,
+      sending_produits: false,
 
       valid_pertes:new Set(),  valid_stocks:new Set(), deleted_commandes:new Set(),
       deleted_stocks:new Set(), deleted_pertes:new Set(),
@@ -145,6 +150,7 @@ export default {
         this.created_produits_count= 0
         this.count_commandes= 0
         this.count_payments= 0
+        this.count_clients= 0
         
         this.validating_pertes= false
         this.validating_stocks= false
@@ -153,6 +159,7 @@ export default {
         this.deleting_pertes= false
         this.receiving_commandes= false
         this.receiving_payments= false
+        this.receiving_clients= false
         this.receiving_stocks= false
         this.receiving_pertes= false
         this.receiving_produits= false
@@ -458,11 +465,16 @@ export default {
       this.receiving_commandes = true
       if(!this.in_action) return
       if(!this.next_commandes){
-        let last_dates = Array.from(Object.values(this.$store.state.commandes), x => {
-          return new Date(x.updated_at).getTime()
-        })
-        let max_time = new Date(Math.max(...last_dates)).toISOString()
-        link = this.url+`/commande/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        let commandes = Object.values(this.$store.state.commandes)
+        if(commandes.length > 0){
+          let last_dates = Array.from(commandes, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
+          link = this.url+`/commande/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        } else {
+          link = this.url+`/commande/?kiosk=${this.kiosk_id}`;
+        }
       } else {
         link = this.next_commandes
       }
@@ -486,11 +498,16 @@ export default {
       this.receiving_payments = true
       if(!this.in_action) return
       if(!this.next_payments){
-        let last_dates = Array.from(Object.values(this.$store.state.payments), x => {
-          return new Date(x.updated_at).getTime()
-        })
-        let max_time = new Date(Math.max(...last_dates)).toISOString()
-        link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        let payments = Object.values(this.$store.state.payments)
+        if(payments.length > 0){
+          let last_dates = Array.from(payments, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
+          link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        } else {
+          link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}`;
+        }
       } else {
         link = this.next_payments
       }
@@ -514,11 +531,16 @@ export default {
       this.receiving_stocks = true
       if(!this.in_action) return
       if(!this.next_stocks){
-        let last_dates = Array.from(Object.values(this.$store.state.stocks), x => {
-          return new Date(x.updated_at).getTime()
-        })
-        let max_time = new Date(Math.max(...last_dates)).toISOString()
-        link = this.url+`/stock/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        let stocks = Object.values(this.$store.state.stocks)
+        if(stocks.length > 0){
+          let last_dates = Array.from(stocks, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
+          link = this.url+`/stock/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        } else {
+          link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
+        }
       } else {
         link = this.next_stocks
       }
@@ -542,11 +564,16 @@ export default {
       this.receiving_pertes = true
       if(!this.in_action) return
       if(!this.next_pertes){
-        let last_dates = Array.from(Object.values(this.$store.state.pertes), x => {
-          return new Date(x.updated_at).getTime()
-        })
-        let max_time = new Date(Math.max(...last_dates)).toISOString()
-        link = this.url+`/perte/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        let pertes = Object.values(this.$store.state.pertes)
+        if(pertes.length > 0){
+          let last_dates = Array.from(pertes, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
+          link = this.url+`/perte/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        } else {
+          link = this.url+`/perte/?kiosk=${this.kiosk_id}`;
+        }
       } else {
         link = this.next_pertes
       }
@@ -570,11 +597,16 @@ export default {
       this.receiving_produits = true
       if(!this.in_action) return
       if(!this.next_produits){
-        let last_dates = Array.from(Object.values(this.$store.state.produits), x => {
-          return new Date(x.updated_at).getTime()
-        })
-        let max_time = new Date(Math.max(...last_dates)).toISOString()
-        link = this.url+`/produit/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        let produits = Object.values(this.$store.state.produits)
+        if(produits.length > 0){
+          let last_dates = Array.from(produits, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
+          link = this.url+`/produit/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        } else {
+          link = this.url+`/produit/?kiosk=${this.kiosk_id}`;
+        }
       } else {
         link = this.next_produits
       }
@@ -587,10 +619,47 @@ export default {
           this.getProduits()
         } else {
           this.next_produits = null
+          this.getClients()
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.getProduits, this.getClients)
+      });
+    },
+    getClients(){
+      let link;
+      this.receiving_clients = true
+      if(!this.in_action) return
+      if(!this.next_clients){
+        
+        let clients = Object.values(this.$store.state.clients).filter(x => !!x.updated_at)
+        this.$store.state.clients = {}
+        clients.forEach(x => this.$store.state.clients[x.id]=x)
+
+        if(clients.length > 0){
+          let last_dates = Array.from(clients, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
+          link = this.url+`/client/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        } else {
+          link = this.url+`/client/?kiosk=${this.kiosk_id}`;
+        }
+      } else {
+        link = this.next_clients
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        response.data.results.forEach(x => this.$store.state.clients[x.id]=x)
+        this.count_clients += response.data.results.length
+        if(!!response.data.next){
+          this.next_clients = response.data.next
+          this.getClients()
+        } else {
+          this.next_clients = null
           this.in_action = false
         }
       }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.getProduits)
+        this.displayErrorOrRefreshToken(error, this.getClients)
       });
     },
   }
