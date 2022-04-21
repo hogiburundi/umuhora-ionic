@@ -14,17 +14,22 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      produits:[]
+      produits:[], produit_chunk:[], last:21
     }
   },
   watch:{
     "$store.state.produits":{
       deep:true,
       handler(new_val){
+        this.last = 21
         this.produits = this.getCurrentProduit()
       }
     },
+    produits(new_val){
+      this.produit_chunk = new_val.slice(0, this.last)
+    },
     "$store.state.home_keyword"(new_val){
+      this.last = 21
       if(this.$route.path != "/home/vente") return
       this.produits = this.getCurrentProduit().filter(x => {
         return x.quantite>0 && x.nom.toLowerCase().includes(new_val)
@@ -43,15 +48,15 @@ export default {
     }
   },
   mounted(){
-    console.log('VENTE MOUNTED')
     if(this.produits.length == 0){
-      console.log('VENTE RELOADING')
       this.produits = this.getCurrentProduit()
-      console.log('VENTE RELOADED')
+      // window.onscroll = () => {
+      //   let bottom = document.documentElement.scrollTop + window.innerHeight == document.documentElement.offsetHeight;
+      //   if (bottomOfWindow) {
+      //     this.produit_chunk.push(this.produit_chunk.length, this.produit_chunk.length+this.last)
+      //   }
+      // };
     }
-  },
-  activated(){
-    console.log('VENTE ACTIVATED')
   }
 }
 </script>
