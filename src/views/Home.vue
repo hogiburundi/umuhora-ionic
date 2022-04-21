@@ -56,7 +56,9 @@
       </ion-popover>
     </ion-header>
     <ion-content>
-      <ion-router-outlet/>
+      <keep-alive>
+        <ion-router-outlet :key="$route.fullPath"/>
+      </keep-alive>
     </ion-content>
     <ion-footer>
       <ion-tab-bar slot="bottom">

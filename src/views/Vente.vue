@@ -1,9 +1,11 @@
 <template>
   <ion-page>
     <ion-content>
-      <ion-col>
-        <VenteItem v-for="item in produits" :item="item"/>
-      </ion-col>
+      <keep-alive>
+        <ion-col>
+          <VenteItem v-for="item in produits" :item="item" :key="item.id"/>
+        </ion-col>
+      </keep-alive>
     </ion-content>
   </ion-page>
 </template>
@@ -32,6 +34,7 @@ export default {
   components:{VenteItem},
   methods:{
     getCurrentProduit(){
+      console.log('LOADING VENTE')
       if(!this.getActiveKiosk()) return []
       let c_k_id = this.getActiveKiosk().id
       return Object.values(this.$store.state.produits).filter(x => {
@@ -40,7 +43,15 @@ export default {
     }
   },
   mounted(){
-    this.produits = this.getCurrentProduit()
+    console.log('VENTE MOUNTED')
+    if(this.produits.length == 0){
+      console.log('VENTE RELOADING')
+      this.produits = this.getCurrentProduit()
+      console.log('VENTE RELOADED')
+    }
+  },
+  activated(){
+    console.log('VENTE ACTIVATED')
   }
 }
 </script>

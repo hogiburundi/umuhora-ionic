@@ -2,7 +2,9 @@
   <ion-app>
     <div v-if="!!active_user">
       <KioskChooser :active="must_choose_kiosk"/>
-      <ion-router-outlet id="main"/>
+      <keep-alive>
+        <ion-router-outlet id="main"/>
+      </keep-alive>
       <ion-menu side="start" class="drawer-layout" content-id="main">
       <div class="menu-content">
         <div class="session-info">

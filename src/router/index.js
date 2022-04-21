@@ -25,7 +25,7 @@ const routes = [
       { path: "vente", component: Vente},
       { path: "stock", component: Stock},
       { path: "stats", component: Stats}
-    ]
+    ],
   },
   { path: '/commande', name: 'commande', component: Commande},
   { path: '/clients', name: 'clients', component: Clientele},

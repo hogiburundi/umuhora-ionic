@@ -5,7 +5,7 @@
         Ajouter un produit
       </ion-button>
       <StockItem v-for="item in produits" :item="item"
-        @edit="editStock(item)" @buy="makeAchat(item)"/>
+        @edit="editStock(item)" @buy="makeAchat(item)" :key="item.id"/>
     </ion-content>
   </ion-page>
 </template>
@@ -47,6 +47,7 @@ export default {
       this.$store.state.dialog_achat_shown = true
     },
     getCurrentProduit(){
+      console.log('LOADING STOCK')
       let c_k_id = this.getActiveKiosk().id
       return Object.values(this.$store.state.produits).filter(x => {
         return x.kiosk == c_k_id
@@ -54,8 +55,15 @@ export default {
     }
   },
   mounted(){
-    this.produits = this.getCurrentProduit()
+    console.log('STOCK MOUNTED')
+    if(this.produits.length==0){
+      console.log('STOCK RELOADED')
+      this.produits = this.getCurrentProduit()
+    }
   },
+  activated(){
+    console.log('STOCK ACTIVATED')
+  }
 }
 </script>
 <style scoped>
