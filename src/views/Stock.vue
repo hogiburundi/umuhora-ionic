@@ -1,10 +1,10 @@
 <template>
   <ion-page>
-    <ion-content fullscreen=true>
+    <ion-content fullscreen=true  overflow-scroll="false">
       <ion-button style="margin: 5px 10px;" size=block @click="createProduit">
         Ajouter un produit
       </ion-button>
-      <StockItem v-for="item in produits" :item="item"
+      <StockItem v-for="item in produits.slice(0, 21)" :item="item"
         @edit="editStock(item)" @buy="makeAchat(item)" :key="item.id"/>
     </ion-content>
   </ion-page>

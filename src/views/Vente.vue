@@ -2,8 +2,8 @@
   <ion-page>
     <ion-content>
       <keep-alive>
-        <ion-col>
-          <VenteItem v-for="item in produits" :item="item" :key="item.id"/>
+        <ion-col overflow-scroll="false">
+          <VenteItem v-for="item in produits.slice(0, 21)" :item="item" :key="item.id"/>
         </ion-col>
       </keep-alive>
     </ion-content>
