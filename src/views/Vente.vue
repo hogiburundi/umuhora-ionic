@@ -1,11 +1,9 @@
 <template>
   <ion-page>
     <ion-content id="ventes_parent">
-      <keep-alive>
-        <ion-col id="ventes">
-          <VenteItem v-for="item in produit_chunk" :item="item" :key="item.id"/>
-        </ion-col>
-      </keep-alive>
+      <ion-col id="ventes" @scroll="e => loadMore(e)">
+        <VenteItem v-for="item in produit_chunk" :item="item" :key="item.id"/>
+      </ion-col>
     </ion-content>
   </ion-page>
 </template>
@@ -45,26 +43,26 @@ export default {
       return Object.values(this.$store.state.produits).filter(x => {
         return x.quantite > 0 && x.kiosk == c_k_id
       })
+    },
+    loadMore(event){
+      let div_ventes = event.target
+      let div_ventes_parent = document.getElementById("ventes_parent")
+      let size_ventes = div_ventes.scrollTop
+      let size_ventes_parent = div_ventes_parent.clientHeight
+      let size_total = div_ventes.scrollHeight
+      this.load_more = size_ventes + size_ventes_parent == size_total;
+
+      if(this.load_more) {
+        this.produit_chunk.push(
+          ...this.produits.slice(this.produit_chunk.length, this.produit_chunk.length+this.last)
+        )
+        this.load_more = false
+      }
     }
   },
   mounted(){
     if(this.produits.length == 0){
       this.produits = this.getCurrentProduit()
-      let div_ventes = document.getElementById("ventes")
-      let div_ventes_parent = document.getElementById("ventes_parent")
-      div_ventes.onscroll = () => {
-        let size_ventes = div_ventes.scrollTop
-        let size_ventes_parent = div_ventes_parent.clientHeight
-        let size_total = div_ventes.scrollHeight
-        this.load_more = size_ventes + size_ventes_parent == size_total;
-
-        if(this.load_more) {
-          this.produit_chunk.push(
-            ...this.produits.slice(this.produit_chunk.length, this.produit_chunk.length+this.last)
-          )
-          this.load_more = false
-        }
-      };
     }
   }
 }

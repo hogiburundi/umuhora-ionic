@@ -1,11 +1,13 @@
 <template>
   <ion-page>
-    <ion-content fullscreen=true  overflow-scroll="false">
-      <ion-button style="margin: 5px 10px;" size=block @click="createProduit">
-        Ajouter un produit
-      </ion-button>
-      <StockItem v-for="item in produit_chunk" :item="item"
-        @edit="editStock(item)" @buy="makeAchat(item)" :key="item.id"/>
+    <ion-content id="stock_parent">
+      <ion-col id="stock" @scroll="loadMore">
+        <ion-button style="margin: 0 10px 5px 10px;" size=block @click="createProduit">
+          Ajouter un produit
+        </ion-button>
+        <StockItem v-for="item in produit_chunk" :item="item"
+          @edit="editStock(item)" @buy="makeAchat(item)" :key="item.id"/>
+      </ion-col>
     </ion-content>
   </ion-page>
 </template>
@@ -16,7 +18,7 @@ export default {
   components:{ StockItem },
   data(){
     return  {
-      produits:[], produit_chunk:[], last:21
+      produits:[], produit_chunk:[], last:21, load_more:false
     }
   },
   watch:{
@@ -57,24 +59,35 @@ export default {
       return Object.values(this.$store.state.produits).filter(x => {
         return x.kiosk == c_k_id
       })
+    },
+    loadMore(event){
+      let div_stock = document.getElementById("stock")
+      let div_stock_parent = document.getElementById("stock_parent")
+      let size_stock = div_stock.scrollTop
+      let size_stock_parent = div_stock_parent.clientHeight
+      let size_total = div_stock.scrollHeight
+
+      this.load_more = size_stock + size_stock_parent == size_total;
+
+      if(this.load_more) {
+        this.produit_chunk.push(
+          ...this.produits.slice(this.produit_chunk.length, this.produit_chunk.length+this.last)
+        )
+        this.load_more = false
+      };
     }
   },
   mounted(){
     if(this.produits.length==0){
       this.produits = this.getCurrentProduit()
-      window.onscroll = () => {
-        let bottom = document.documentElement.scrollTop + window.innerHeight == document.documentElement.offsetHeight;
-        if (bottomOfWindow) {
-          this.produit_chunk.push(this.produit_chunk.length, this.produit_chunk.length+this.last)
-        }
-      };
     }
   },
 }
 </script>
 <style scoped>
-ion-col{
-  max-height: 100%;
+#stock{
+  display: block;
+  height: 100%;
   overflow-y: auto;
 }
 </style>

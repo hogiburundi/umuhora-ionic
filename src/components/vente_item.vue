@@ -73,6 +73,7 @@ export default {
 }
 .name{
   flex-grow: 1;
+  word-break: break-all;
 }
 .qtt, .prix{
   font-size: .8em;

@@ -1,5 +1,5 @@
 <template>
-  <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
+  <div :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
     <div class="item">
       <div>{{ item.nom }}</div>
       <div class="inline">
@@ -21,7 +21,7 @@
         <ion-icon slot="icon-only" :src="getIcon('bagAdd')"/>
       </ion-button>
     </ion-list>
-  </ion-col>
+  </div>
 </template>
 
 <script >
