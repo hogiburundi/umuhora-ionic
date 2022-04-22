@@ -1,9 +1,9 @@
 <template>
   <ion-page>
-    <ion-content>
+    <ion-content id="ventes_parent">
       <keep-alive>
-        <ion-col overflow-scroll="false">
-          <VenteItem v-for="item in produits.slice(0, 21)" :item="item" :key="item.id"/>
+        <ion-col id="ventes">
+          <VenteItem v-for="item in produit_chunk" :item="item" :key="item.id"/>
         </ion-col>
       </keep-alive>
     </ion-content>
@@ -14,7 +14,7 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      produits:[], produit_chunk:[], last:21
+      produits:[], produit_chunk:[], last:21, load_more:false
     }
   },
   watch:{
@@ -50,12 +50,21 @@ export default {
   mounted(){
     if(this.produits.length == 0){
       this.produits = this.getCurrentProduit()
-      // window.onscroll = () => {
-      //   let bottom = document.documentElement.scrollTop + window.innerHeight == document.documentElement.offsetHeight;
-      //   if (bottomOfWindow) {
-      //     this.produit_chunk.push(this.produit_chunk.length, this.produit_chunk.length+this.last)
-      //   }
-      // };
+      let div_ventes = document.getElementById("ventes")
+      let div_ventes_parent = document.getElementById("ventes_parent")
+      div_ventes.onscroll = () => {
+        let size_ventes = div_ventes.scrollTop
+        let size_ventes_parent = div_ventes_parent.clientHeight
+        let size_total = div_ventes.scrollHeight
+        this.load_more = size_ventes + size_ventes_parent == size_total;
+
+        if(this.load_more) {
+          this.produit_chunk.push(
+            ...this.produits.slice(this.produit_chunk.length, this.produit_chunk.length+this.last)
+          )
+          this.load_more = false
+        }
+      };
     }
   }
 }

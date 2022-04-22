@@ -4,7 +4,7 @@
       <ion-button style="margin: 5px 10px;" size=block @click="createProduit">
         Ajouter un produit
       </ion-button>
-      <StockItem v-for="item in produits.slice(0, 21)" :item="item"
+      <StockItem v-for="item in produit_chunk" :item="item"
         @edit="editStock(item)" @buy="makeAchat(item)" :key="item.id"/>
     </ion-content>
   </ion-page>
@@ -62,12 +62,12 @@ export default {
   mounted(){
     if(this.produits.length==0){
       this.produits = this.getCurrentProduit()
-      // window.onscroll = () => {
-      //   let bottom = document.documentElement.scrollTop + window.innerHeight == document.documentElement.offsetHeight;
-      //   if (bottomOfWindow) {
-      //     this.produit_chunk.push(this.produit_chunk.length, this.produit_chunk.length+this.last)
-      //   }
-      // };
+      window.onscroll = () => {
+        let bottom = document.documentElement.scrollTop + window.innerHeight == document.documentElement.offsetHeight;
+        if (bottomOfWindow) {
+          this.produit_chunk.push(this.produit_chunk.length, this.produit_chunk.length+this.last)
+        }
+      };
     }
   },
 }
