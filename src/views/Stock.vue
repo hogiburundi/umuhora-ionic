@@ -27,7 +27,7 @@ export default {
       deep:true,
       handler(new_val){
         this.last = 21
-        this.produits = new_val.slice(0, this.last)
+        this.chunk = new_val.slice(0, this.last)
       }
     },
     "$store.state.home_keyword"(new_val){

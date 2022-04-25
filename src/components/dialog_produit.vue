@@ -82,6 +82,7 @@ export default {
         rapport: this.rapport,
         prix_vente: this.prix_vente,
         user_id: this.active_user.id,
+        quantite: 0,
         kiosk: this.getActiveKiosk().id,
         kiosk_id: this.getActiveKiosk().id
       }
