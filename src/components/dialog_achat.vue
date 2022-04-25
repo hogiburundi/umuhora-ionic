@@ -98,7 +98,8 @@ export default {
         user_id: this.active_user.id,
         kiosk_id: this.getActiveKiosk().id
       }
-      this.$store.state.stocks[id] = new_stock
+      this.$store.state.db_stocks[id] = new_stock
+      this.$store.state.stocks.unshift(new_stock)
       this.item.quantite = parseInt(this.item.quantite) + parseInt(this.qtt)
       this.close()
     },

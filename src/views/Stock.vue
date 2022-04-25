@@ -5,7 +5,7 @@
         <ion-button style="margin: 0 10px 5px 10px;" size=block @click="createProduit">
           Ajouter un produit
         </ion-button>
-        <StockItem v-for="item in produit_chunk" :item="item"
+        <StockItem v-for="item in chunk" :item="item"
           @edit="editStock(item)" @buy="makeAchat(item)" :key="item.id"/>
       </ion-col>
     </ion-content>
@@ -18,7 +18,8 @@ export default {
   components:{ StockItem },
   data(){
     return  {
-      produits:[], produit_chunk:[], last:21, load_more:false
+      chunk:this.$store.state.produits.slice(0, 21),
+      last:21, load_more:false
     }
   },
   watch:{
@@ -26,18 +27,15 @@ export default {
       deep:true,
       handler(new_val){
         this.last = 21
-        this.produits = this.getCurrentProduit()
+        this.produits = new_val.slice(0, this.last)
       }
-    },
-    produits(new_val){
-      this.produit_chunk = new_val.slice(0, this.last)
     },
     "$store.state.home_keyword"(new_val){
       this.last = 21
       if(this.$route.path != "/home/stock") return
-      this.produits = this.getCurrentProduit().filter(x => {
+      this.chunk = this.$store.state.produits.filter(x => {
         return x.nom.toLowerCase().includes(new_val)
-      })
+      }).slice(0, 21)
     }
   },
   methods:{
@@ -63,17 +61,14 @@ export default {
       this.load_more = size_stock + size_stock_parent == size_total;
 
       if(this.load_more) {
-        this.produit_chunk.push(
-          ...this.produits.slice(this.produit_chunk.length, this.produit_chunk.length+this.last)
+        this.chunk.push(
+          ...this.$store.state.produits.slice(this.chunk.length, this.chunk.length+this.last)
         )
         this.load_more = false
       };
     }
   },
   mounted(){
-    if(this.produits.length==0){
-      this.produits = this.getCurrentProduit()
-    }
   },
 }
 </script>

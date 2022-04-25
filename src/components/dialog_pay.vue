@@ -86,7 +86,8 @@ export default {
         user_id: this.active_user.id,
         kiosk_id: this.getActiveKiosk().id
       }
-      this.$store.state.payments[id] = data
+      this.$store.state.db_payments[id] = data
+      this.$store.state.payments.unshift(data)
       this.item.payee += this.payee
       this.close()
     }

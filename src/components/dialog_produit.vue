@@ -89,7 +89,8 @@ export default {
         let id = this.generateId()
         data.created = JSON.parse(JSON.stringify(data))
         data.id = id
-        this.$store.state.produits[id] = data
+        this.$store.state.db_produits[id] = data
+        this.$store.state.produits.unshift(data)
       } else {
         for(let key of Object.keys(data)){
           this.item[key] = data[key]

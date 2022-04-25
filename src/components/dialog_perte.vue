@@ -70,7 +70,8 @@ export default {
         user_id: this.active_user.id,
         kiosk_id: this.getActiveKiosk().id
       }
-      this.$store.state.pertes[id] = data
+      this.$store.state.db_pertes[id] = data
+      this.$store.state.pertes.unshift(data)
       this.item.quantite_actuelle -= this.qtt
       this.close()
     }

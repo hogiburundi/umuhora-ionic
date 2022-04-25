@@ -2,7 +2,7 @@
   <ion-page>
     <ion-content id="ventes_parent">
       <ion-col id="ventes" @scroll="e => loadMore(e)">
-        <VenteItem v-for="item in produit_chunk" :item="item" :key="item.id"/>
+        <VenteItem v-for="item in chunk" :item="item" :key="item.id"/>
       </ion-col>
     </ion-content>
   </ion-page>
@@ -12,26 +12,24 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      produits:[], produit_chunk:[], last:21, load_more:false
+      chunk:this.$store.state.ibidandazwa.slice(0, 21),
+      last:21, load_more:false
     }
   },
   watch:{
-    "$store.state.produits":{
+    "$store.state.ibidandazwa":{
       deep:true,
       handler(new_val){
         this.last = 21
-        this.produits = this.getCurrentProduit()
+        this.chunk = new_val.slice(0, this.last)
       }
-    },
-    produits(new_val){
-      this.produit_chunk = new_val.slice(0, this.last)
     },
     "$store.state.home_keyword"(new_val){
       this.last = 21
       if(this.$route.path != "/home/vente") return
-      this.produits = this.getCurrentProduit().filter(x => {
-        return x.quantite>0 && x.nom.toLowerCase().includes(new_val)
-      })
+      this.chunk = this.$store.state.ibidandazwa.filter(x => {
+        return x.nom.toLowerCase().includes(new_val)
+      }).slice(0, this.last)
     }
   },
   components:{VenteItem},
@@ -45,17 +43,16 @@ export default {
       this.load_more = size_ventes + size_ventes_parent == size_total;
 
       if(this.load_more) {
-        this.produit_chunk.push(
-          ...this.produits.slice(this.produit_chunk.length, this.produit_chunk.length+this.last)
+        this.chunk.push(
+          ...this.this.$store.state.ibidandazwa.slice(
+            this.chunk.length, this.chunk.length+this.last
+          )
         )
         this.load_more = false
       }
     }
   },
   mounted(){
-    if(this.produits.length == 0){
-      this.produits = this.getCurrentProduit()
-    }
   }
 }
 </script>

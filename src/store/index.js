@@ -13,12 +13,12 @@ export default createStore({
     db_commandes:{}, commandes:[], deleted_commandes:new Set(),
     db_stocks:{}, stocks:[], deleted_stocks:new Set(), validated_stocks:new Set(),
     db_pertes:{}, pertes:[], deleted_pertes:new Set(), validated_pertes:new Set(),
-    db_produits:{}, produits:[],
+    db_produits:{}, produits:[], ibidandazwa:[],
     db_payments:{}, payments:[],
     db_clients:{}, clients:[],
     versements:[],
     stats_clients:[],
-    
+
     roles:["owner", "gerant", "vendeur"],
     active_kiosk:null,
     cart:new Object({
