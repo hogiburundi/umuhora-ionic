@@ -59,6 +59,12 @@ export default {
   },
   methods: {
     close(){
+      this.qtt = 0
+      this.prix_vente = 0
+      this.date = null
+      this.escompte = ""
+      this.du_shown = false,
+      this.du = null
       this.$emit("close")
     },
     choosedDu(event){
