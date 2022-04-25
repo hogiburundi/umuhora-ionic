@@ -105,9 +105,7 @@ export default {
       })
     },
     getCurrrentCommands(){
-      return Object.values(this.$store.state.commandes).sort((x, y) =>  {
-        return Math.abs(y.id) - Math.abs(x.id)
-      })
+      return Object.values(this.$store.state.commandes).filter(x => x.prix > x.payee)
     }
   },
   mounted(){

@@ -36,9 +36,6 @@ export default {
   },
   components:{VenteItem},
   methods:{
-    getCurrentProduit(){
-      return Object.values(this.$store.state.produits).filter(x => x.quantite > 0)
-    },
     loadMore(event){
       let div_ventes = event.target
       let div_ventes_parent = document.getElementById("ventes_parent")

@@ -241,24 +241,6 @@ export default {
       var db_produits = JSON.parse(localStorage.getItem('produits'))
       var db_clients = JSON.parse(localStorage.getItem('clients'))
 
-      if(db_commandes) this.$store.state.db_commandes = db_commandes
-      if(db_payments) this.$store.state.db_payments = db_payments
-      if(db_stocks) this.$store.state.db_stocks = db_stocks
-      if(db_pertes) this.$store.state.db_pertes = db_pertes
-      if(db_produits) this.$store.state.db_produits = db_produits
-      if(db_clients) this.$store.state.db_clients = db_clients
-
-//=====================================================================================
-
-      var commandes = JSON.parse(localStorage.getItem('commandes')).filter(x => {
-        return x.kiosk == active_kiosk.id
-      })
-      var payments = JSON.parse(localStorage.getItem('payments')).filter(x => !!commandes[x.commande])
-      var stocks = JSON.parse(localStorage.getItem('stocks')).filter(x => x.kiosk == active_kiosk.id)
-      var pertes = JSON.parse(localStorage.getItem('pertes')).filter(x => x.kiosk == active_kiosk.id)
-      var produits = JSON.parse(localStorage.getItem('produits')).filter(x => x.kiosk == active_kiosk.id)
-      var clients = JSON.parse(localStorage.getItem('clients')).filter(x => x.kiosk == active_kiosk.id)
-
       var deleted_commandes = new Set(JSON.parse(localStorage.getItem('deleted_commandes'))).filter(x => {
         return !!commandes[x]
       })
@@ -278,18 +260,48 @@ export default {
         return !!pertes[x]
       })
 
-      if(commandes) this.$store.state.commandes = commandes
-      if(payments) this.$store.state.payments = payments
-      if(stocks) this.$store.state.stocks = stocks
-      if(pertes) this.$store.state.pertes = pertes
-      if(produits) this.$store.state.produits = produits
-      if(clients) this.$store.state.clients = clients
+      if(db_commandes) this.$store.state.db_commandes = db_commandes
+      if(db_payments) this.$store.state.db_payments = db_payments
+      if(db_stocks) this.$store.state.db_stocks = db_stocks
+      if(db_pertes) this.$store.state.db_pertes = db_pertes
+      if(db_produits) this.$store.state.db_produits = db_produits
+      if(db_clients) this.$store.state.db_clients = db_clients
+
+//=====================================================================================
+
+      var commandes = Object.values(db_commandes).filter(x => {
+        return x.kiosk == active_kiosk.id
+      })
+      var payments = Object.values(db_payments).filter(x => !!commandes[x.commande])
+      var stocks = Object.values(db_stocks).filter(x => x.kiosk == active_kiosk.id)
+      var pertes = Object.values(db_pertes).filter(x => x.kiosk == active_kiosk.id)
+      var produits = Object.values(db_produits).filter(x => x.kiosk == active_kiosk.id)
+      var clients = Object.values(db_clients).filter(x => x.kiosk == active_kiosk.id)
+
+      if(commandes) this.$store.state.commandes = commandes.sort((x, y) =>  {
+        return Math.abs(y.id) - Math.abs(x.id)
+      })
+      if(payments) this.$store.state.payments = payments.sort((x, y) =>  {
+        return Math.abs(y.id) - Math.abs(x.id)
+      })
+      if(stocks) this.$store.state.stocks = stocks.sort((x, y) =>  {
+        return Math.abs(y.id) - Math.abs(x.id)
+      })
+      if(pertes) this.$store.state.pertes = pertes.sort((x, y) =>  {
+        return Math.abs(y.id) - Math.abs(x.id)
+      })
+      if(produits) this.$store.state.produits = produits.sort((x, y) =>  {
+        return Math.abs(y.id) - Math.abs(x.id)
+      })
+      if(clients) this.$store.state.clients = clients.sort((x, y) =>  {
+        return Math.abs(y.id) - Math.abs(x.id)
+      })
 
       if(deleted_commandes) this.$store.state.deleted_commandes = deleted_commandes
       if(deleted_payments) this.$store.state.deleted_payments = deleted_payments
       if(deleted_stocks) this.$store.state.deleted_stocks = deleted_stocks
-      if(validated_stocks) this.$store.state.validated_stocks = validated_stocks
       if(deleted_pertes) this.$store.state.deleted_pertes = deleted_pertes
+      if(validated_stocks) this.$store.state.validated_stocks = validated_stocks
       if(validated_pertes) this.$store.state.validated_pertes = validated_pertes
     }
   },

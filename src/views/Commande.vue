@@ -167,11 +167,6 @@ export default {
         CustomPlugins.launchPrint({"html":invoice.innerHTML})
       }
     },
-    getCurrrentCommands(){
-      return Object.values(this.$store.state.commandes).sort((x, y) =>  {
-        return Math.abs(y.id) - Math.abs(x.id)
-      })
-    }
   },
   mounted(){
     this.commandes = this.getCurrrentCommands()
