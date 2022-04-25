@@ -105,11 +105,9 @@ export default {
       })
     },
     getCurrrentCommands(){
-      console.log("filtering...")
-      let c_k_id = this.getActiveKiosk().id
-      return Object.values(this.$store.state.commandes).filter(x => {
-        return x.kiosk == c_k_id && x.prix > x.payee
-      }).sort((x, y) =>  Math.abs(y.id) - Math.abs(x.id))
+      return Object.values(this.$store.state.commandes).sort((x, y) =>  {
+        return Math.abs(y.id) - Math.abs(x.id)
+      })
     }
   },
   mounted(){

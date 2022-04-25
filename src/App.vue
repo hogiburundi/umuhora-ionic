@@ -219,19 +219,33 @@ export default {
   mounted(){
     var user = JSON.parse(localStorage.getItem('user'));
     var active_kiosk = JSON.parse(localStorage.getItem('active_kiosk'));
-    var commandes = JSON.parse(localStorage.getItem('commandes'))
-    var payments = JSON.parse(localStorage.getItem('payments'))
-    var stocks = JSON.parse(localStorage.getItem('stocks'))
-    var pertes = JSON.parse(localStorage.getItem('pertes'))
-    var produits = JSON.parse(localStorage.getItem('produits'))
-    var clients = JSON.parse(localStorage.getItem('clients'))
+    if(!active_kiosk) return
 
-    var deleted_commandes = new Set(JSON.parse(localStorage.getItem('deleted_commandes')))
-    var deleted_payments = new Set(JSON.parse(localStorage.getItem('deleted_payments')))
-    var deleted_stocks = new Set(JSON.parse(localStorage.getItem('deleted_stocks')))
-    var validated_stocks = new Set(JSON.parse(localStorage.getItem('validated_stocks')))
-    var deleted_pertes = new Set(JSON.parse(localStorage.getItem('deleted_pertes')))
-    var validated_pertes = new Set(JSON.parse(localStorage.getItem('validated_pertes')))
+    var commandes = JSON.parse(localStorage.getItem('commandes')).filter(x => x.kiosk == active_kiosk.id)
+    var payments = JSON.parse(localStorage.getItem('payments')).filter(x => !!commandes[x.commande])
+    var stocks = JSON.parse(localStorage.getItem('stocks')).filter(x => x.kiosk == active_kiosk.id)
+    var pertes = JSON.parse(localStorage.getItem('pertes')).filter(x => x.kiosk == active_kiosk.id)
+    var produits = JSON.parse(localStorage.getItem('produits')).filter(x => x.kiosk == active_kiosk.id)
+    var clients = JSON.parse(localStorage.getItem('clients')).filter(x => x.kiosk == active_kiosk.id)
+
+    var deleted_commandes = new Set(JSON.parse(localStorage.getItem('deleted_commandes'))).filter(x => {
+      return !!commandes[x]
+    })
+    var deleted_payments = new Set(JSON.parse(localStorage.getItem('deleted_payments'))).filter(x => {
+      return !!payments[x]
+    })
+    var deleted_stocks = new Set(JSON.parse(localStorage.getItem('deleted_stocks'))).filter(x => {
+      return !!stocks[x]
+    })
+    var deleted_pertes = new Set(JSON.parse(localStorage.getItem('deleted_pertes'))).filter(x => {
+      return !!pertes[x]
+    })
+    var validated_stocks = new Set(JSON.parse(localStorage.getItem('validated_stocks'))).filter(x => {
+      return !!stocks[x]
+    })
+    var validated_pertes = new Set(JSON.parse(localStorage.getItem('validated_pertes'))).filter(x => {
+      return !!pertes[x]
+    })
 
     if(user) this.$store.state.user = user;
     if(active_kiosk) this.$store.state.active_kiosk = active_kiosk;

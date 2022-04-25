@@ -37,12 +37,7 @@ export default {
   components:{VenteItem},
   methods:{
     getCurrentProduit(){
-      console.log('LOADING VENTE')
-      if(!this.getActiveKiosk()) return []
-      let c_k_id = this.getActiveKiosk().id
-      return Object.values(this.$store.state.produits).filter(x => {
-        return x.quantite > 0 && x.kiosk == c_k_id
-      })
+      return Object.values(this.$store.state.produits).filter(x => x.quantite > 0)
     },
     loadMore(event){
       let div_ventes = event.target

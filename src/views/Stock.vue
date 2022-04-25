@@ -54,11 +54,7 @@ export default {
       this.$store.state.dialog_achat_shown = true
     },
     getCurrentProduit(){
-      console.log('LOADING STOCK')
-      let c_k_id = this.getActiveKiosk().id
-      return Object.values(this.$store.state.produits).filter(x => {
-        return x.kiosk == c_k_id
-      })
+      return Object.values(this.$store.state.produits)
     },
     loadMore(event){
       let div_stock = document.getElementById("stock")
