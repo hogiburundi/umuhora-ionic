@@ -195,7 +195,7 @@ export default {
       });
     },
     generateId(){
-      let ids = Array.from(Object.values(this.$store.state.commandes), x => Math.abs(x.id))
+      let ids = Array.from(Object.keys(this.$store.state.commandes), x => Math.abs(x))
       return -1 * (Math.max(...ids)+ 1)
     }
   },

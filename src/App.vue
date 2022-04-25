@@ -91,6 +91,7 @@ export default {
     "$store.state.active_kiosk"(new_val){
       if(!!new_val){
         localStorage.setItem('active_kiosk', JSON.stringify(new_val));
+        this.loadData()
       } else {
         localStorage.removeItem('active_kiosk')
       }
@@ -216,53 +217,6 @@ export default {
       }
     },
   },
-  mounted(){
-    var user = JSON.parse(localStorage.getItem('user'));
-    var active_kiosk = JSON.parse(localStorage.getItem('active_kiosk'));
-    if(!active_kiosk) return
-
-    var commandes = JSON.parse(localStorage.getItem('commandes')).filter(x => x.kiosk == active_kiosk.id)
-    var payments = JSON.parse(localStorage.getItem('payments')).filter(x => !!commandes[x.commande])
-    var stocks = JSON.parse(localStorage.getItem('stocks')).filter(x => x.kiosk == active_kiosk.id)
-    var pertes = JSON.parse(localStorage.getItem('pertes')).filter(x => x.kiosk == active_kiosk.id)
-    var produits = JSON.parse(localStorage.getItem('produits')).filter(x => x.kiosk == active_kiosk.id)
-    var clients = JSON.parse(localStorage.getItem('clients')).filter(x => x.kiosk == active_kiosk.id)
-
-    var deleted_commandes = new Set(JSON.parse(localStorage.getItem('deleted_commandes'))).filter(x => {
-      return !!commandes[x]
-    })
-    var deleted_payments = new Set(JSON.parse(localStorage.getItem('deleted_payments'))).filter(x => {
-      return !!payments[x]
-    })
-    var deleted_stocks = new Set(JSON.parse(localStorage.getItem('deleted_stocks'))).filter(x => {
-      return !!stocks[x]
-    })
-    var deleted_pertes = new Set(JSON.parse(localStorage.getItem('deleted_pertes'))).filter(x => {
-      return !!pertes[x]
-    })
-    var validated_stocks = new Set(JSON.parse(localStorage.getItem('validated_stocks'))).filter(x => {
-      return !!stocks[x]
-    })
-    var validated_pertes = new Set(JSON.parse(localStorage.getItem('validated_pertes'))).filter(x => {
-      return !!pertes[x]
-    })
-
-    if(user) this.$store.state.user = user;
-    if(active_kiosk) this.$store.state.active_kiosk = active_kiosk;
-    if(commandes) this.$store.state.commandes = commandes
-    if(payments) this.$store.state.payments = payments
-    if(stocks) this.$store.state.stocks = stocks
-    if(pertes) this.$store.state.pertes = pertes
-    if(produits) this.$store.state.produits = produits
-    if(clients) this.$store.state.clients = clients
-
-    if(deleted_commandes) this.$store.state.deleted_commandes = deleted_commandes
-    if(deleted_payments) this.$store.state.deleted_payments = deleted_payments
-    if(deleted_stocks) this.$store.state.deleted_stocks = deleted_stocks
-    if(validated_stocks) this.$store.state.validated_stocks = validated_stocks
-    if(deleted_pertes) this.$store.state.deleted_pertes = deleted_pertes
-    if(validated_pertes) this.$store.state.validated_pertes = validated_pertes
-  },
   methods:{
     logout(){
       this.$store.state.active_kiosk = null
@@ -273,8 +227,81 @@ export default {
     },
     doThings(event){
       menuController.close();
+    },
+    loadData(){
+      let user = this.$store.state.user;
+      let active_kiosk = this.$store.state.active_kiosk;
+
+      if(!user || !active_kiosk) return
+
+      var db_commandes = JSON.parse(localStorage.getItem('commandes'))
+      var db_payments = JSON.parse(localStorage.getItem('payments'))
+      var db_stocks = JSON.parse(localStorage.getItem('stocks'))
+      var db_pertes = JSON.parse(localStorage.getItem('pertes'))
+      var db_produits = JSON.parse(localStorage.getItem('produits'))
+      var db_clients = JSON.parse(localStorage.getItem('clients'))
+
+      if(db_commandes) this.$store.state.db_commandes = db_commandes
+      if(db_payments) this.$store.state.db_payments = db_payments
+      if(db_stocks) this.$store.state.db_stocks = db_stocks
+      if(db_pertes) this.$store.state.db_pertes = db_pertes
+      if(db_produits) this.$store.state.db_produits = db_produits
+      if(db_clients) this.$store.state.db_clients = db_clients
+
+//=====================================================================================
+
+      var commandes = JSON.parse(localStorage.getItem('commandes')).filter(x => {
+        return x.kiosk == active_kiosk.id
+      })
+      var payments = JSON.parse(localStorage.getItem('payments')).filter(x => !!commandes[x.commande])
+      var stocks = JSON.parse(localStorage.getItem('stocks')).filter(x => x.kiosk == active_kiosk.id)
+      var pertes = JSON.parse(localStorage.getItem('pertes')).filter(x => x.kiosk == active_kiosk.id)
+      var produits = JSON.parse(localStorage.getItem('produits')).filter(x => x.kiosk == active_kiosk.id)
+      var clients = JSON.parse(localStorage.getItem('clients')).filter(x => x.kiosk == active_kiosk.id)
+
+      var deleted_commandes = new Set(JSON.parse(localStorage.getItem('deleted_commandes'))).filter(x => {
+        return !!commandes[x]
+      })
+      var deleted_payments = new Set(JSON.parse(localStorage.getItem('deleted_payments'))).filter(x => {
+        return !!payments[x]
+      })
+      var deleted_stocks = new Set(JSON.parse(localStorage.getItem('deleted_stocks'))).filter(x => {
+        return !!stocks[x]
+      })
+      var deleted_pertes = new Set(JSON.parse(localStorage.getItem('deleted_pertes'))).filter(x => {
+        return !!pertes[x]
+      })
+      var validated_stocks = new Set(JSON.parse(localStorage.getItem('validated_stocks'))).filter(x => {
+        return !!stocks[x]
+      })
+      var validated_pertes = new Set(JSON.parse(localStorage.getItem('validated_pertes'))).filter(x => {
+        return !!pertes[x]
+      })
+
+      if(commandes) this.$store.state.commandes = commandes
+      if(payments) this.$store.state.payments = payments
+      if(stocks) this.$store.state.stocks = stocks
+      if(pertes) this.$store.state.pertes = pertes
+      if(produits) this.$store.state.produits = produits
+      if(clients) this.$store.state.clients = clients
+
+      if(deleted_commandes) this.$store.state.deleted_commandes = deleted_commandes
+      if(deleted_payments) this.$store.state.deleted_payments = deleted_payments
+      if(deleted_stocks) this.$store.state.deleted_stocks = deleted_stocks
+      if(validated_stocks) this.$store.state.validated_stocks = validated_stocks
+      if(deleted_pertes) this.$store.state.deleted_pertes = deleted_pertes
+      if(validated_pertes) this.$store.state.validated_pertes = validated_pertes
     }
-  }
+  },
+  mounted(){
+    var user = JSON.parse(localStorage.getItem('user'));
+    var active_kiosk = JSON.parse(localStorage.getItem('active_kiosk'));
+
+    if(user) this.$store.state.user = user;
+    if(active_kiosk) this.$store.state.active_kiosk = active_kiosk;
+
+    if(!!active_kiosk) this.loadData()
+  },
 };
 </script>
 <style src="./style.css">
