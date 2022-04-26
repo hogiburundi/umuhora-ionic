@@ -91,7 +91,6 @@ export default {
     "$store.state.active_kiosk"(new_val){
       if(!!new_val){
         localStorage.setItem('active_kiosk', JSON.stringify(new_val));
-        this.loadData()
       } else {
         localStorage.removeItem('active_kiosk')
       }
@@ -141,6 +140,8 @@ export default {
       handler(new_val){
         if(new_val){
           localStorage.setItem("produits", JSON.stringify(new_val))
+          this.$store.state.produits = new_val
+          this.$store.state.ibidandazwa = new_val.filter(x => x.quantite > 0)
         }else{
           localStorage.removeItem("produits")
         }
@@ -234,64 +235,77 @@ export default {
 
       if(!user || !active_kiosk) return
 
-      var db_commandes = JSON.parse(localStorage.getItem('commandes'))
-      var db_payments = JSON.parse(localStorage.getItem('payments'))
-      var db_stocks = JSON.parse(localStorage.getItem('stocks'))
-      var db_pertes = JSON.parse(localStorage.getItem('pertes'))
-      var db_produits = JSON.parse(localStorage.getItem('produits'))
-      var db_clients = JSON.parse(localStorage.getItem('clients'))
-
-      var deleted_commandes = new Set(JSON.parse(localStorage.getItem('deleted_commandes')).filter(x => {
-        return !!commandes[x]
-      }))
-      var deleted_payments = new Set(JSON.parse(localStorage.getItem('deleted_payments')).filter(x => {
-        return !!payments[x]
-      }))
-      var deleted_stocks = new Set(JSON.parse(localStorage.getItem('deleted_stocks')).filter(x => {
-        return !!stocks[x]
-      }))
-      var deleted_pertes = new Set(JSON.parse(localStorage.getItem('deleted_pertes')).filter(x => {
-        return !!pertes[x]
-      }))
-      var validated_stocks = new Set(JSON.parse(localStorage.getItem('validated_stocks')).filter(x => {
-        return !!stocks[x]
-      }))
-      var validated_pertes = new Set(JSON.parse(localStorage.getItem('validated_pertes')).filter(x => {
-        return !!pertes[x]
-      }))
-
-      this.$store.state.db_commandes = db_commandes
-      this.$store.state.db_payments = db_payments
-      this.$store.state.db_stocks = db_stocks
-      this.$store.state.db_pertes = db_pertes
-      this.$store.state.db_produits = db_produits
-      this.$store.state.db_clients = db_clients
-
-//=====================================================================================
-
-      var commandes = Object.values(db_commandes).filter(x => {
-        return x.kiosk == active_kiosk.id
-      })
-      var payments = Object.values(db_payments).filter(x => !!commandes[x.commande])
-      var stocks = Object.values(db_stocks).filter(x => x.kiosk == active_kiosk.id)
-      var pertes = Object.values(db_pertes).filter(x => x.kiosk == active_kiosk.id)
-      var produits = Object.values(db_produits).filter(x => x.kiosk == active_kiosk.id)
-      var clients = Object.values(db_clients).filter(x => x.kiosk == active_kiosk.id)
-
-      this.$store.state.commandes = commandes.sort((x, y) => Math.abs(y.id) - Math.abs(x.id))
-      this.$store.state.payments = payments.sort((x, y) => Math.abs(y.id) - Math.abs(x.id))
-      this.$store.state.stocks = stocks.sort((x, y) => Math.abs(y.id) - Math.abs(x.id))
-      this.$store.state.pertes = pertes.sort((x, y) => Math.abs(y.id) - Math.abs(x.id))
-      this.$store.state.produits = produits
-      this.$store.state.ibidandazwa = produits.filter(x => x.quantite > 0)
-      this.$store.state.clients = clients.sort((x, y) => Math.abs(y.id) - Math.abs(x.id))
-
       this.$store.state.deleted_commandes = deleted_commandes
       this.$store.state.deleted_payments = deleted_payments
       this.$store.state.deleted_stocks = deleted_stocks
       this.$store.state.deleted_pertes = deleted_pertes
       this.$store.state.validated_stocks = validated_stocks
       this.$store.state.validated_pertes = validated_pertes
+    },
+    loadDB(){
+      const request = indexedDB.open("umuhora", 1);
+      const state = this.$store.state
+
+      request.onupgradeneeded = function() {
+        console.log("DB CREATION")
+        state.db = request.result;
+
+        let store = state.db.createObjectStore('commandes', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+        store.createIndex("by_date", "updated_at");
+        store.createIndex("by_offline", "offline");
+
+        store = state.db.createObjectStore('payments', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+        store.createIndex("by_date", "updated_at");
+        store.createIndex("by_offline", "offline");
+
+        store = state.db.createObjectStore('stocks', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+        store.createIndex("by_date", "updated_at");
+        store.createIndex("by_offline", "offline");
+        store.createIndex("by_quantite", "quantite_actuelle");
+
+        store = state.db.createObjectStore('pertes', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+        store.createIndex("by_date", "updated_at");
+        store.createIndex("by_offline", "offline");
+
+        store = state.db.createObjectStore('produits', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+        store.createIndex("by_date", "updated_at");
+        store.createIndex("by_offline", "offline");
+        store.createIndex("by_quantite", "quantite");
+        store.createIndex("by_nom", "nom", {unique: true});
+
+        store = state.db.createObjectStore('clients', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+        store.createIndex("by_date", "updated_at");
+        store.createIndex("by_offline", "offline");
+
+        store = state.db.createObjectStore('deleted_commandes', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+
+        store = state.db.createObjectStore('deleted_payments', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+
+        store = state.db.createObjectStore('deleted_stocks', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+
+        store = state.db.createObjectStore('deleted_pertes', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+
+        store = state.db.createObjectStore('validated_stocks', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+
+        store = state.db.createObjectStore('validated_pertes', {keyPath: "id"});
+        store.createIndex("by_kiosk", "kiosk");
+
+      };
+
+      request.onsuccess = function() {
+        this.$store.state.db = request.result;
+      };
     }
   },
   mounted(){
@@ -301,7 +315,7 @@ export default {
     if(user) this.$store.state.user = user;
     if(active_kiosk) this.$store.state.active_kiosk = active_kiosk;
 
-    if(!!active_kiosk) this.loadData()
+    this.loadDB()
   },
 };
 </script>

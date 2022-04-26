@@ -3,13 +3,13 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     user:null,
+    db:null,
     base_url: "https://urufatanamende.hogi.bi",
     // base_url: "http://127.0.0.1:8000",
     // base_url: "",
     api: "/api",
     dialog_produit_shown:false, dialog_achat_shown:false, active_stock_item:null,
     notifs:[], read_notif:new Set(),
-
     db_commandes:{}, commandes:[], deleted_commandes:new Set(),
     db_stocks:{}, stocks:[], deleted_stocks:new Set(), validated_stocks:new Set(),
     db_pertes:{}, pertes:[], deleted_pertes:new Set(), validated_pertes:new Set(),
