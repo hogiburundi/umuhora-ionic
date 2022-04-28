@@ -128,7 +128,7 @@ export default {
         store.createIndex("by_kiosk", "kiosk");
         store.createIndex("by_date", "updated_at");
         store.createIndex("by_offline", "offline");
-        store.createIndex("by_quantite", "quantite_actuelle");
+        // store.createIndex("by_quantite", "quantite_actuelle");
 
         store = db.createObjectStore('pertes', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
@@ -138,8 +138,8 @@ export default {
         store = db.createObjectStore('produits', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
         store.createIndex("by_date", "updated_at");
-        store.createIndex("by_offline", "offline");
-        store.createIndex("by_quantite", "quantite");
+        // store.createIndex("by_offline", "offline");
+        // store.createIndex("by_quantite", "quantite");
         store.createIndex("by_nom", "nom", {unique: true});
 
         store = db.createObjectStore('clients', {keyPath: "id"});
