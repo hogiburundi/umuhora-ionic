@@ -130,19 +130,6 @@ export default {
 
       created_commandes:[], created_payments:[], created_stocks:[],
       created_pertes:[], created_produits:[],
-
-      store_commandes: this.$store.state.db.objectStore('commandes'),
-      store_payments: this.$store.state.db.objectStore('payments'),
-      store_stocks: this.$store.state.db.objectStore('stocks'),
-      store_pertes: this.$store.state.db.objectStore('pertes'),
-      store_produits: this.$store.state.db.objectStore('produits'),
-      store_clients: this.$store.state.db.objectStore('clients'),
-      store_deleted_commandes: this.$store.state.db.objectStore('deleted_commandes'),
-      store_deleted_payments: this.$store.state.db.objectStore('deleted_payments'),
-      store_deleted_stocks: this.$store.state.db.objectStore('deleted_stocks'),
-      store_deleted_pertes: this.$store.state.db.objectStore('deleted_pertes'),
-      store_validated_stocks: this.$store.state.db.objectStore('validated_stocks'),
-      store_validated_pertes: this.$store.state.db.objectStore('validated_pertes'),
     }
   },
   watch:{
@@ -483,7 +470,7 @@ export default {
         } else if(!!max_time) {
           link = this.url+`/commande/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
-          this.dbGetLastDate(store_commandes, this.getCommandes)
+          this.dbGetLastDate("commandes", this.getCommandes)
           return
         }
       } else {
@@ -491,7 +478,11 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.commandes[x.id]=x)
+        this.dbWriteAll("commandes", response.data.results, () => {
+          if(this.$store.state.commandes.length == 0){
+            this.$store.state.commandes = response.data.results.slice(0, 21)
+          }
+        })
         this.count_commandes += response.data.results.length
         if(!!response.data.next){
           this.next_commandes = response.data.next

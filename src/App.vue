@@ -108,68 +108,63 @@ export default {
       menuController.close();
     },
     loadDB(){
-      const request = indexedDB.open("umuhora", 1);
-      const state = this.$store.state
+      const request = indexedDB.open(this.$store.state.db_name, 1);
 
       request.onupgradeneeded = function() {
         console.log("DB CREATION")
-        state.db = request.result;
+        const db = request.result;
 
-        let store = state.db.createObjectStore('commandes', {keyPath: "id"});
+        let store = db.createObjectStore('commandes', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
         store.createIndex("by_date", "updated_at");
         store.createIndex("by_offline", "offline");
 
-        store = state.db.createObjectStore('payments', {keyPath: "id"});
+        store = db.createObjectStore('payments', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
         store.createIndex("by_date", "updated_at");
         store.createIndex("by_offline", "offline");
 
-        store = state.db.createObjectStore('stocks', {keyPath: "id"});
+        store = db.createObjectStore('stocks', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
         store.createIndex("by_date", "updated_at");
         store.createIndex("by_offline", "offline");
         store.createIndex("by_quantite", "quantite_actuelle");
 
-        store = state.db.createObjectStore('pertes', {keyPath: "id"});
+        store = db.createObjectStore('pertes', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
         store.createIndex("by_date", "updated_at");
         store.createIndex("by_offline", "offline");
 
-        store = state.db.createObjectStore('produits', {keyPath: "id"});
+        store = db.createObjectStore('produits', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
         store.createIndex("by_date", "updated_at");
         store.createIndex("by_offline", "offline");
         store.createIndex("by_quantite", "quantite");
         store.createIndex("by_nom", "nom", {unique: true});
 
-        store = state.db.createObjectStore('clients', {keyPath: "id"});
+        store = db.createObjectStore('clients', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
         store.createIndex("by_date", "updated_at");
         store.createIndex("by_offline", "offline");
 
-        store = state.db.createObjectStore('deleted_commandes', {keyPath: "id"});
+        store = db.createObjectStore('deleted_commandes', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
 
-        store = state.db.createObjectStore('deleted_payments', {keyPath: "id"});
+        store = db.createObjectStore('deleted_payments', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
 
-        store = state.db.createObjectStore('deleted_stocks', {keyPath: "id"});
+        store = db.createObjectStore('deleted_stocks', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
 
-        store = state.db.createObjectStore('deleted_pertes', {keyPath: "id"});
+        store = db.createObjectStore('deleted_pertes', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
 
-        store = state.db.createObjectStore('validated_stocks', {keyPath: "id"});
+        store = db.createObjectStore('validated_stocks', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
 
-        store = state.db.createObjectStore('validated_pertes', {keyPath: "id"});
+        store = db.createObjectStore('validated_pertes', {keyPath: "id"});
         store.createIndex("by_kiosk", "kiosk");
 
-      };
-
-      request.onsuccess = function() {
-        this.$store.state.db = request.result;
       };
     }
   },
