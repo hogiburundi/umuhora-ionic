@@ -582,40 +582,38 @@ export default {
           this.getStocks()
         } else {
           this.next_stocks = null
-          this.in_action = false
           this.getPertes()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getStocks, this.getPertes)
       });
     },
-    getPertes(){
+    getPertes(max_time){
       let link;
       this.receiving_pertes = true
       if(!this.in_action) return
       if(!this.next_pertes){
-        let pertes = Object.values(this.$store.state.pertes)
-        if(pertes.length > 0){
-          let last_dates = Array.from(pertes, x => {
-            return new Date(x.updated_at).getTime()
-          })
-          let max_time = new Date(Math.max(...last_dates)).toISOString()
+        if(max_time == -1){
+          link = this.url+`/perte/?kiosk=${this.kiosk_id}`;
+        } else if(!!max_time) {
           link = this.url+`/perte/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
-          link = this.url+`/perte/?kiosk=${this.kiosk_id}`;
+          this.dbGetLastDate("pertes", this.getPertes)
+          return
         }
       } else {
         link = this.next_pertes
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.pertes[x.id]=x)
+        this.dbWriteAll("pertes", response.data.results)
         this.count_pertes += response.data.results.length
         if(!!response.data.next){
           this.next_pertes = response.data.next
           this.getPertes()
         } else {
           this.next_pertes = null
+          this.in_action = false
           this.getClients()
         }
       }).catch((error) => {
