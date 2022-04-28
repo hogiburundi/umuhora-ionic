@@ -112,20 +112,6 @@ app.mixin({
       str = str.toString();
       return str.replace( /(<([^>]+)>)/ig, '');
     },
-    getGroupName(id){
-      let group = this.$store.state.groups.find(x => x.id == id)
-      return !!group? group.name:"-";
-    },
-    getGroupId(name){
-      let group = this.$store.state.groups.find(x => {
-        return x.name.toLowerCase() == name.toLowerCase()
-      })
-      return !!group? group.id:-1;
-    },
-    userIs(personnel, group_id){
-      let groups = personnel.user.groups;
-      return groups.includes(group_id);
-    },
     datetime(x) {
       if(!x) return "-"
       let date = new Date(x);
@@ -173,6 +159,22 @@ app.mixin({
         }
       }
       return this.$store.state.active_kiosk
+    },
+    dbGetLastDate(store, callback){
+      const index = store.index("by_date");
+      const cursor = index.openCursor(null, 'prev');
+      cursor.onsuccess = (event) => {
+        if(event.target.result) {
+          console.log("last item: ", event.target.result.value);
+          callback(event.target.result.value.updated_at);
+        } else {
+          callback(-1)
+        }
+      };
+      cursor.onerror = (error) => {
+        console.error(error)
+        callback(-1)
+      }
     }
   },
   computed:{

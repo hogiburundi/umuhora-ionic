@@ -129,7 +129,20 @@ export default {
       deleted_stocks:new Set(), deleted_pertes:new Set(),
 
       created_commandes:[], created_payments:[], created_stocks:[],
-      created_pertes:[], created_produits:[]
+      created_pertes:[], created_produits:[],
+
+      store_commandes: this.$store.state.db.objectStore('commandes'),
+      store_payments: this.$store.state.db.objectStore('payments'),
+      store_stocks: this.$store.state.db.objectStore('stocks'),
+      store_pertes: this.$store.state.db.objectStore('pertes'),
+      store_produits: this.$store.state.db.objectStore('produits'),
+      store_clients: this.$store.state.db.objectStore('clients'),
+      store_deleted_commandes: this.$store.state.db.objectStore('deleted_commandes'),
+      store_deleted_payments: this.$store.state.db.objectStore('deleted_payments'),
+      store_deleted_stocks: this.$store.state.db.objectStore('deleted_stocks'),
+      store_deleted_pertes: this.$store.state.db.objectStore('deleted_pertes'),
+      store_validated_stocks: this.$store.state.db.objectStore('validated_stocks'),
+      store_validated_pertes: this.$store.state.db.objectStore('validated_pertes'),
     }
   },
   watch:{
@@ -460,20 +473,18 @@ export default {
         this.getCommandes()
       }
     },
-    getCommandes(){
+    getCommandes(max_time){
       let link;
       this.receiving_commandes = true
       if(!this.in_action) return
       if(!this.next_commandes){
-        let commandes = Object.values(this.$store.state.commandes)
-        if(commandes.length > 0){
-          let last_dates = Array.from(commandes, x => {
-            return new Date(x.updated_at).getTime()
-          })
-          let max_time = new Date(Math.max(...last_dates)).toISOString()
+        if(max_time == -1){
+          link = this.url+`/commande/?kiosk=${this.kiosk_id}`;
+        } else if(!!max_time) {
           link = this.url+`/commande/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
-          link = this.url+`/commande/?kiosk=${this.kiosk_id}`;
+          this.dbGetLastDate(store_commandes, this.getCommandes)
+          return
         }
       } else {
         link = this.next_commandes
@@ -487,7 +498,8 @@ export default {
           this.getCommandes()
         } else {
           this.next_commandes = null
-          this.getPayments()
+          this.in_action = false
+          // this.getPayments()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getCommandes, this.getPayments)
