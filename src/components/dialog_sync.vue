@@ -613,38 +613,31 @@ export default {
           this.getPertes()
         } else {
           this.next_pertes = null
-          this.in_action = false
           this.getClients()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getPertes, this.getClients)
       });
     },
-    getClients(){
+    getClients(max_time){
       let link;
       this.receiving_clients = true
       if(!this.in_action) return
       if(!this.next_clients){
-        
-        let clients = Object.values(this.$store.state.clients).filter(x => !!x.updated_at)
-        this.$store.state.clients = {}
-        clients.forEach(x => this.$store.state.clients[x.id]=x)
-
-        if(clients.length > 0){
-          let last_dates = Array.from(clients, x => {
-            return new Date(x.updated_at).getTime()
-          })
-          let max_time = new Date(Math.max(...last_dates)).toISOString()
+        if(max_time == -1){
+          link = this.url+`/client/?kiosk=${this.kiosk_id}`;
+        } else if(!!max_time) {
           link = this.url+`/client/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
-          link = this.url+`/client/?kiosk=${this.kiosk_id}`;
+          this.dbGetLastDate("clients", this.getClients)
+          return
         }
       } else {
         link = this.next_clients
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.clients[x.id]=x)
+        this.dbWriteAll("clients", response.data.results)
         this.count_clients += response.data.results.length
         if(!!response.data.next){
           this.next_clients = response.data.next
@@ -652,6 +645,7 @@ export default {
         } else {
           this.next_clients = null
           this.in_action = false
+          this.getClients()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getClients)
