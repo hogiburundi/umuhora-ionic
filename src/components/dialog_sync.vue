@@ -62,10 +62,6 @@
           {{ created_produits_count - created_produits.length }}/{{ created_produits_count }}
         </div>
       </div>
-      <div class="line" :class="{'active':receiving_produits}">
-        <div class="key">reception produits</div>
-        <div>{{ count_produits }}</div>
-      </div>
       <div class="line" :class="{'active':receiving_commandes}">
         <div class="key">reception commandes</div>
         <div>{{ count_commandes }}</div>
@@ -81,6 +77,10 @@
       <div class="line" :class="{'active':receiving_pertes}">
         <div class="key">reception pertes</div>
         <div>{{ count_pertes }}</div>
+      </div>
+      <div class="line" :class="{'active':receiving_produits}">
+        <div class="key">reception produits</div>
+        <div>{{ count_produits }}</div>
       </div>
       <div class="line" :class="{'active':receiving_clients}">
         <div class="key">reception clients</div>
@@ -129,7 +129,7 @@ export default {
       deleted_stocks:new Set(), deleted_pertes:new Set(),
 
       created_commandes:[], created_payments:[], created_stocks:[],
-      created_pertes:[], created_produits:[],
+      created_pertes:[], created_produits:[]
     }
   },
   watch:{
@@ -457,63 +457,30 @@ export default {
           }
         });
       } else {
-        this.getProduits()
+        this.getCommandes()
       }
     },
-    getProduits(max_time){
-      let link;
-      this.receiving_produits = true
-      if(!this.in_action) return
-      if(!this.next_produits){
-        if(max_time == -1){
-          link = this.url+`/produit/?kiosk=${this.kiosk_id}`;
-        } else if(!!max_time) {
-          link = this.url+`/produit/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
-        } else {
-          this.dbGetLastDate("produits", this.getProduits)
-          return
-        }
-      } else {
-        link = this.next_produits
-      }
-      axios.get(link, this.headers)
-      .then((response) => {
-        this.dbWriteAll("produits", response.data.results, () => {
-          if(this.$store.state.produits.length == 0){
-            this.$store.state.produits = response.data.results.slice(0, 21)
-          }
-        })
-        this.count_produits += response.data.results.length
-        if(!!response.data.next){
-          this.next_produits = response.data.next
-          this.getProduits()
-        } else {
-          this.next_produits = null
-          this.getCommandes()
-        }
-      }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.getProduits, this.getCommandes)
-      });
-    },
-    getCommandes(max_time){
+    getCommandes(){
       let link;
       this.receiving_commandes = true
       if(!this.in_action) return
       if(!this.next_commandes){
-        if(max_time == -1){
-          link = this.url+`/commande/?kiosk=${this.kiosk_id}`;
-        } else if(!!max_time) {
+        let commandes = Object.values(this.$store.state.commandes)
+        if(commandes.length > 0){
+          let last_dates = Array.from(commandes, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
           link = this.url+`/commande/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
-          this.dbGetLastDate("commandes", this.getCommandes)
-          return
+          link = this.url+`/commande/?kiosk=${this.kiosk_id}`;
         }
       } else {
         link = this.next_commandes
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.dbWriteAll("commandes", response.data.results)
+        response.data.results.forEach(x => this.$store.state.commandes[x.id]=x)
         this.count_commandes += response.data.results.length
         if(!!response.data.next){
           this.next_commandes = response.data.next
@@ -526,25 +493,27 @@ export default {
         this.displayErrorOrRefreshToken(error, this.getCommandes, this.getPayments)
       });
     },
-    getPayments(max_time){
+    getPayments(){
       let link;
       this.receiving_payments = true
       if(!this.in_action) return
       if(!this.next_payments){
-        if(max_time == -1){
-          link = this.url+`/payment/?kiosk=${this.kiosk_id}`;
-        } else if(!!max_time) {
-          link = this.url+`/payment/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        let payments = Object.values(this.$store.state.payments)
+        if(payments.length > 0){
+          let last_dates = Array.from(payments, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
+          link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
-          this.dbGetLastDate("payments", this.getPayments)
-          return
+          link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}`;
         }
       } else {
         link = this.next_payments
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.dbWriteAll("payments", response.data.results)
+        response.data.results.forEach(x => this.$store.state.payments[x.id]=x)
         this.count_payments += response.data.results.length
         if(!!response.data.next){
           this.next_payments = response.data.next
@@ -557,29 +526,31 @@ export default {
         this.displayErrorOrRefreshToken(error, this.getPayments, this.getStocks)
       });
     },
-    getStocks(max_time){
+    getStocks(){
       let link;
       this.receiving_stocks = true
       if(!this.in_action) return
       if(!this.next_stocks){
-        if(max_time == -1){
-          link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
-        } else if(!!max_time) {
+        let stocks = Object.values(this.$store.state.stocks)
+        if(stocks.length > 0){
+          let last_dates = Array.from(stocks, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
           link = this.url+`/stock/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
-          this.dbGetLastDate("stocks", this.getStocks)
-          return
+          link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
         }
       } else {
         link = this.next_stocks
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.dbWriteAll("stocks", response.data.results)
+        response.data.results.forEach(x => this.$store.state.stocks[x.id]=x)
         this.count_stocks += response.data.results.length
         if(!!response.data.next){
           this.next_stocks = response.data.next
-          this.getStocks()
+          this.getPertes()
         } else {
           this.next_stocks = null
           this.getPertes()
@@ -588,56 +559,97 @@ export default {
         this.displayErrorOrRefreshToken(error, this.getStocks, this.getPertes)
       });
     },
-    getPertes(max_time){
+    getPertes(){
       let link;
       this.receiving_pertes = true
       if(!this.in_action) return
       if(!this.next_pertes){
-        if(max_time == -1){
-          link = this.url+`/perte/?kiosk=${this.kiosk_id}`;
-        } else if(!!max_time) {
+        let pertes = Object.values(this.$store.state.pertes)
+        if(pertes.length > 0){
+          let last_dates = Array.from(pertes, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
           link = this.url+`/perte/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
-          this.dbGetLastDate("pertes", this.getPertes)
-          return
+          link = this.url+`/perte/?kiosk=${this.kiosk_id}`;
         }
       } else {
         link = this.next_pertes
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.dbWriteAll("pertes", response.data.results)
+        response.data.results.forEach(x => this.$store.state.pertes[x.id]=x)
         this.count_pertes += response.data.results.length
         if(!!response.data.next){
           this.next_pertes = response.data.next
           this.getPertes()
         } else {
           this.next_pertes = null
+          this.getProduits()
+        }
+      }).catch((error) => {
+        this.displayErrorOrRefreshToken(error, this.getPertes, this.getProduits)
+      });
+    },
+    getProduits(){
+      let link;
+      this.receiving_produits = true
+      if(!this.in_action) return
+      if(!this.next_produits){
+        let produits = Object.values(this.$store.state.produits)
+        if(produits.length > 0){
+          let last_dates = Array.from(produits, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
+          link = this.url+`/produit/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        } else {
+          link = this.url+`/produit/?kiosk=${this.kiosk_id}`;
+        }
+      } else {
+        link = this.next_produits
+      }
+      axios.get(link, this.headers)
+      .then((response) => {
+        response.data.results.forEach(x => this.$store.state.produits[x.id]=x)
+        this.count_produits += response.data.results.length
+        if(!!response.data.next){
+          this.next_produits = response.data.next
+          this.getProduits()
+        } else {
+          this.next_produits = null
           this.getClients()
         }
       }).catch((error) => {
-        this.displayErrorOrRefreshToken(error, this.getPertes, this.getClients)
+        this.displayErrorOrRefreshToken(error, this.getProduits, this.getClients)
       });
     },
-    getClients(max_time){
+    getClients(){
       let link;
       this.receiving_clients = true
       if(!this.in_action) return
       if(!this.next_clients){
-        if(max_time == -1){
-          link = this.url+`/client/?kiosk=${this.kiosk_id}`;
-        } else if(!!max_time) {
+        
+        let clients = Object.values(this.$store.state.clients).filter(x => !!x.updated_at)
+        this.$store.state.clients = {}
+        clients.forEach(x => this.$store.state.clients[x.id]=x)
+
+        if(clients.length > 0){
+          let last_dates = Array.from(clients, x => {
+            return new Date(x.updated_at).getTime()
+          })
+          let max_time = new Date(Math.max(...last_dates)).toISOString()
           link = this.url+`/client/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
-          this.dbGetLastDate("clients", this.getClients)
-          return
+          link = this.url+`/client/?kiosk=${this.kiosk_id}`;
         }
       } else {
         link = this.next_clients
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.dbWriteAll("clients", response.data.results)
+        response.data.results.forEach(x => this.$store.state.clients[x.id]=x)
         this.count_clients += response.data.results.length
         if(!!response.data.next){
           this.next_clients = response.data.next
@@ -645,7 +657,6 @@ export default {
         } else {
           this.next_clients = null
           this.in_action = false
-          this.getClients()
         }
       }).catch((error) => {
         this.displayErrorOrRefreshToken(error, this.getClients)

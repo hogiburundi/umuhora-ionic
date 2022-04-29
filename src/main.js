@@ -112,6 +112,20 @@ app.mixin({
       str = str.toString();
       return str.replace( /(<([^>]+)>)/ig, '');
     },
+    getGroupName(id){
+      let group = this.$store.state.groups.find(x => x.id == id)
+      return !!group? group.name:"-";
+    },
+    getGroupId(name){
+      let group = this.$store.state.groups.find(x => {
+        return x.name.toLowerCase() == name.toLowerCase()
+      })
+      return !!group? group.id:-1;
+    },
+    userIs(personnel, group_id){
+      let groups = personnel.user.groups;
+      return groups.includes(group_id);
+    },
     datetime(x) {
       if(!x) return "-"
       let date = new Date(x);
@@ -159,46 +173,6 @@ app.mixin({
         }
       }
       return this.$store.state.active_kiosk
-    },
-    dbGetLastDate(store_name, callback){
-      const request = indexedDB.open(this.$store.state.db_name, 1);
-      request.onsuccess = () => {
-        const db = request.result
-        const tx = db.transaction(store_name);
-        const store = tx.objectStore(store_name);
-        const index = store.index("by_date");
-        const cursor = index.openCursor(null, 'prev');
-        cursor.onsuccess = (event) => {
-          if(event.target.result) {
-            console.log("last item: ", event.target.result.value);
-            callback(event.target.result.value.updated_at);
-          } else {
-            callback(-1)
-          }
-        };
-        cursor.onerror = (error) => {
-          console.error(error)
-          callback(-1)
-        };
-        cursor.oncomplete = () => {
-          db.close()
-        }
-      }
-    },
-    dbWriteAll(store_name, data, callback){
-      const request = indexedDB.open(this.$store.state.db_name, 1);
-      request.onsuccess = () => {
-        const db = request.result
-        const tx = db.transaction(store_name, "readwrite");
-        const store = tx.objectStore(store_name);
-
-        for(let item of data){
-          store.put(item)
-        }
-      }
-      request.oncomplete = () => {
-        db.close()
-      }
     }
   },
   computed:{
