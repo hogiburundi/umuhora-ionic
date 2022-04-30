@@ -45,14 +45,7 @@ export default {
       axios.post(this.url+"/login/", 
         {"username": this.username, "password":this.password}
       ).then((response) => {
-        this.$store.state.user = {
-          "username": this.username,
-          "password":this.password
-        }
         this.$store.state.user = response.data
-        this.$store.state.alert = {
-          type:"success", message:"Bienvenue"
-        }
       }).catch((error) => {
         console.log(error)
         this.logs = error.response.data
