@@ -182,7 +182,7 @@ app.mixin({
       let db = JSON.parse(localStorage.getItem(storage))
       if(!db){
         db = []
-        localStorage.setItem(storage, "[]")
+        localStorage.setItem(storage, "{}")
       } else if(db.length > 0){
         db = db.filter(x => {
           return x.kiosk == kiosk_id || x.produit.kiosk == kiosk_id
@@ -201,7 +201,7 @@ app.mixin({
       let db = JSON.parse(localStorage.getItem(storage))
       if(!db){
         db = []
-        localStorage.setItem(storage, "[]")
+        localStorage.setItem(storage, "{}")
       } else if(db.length > 0){
         db = db.filter(x => {
           return x.kiosk == kiosk_id || x.produit.kiosk == kiosk_id
@@ -221,7 +221,7 @@ app.mixin({
       let db = JSON.parse(localStorage.getItem(storage))
       if(!db){
         db = []
-        localStorage.setItem(storage, "[]")
+        localStorage.setItem(storage, "{}")
       } else if(db.length > 0){
         results = db.filter(x => x.kiosk == this.getActiveKiosk().id && !!x.created)
       }
@@ -229,12 +229,10 @@ app.mixin({
     },
     saveInDB(storage, data){
       let db = JSON.parse(localStorage.getItem(storage))
-      if(!db){
-        localStorage.setItem(storage, JSON.stringify(data))
-      } else{
-        let results = new Set([...db, ...data])
-        localStorage.setItem(storage, JSON.stringify(Array.from(results)))
+      for(let item of data){
+        db[item.id.toString()] = item
       }
+      localStorage.setItem(storage, JSON.stringify(db))
       console.log(`${storage.toUpperCase()} SAVED`)
     }
   },
