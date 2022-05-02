@@ -96,16 +96,6 @@ export default {
         localStorage.removeItem('active_kiosk')
       }
     },
-    "$store.state.produits":{
-      deep:true,
-      handler(new_val){
-        if(new_val){
-          localStorage.setItem("produits", JSON.stringify(new_val))
-        }else{
-          localStorage.removeItem("produits")
-        }
-      }
-    },
   },
   methods:{
     logout(){

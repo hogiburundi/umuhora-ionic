@@ -159,11 +159,13 @@ app.mixin({
             console.error(error)
           })
         } else {
-          console.error(error)
+          this.makeToast('erreur', this.cleanString(error.response.data))
           if(typeof(elseCallback) == 'function'){
             elseCallback()
           }
         }
+      } else {
+        console.error(error)
       }
     },
     getActiveKiosk(){
@@ -174,19 +176,43 @@ app.mixin({
       }
       return this.$store.state.active_kiosk
     },
+    getMaxID(storage){
+      let kiosk_id = this.getActiveKiosk().id;
+      let id = null
+      let db = JSON.parse(localStorage.getItem(storage))
+      if(!db){
+        db = []
+        localStorage.setItem(storage, "[]")
+      } else if(db.length > 0){
+        db = db.filter(x => {
+          return x.kiosk == kiosk_id || x.produit.kiosk == kiosk_id
+        })
+        if(db.length == 0) return id
+        id = db[0].id
+        for(let item of db){
+          if(item.id > id) id = item.id
+        }
+      }
+      return id
+    },
     getMaxTime(storage){
+      let kiosk_id = this.getActiveKiosk().id;
       let date = null
       let db = JSON.parse(localStorage.getItem(storage))
       if(!db){
         db = []
-        localStorage[storage] = "[]"
+        localStorage.setItem(storage, "[]")
       } else if(db.length > 0){
-        db = db.filter(x => x.kiosk == this.getActiveKiosk().id)
+        db = db.filter(x => {
+          return x.kiosk == kiosk_id || x.produit.kiosk == kiosk_id
+        })
+        if(db.length == 0) return id
         date = new Date(db[0].updated_at)
         for(let item of db){
           let new_date = new Date(item.updated_at)
           if(new_date > date) date = new_date
         }
+        date = date.toISOString()
       }
       return date
     },
@@ -195,11 +221,21 @@ app.mixin({
       let db = JSON.parse(localStorage.getItem(storage))
       if(!db){
         db = []
-        localStorage[storage] = "[]"
+        localStorage.setItem(storage, "[]")
       } else if(db.length > 0){
         results = db.filter(x => x.kiosk == this.getActiveKiosk().id && !!x.created)
       }
       return results
+    },
+    saveInDB(storage, data){
+      let db = JSON.parse(localStorage.getItem(storage))
+      if(!db){
+        localStorage.setItem(storage, JSON.stringify(data))
+      } else{
+        let results = new Set([...db, ...data])
+        localStorage.setItem(storage, JSON.stringify(Array.from(results)))
+      }
+      console.log(`${storage.toUpperCase()} SAVED`)
     }
   },
   computed:{

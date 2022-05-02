@@ -132,7 +132,7 @@ export default {
       created_produits:[],
 
       fetched_commandes:[], fetched_payments:[], fetched_stocks:[], fetched_pertes:[],
-      fetched_produits:[]
+      fetched_produits:[], fetched_clients:[]
     }
   },
   watch:{
@@ -474,8 +474,8 @@ export default {
           this.getCommandes()
         } else {
           this.next_commandes = null
-          this.saveInDB("payments", this.payments)
-          this.payments = []
+          this.saveInDB("commandes", this.fetched_commandes)
+          this.commandes = []
           this.getPayments()
         }
       }).catch((error) => {
@@ -503,8 +503,8 @@ export default {
           this.getPayments()
         } else {
           this.next_payments = null
-          this.saveInDB("stocks", this.stocks)
-          this.stocks = []
+          this.saveInDB("payments", this.fetched_payments)
+          this.payments = []
           this.getStocks()
         }
       }).catch((error) => {
@@ -516,11 +516,11 @@ export default {
       this.receiving_stocks = true
       if(!this.in_action) return
       if(!this.next_stocks){
-        let max_time = this.getMaxTime("stocks")
-        if(max_time != null){
-          link = this.url+`/stock/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+        let id = this.getMaxID("stocks")
+        if(id != null){
+          link = this.url+`/stock/?produit__kiosk=${this.kiosk_id}&id__gt=${id}`;
         } else {
-          link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
+          link = this.url+`/stock/?produit__kiosk=${this.kiosk_id}`;
         }
       }
       axios.get(link, this.headers)
@@ -529,11 +529,11 @@ export default {
         this.count_stocks += response.data.results.length
         if(!!response.data.next){
           this.next_stocks = response.data.next
-          this.getPertes()
+          this.getStocks()
         } else {
           this.next_stocks = null
-          this.saveInDB("pertes", this.pertes)
-          this.pertes = []
+          this.saveInDB("stocks", this.fetched_stocks)
+          this.stocks = []
           this.getPertes()
         }
       }).catch((error) => {
@@ -561,8 +561,8 @@ export default {
           this.getPertes()
         } else {
           this.next_pertes = null
-          this.saveInDB("produits", this.produits)
-          this.produits = []
+          this.saveInDB("pertes", this.fetched_pertes)
+          this.pertes = []
           this.getProduits()
         }
       }).catch((error) => {
@@ -590,8 +590,8 @@ export default {
           this.getProduits()
         } else {
           this.next_produits = null
-          this.saveInDB("clients", this.clients)
-          this.clients = []
+          this.saveInDB("produits", this.fetched_produits)
+          this.produits = []
           this.getClients()
         }
       }).catch((error) => {
@@ -619,9 +619,12 @@ export default {
           this.getClients()
         } else {
           this.next_clients = null
+          this.saveInDB("clients", this.fetched_clients)
+          this.clients = []
           this.in_action = false
         }
       }).catch((error) => {
+        this.in_action = false
         this.displayErrorOrRefreshToken(error, this.getClients)
       });
     },
