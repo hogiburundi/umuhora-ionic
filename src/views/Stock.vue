@@ -52,6 +52,10 @@ export default {
       this.$store.state.active_stock_item = item
       this.$store.state.dialog_achat_shown = true
     },
+    loadData(){
+      let db = Object.values(JSON.parse(localStorage.produits))
+      let chunk = db.slice(0, 21)
+    },
     loadMore(event){
       let div_stock = document.getElementById("stock")
       let div_stock_parent = document.getElementById("stock_parent")
@@ -71,6 +75,9 @@ export default {
     }
   },
   mounted(){
+    if(this.chunk == 0){
+      this.loadData()
+    }
   },
 }
 </script>

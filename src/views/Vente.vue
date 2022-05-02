@@ -35,6 +35,10 @@ export default {
   },
   components:{VenteItem},
   methods:{
+    loadData(){
+      let db = Object.values(JSON.parse(localStorage.produits))
+      let chunk = db.filter(x => x.quantite > 0).slice(0, 21)
+    },
     loadMore(event){
       let div_ventes = event.target
       let div_ventes_parent = document.getElementById("ventes_parent")
@@ -53,6 +57,9 @@ export default {
     }
   },
   mounted(){
+    if(this.chunk.size == 0){
+      this.loadData()
+    }
   }
 }
 </script>
