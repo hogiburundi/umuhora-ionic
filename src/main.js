@@ -173,6 +173,22 @@ app.mixin({
         }
       }
       return this.$store.state.active_kiosk
+    },
+    getMaxTime(storage){
+      let date = null
+      let db = JSON.parse(localStorage[storage])
+      if(!db){
+        db = []
+        localStorage[storage] = "[]"
+      } else if(db.length > 0){
+        db = db.filter(x => x.kiosk == this.getActiveKiosk().id)
+        date = new Date(db[0].updated_at)
+        for(let item of db){
+          let new_date = new Date(item.updated_at)
+          if(new_date > date) date = new_date
+        }
+      }
+      return date
     }
   },
   computed:{
