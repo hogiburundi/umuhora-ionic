@@ -115,21 +115,24 @@ export default {
       created_stocks_count: 0, created_pertes_count: 0, created_produits_count: 0,
       count_commandes: 0, count_payments: 0, count_clients: 0,
 
-      next_commandes: null, next_payments: null, next_stocks: null,
-      next_pertes: null, next_produits: null, next_client:null,
+      next_commandes: null, next_payments: null, next_stocks: null, next_pertes: null,
+      next_produits: null, next_client:null,
 
-      validating_pertes: false,validating_stocks: false,deleting_commandes: false,
-      deleting_stocks: false,deleting_pertes: false,receiving_commandes: false,
-      receiving_payments: false,receiving_stocks: false,receiving_pertes: false,
-      receiving_produits: false, receiving_clients: false,sending_commandes: false,
-      sending_payments: false, sending_stocks: false,sending_pertes: false,
+      validating_pertes: false, validating_stocks: false, deleting_commandes: false,
+      deleting_stocks: false, deleting_pertes: false, receiving_commandes: false,
+      receiving_payments: false, receiving_stocks: false, receiving_pertes: false,
+      receiving_produits: false, receiving_clients: false, sending_commandes: false,
+      sending_payments: false, sending_stocks: false, sending_pertes: false,
       sending_produits: false,
 
-      valid_pertes:new Set(),  valid_stocks:new Set(), deleted_commandes:new Set(),
+      valid_pertes:new Set(), valid_stocks:new Set(), deleted_commandes:new Set(),
       deleted_stocks:new Set(), deleted_pertes:new Set(),
 
-      created_commandes:[], created_payments:[], created_stocks:[],
-      created_pertes:[], created_produits:[]
+      created_commandes:[], created_payments:[], created_stocks:[], created_pertes:[],
+      created_produits:[],
+
+      fetched_commandes:[], fetched_payments:[], fetched_stocks:[], fetched_pertes:[],
+      fetched_produits:[]
     }
   },
   watch:{
@@ -464,13 +467,15 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.commandes[x.id]=x)
+        this.fetched_commandes.push(...response.data.results)
         this.count_commandes += response.data.results.length
         if(!!response.data.next){
           this.next_commandes = response.data.next
           this.getCommandes()
         } else {
           this.next_commandes = null
+          this.saveInDB("payments", this.payments)
+          this.payments = []
           this.getPayments()
         }
       }).catch((error) => {
@@ -491,13 +496,15 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.payments[x.id]=x)
+        this.fetched_payments.push(...response.data.results)
         this.count_payments += response.data.results.length
         if(!!response.data.next){
           this.next_payments = response.data.next
           this.getPayments()
         } else {
           this.next_payments = null
+          this.saveInDB("stocks", this.stocks)
+          this.stocks = []
           this.getStocks()
         }
       }).catch((error) => {
@@ -518,13 +525,15 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.stocks[x.id]=x)
+        this.fetched_stocks.push(...response.data.results)
         this.count_stocks += response.data.results.length
         if(!!response.data.next){
           this.next_stocks = response.data.next
           this.getPertes()
         } else {
           this.next_stocks = null
+          this.saveInDB("pertes", this.pertes)
+          this.pertes = []
           this.getPertes()
         }
       }).catch((error) => {
@@ -545,13 +554,15 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.pertes[x.id]=x)
+        this.fetched_pertes.push(...response.data.results)
         this.count_pertes += response.data.results.length
         if(!!response.data.next){
           this.next_pertes = response.data.next
           this.getPertes()
         } else {
           this.next_pertes = null
+          this.saveInDB("produits", this.produits)
+          this.produits = []
           this.getProduits()
         }
       }).catch((error) => {
@@ -572,13 +583,15 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.produits[x.id]=x)
+        this.fetched_produits.push(...response.data.results)
         this.count_produits += response.data.results.length
         if(!!response.data.next){
           this.next_produits = response.data.next
           this.getProduits()
         } else {
           this.next_produits = null
+          this.saveInDB("clients", this.clients)
+          this.clients = []
           this.getClients()
         }
       }).catch((error) => {
@@ -599,7 +612,7 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        response.data.results.forEach(x => this.$store.state.clients[x.id]=x)
+        this.fetched_clients.push(...response.data.results)
         this.count_clients += response.data.results.length
         if(!!response.data.next){
           this.next_clients = response.data.next
