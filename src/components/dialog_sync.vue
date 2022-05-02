@@ -461,22 +461,16 @@ export default {
       }
     },
     getCommandes(){
-      let link;
+      let link = this.next_commandes;
       this.receiving_commandes = true
       if(!this.in_action) return
       if(!this.next_commandes){
-        let commandes = Object.values(this.$store.state.commandes)
-        if(commandes.length > 0){
-          let last_dates = Array.from(commandes, x => {
-            return new Date(x.updated_at).getTime()
-          })
-          let max_time = new Date(Math.max(...last_dates)).toISOString()
+        let max_time = this.getMaxTime("commandes")
+        if(max_time != null){
           link = this.url+`/commande/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
           link = this.url+`/commande/?kiosk=${this.kiosk_id}`;
         }
-      } else {
-        link = this.next_commandes
       }
       axios.get(link, this.headers)
       .then((response) => {
@@ -494,22 +488,16 @@ export default {
       });
     },
     getPayments(){
-      let link;
+      let link = this.next_payments;
       this.receiving_payments = true
       if(!this.in_action) return
       if(!this.next_payments){
-        let payments = Object.values(this.$store.state.payments)
-        if(payments.length > 0){
-          let last_dates = Array.from(payments, x => {
-            return new Date(x.updated_at).getTime()
-          })
-          let max_time = new Date(Math.max(...last_dates)).toISOString()
+        let max_time = this.getMaxTime("payments")
+        if(max_time != null){
           link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
           link = this.url+`/payment/?commande__kiosk=${this.kiosk_id}`;
         }
-      } else {
-        link = this.next_payments
       }
       axios.get(link, this.headers)
       .then((response) => {
@@ -527,22 +515,16 @@ export default {
       });
     },
     getStocks(){
-      let link;
+      let link = this.next_stocks;
       this.receiving_stocks = true
       if(!this.in_action) return
       if(!this.next_stocks){
-        let stocks = Object.values(this.$store.state.stocks)
-        if(stocks.length > 0){
-          let last_dates = Array.from(stocks, x => {
-            return new Date(x.updated_at).getTime()
-          })
-          let max_time = new Date(Math.max(...last_dates)).toISOString()
+        let max_time = this.getMaxTime("stocks")
+        if(max_time != null){
           link = this.url+`/stock/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
           link = this.url+`/stock/?kiosk=${this.kiosk_id}`;
         }
-      } else {
-        link = this.next_stocks
       }
       axios.get(link, this.headers)
       .then((response) => {
@@ -560,22 +542,16 @@ export default {
       });
     },
     getPertes(){
-      let link;
+      let link = this.next_pertes;
       this.receiving_pertes = true
       if(!this.in_action) return
       if(!this.next_pertes){
-        let pertes = Object.values(this.$store.state.pertes)
-        if(pertes.length > 0){
-          let last_dates = Array.from(pertes, x => {
-            return new Date(x.updated_at).getTime()
-          })
-          let max_time = new Date(Math.max(...last_dates)).toISOString()
+        let max_time = this.getMaxTime("pertes")
+        if(max_time != null){
           link = this.url+`/perte/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
           link = this.url+`/perte/?kiosk=${this.kiosk_id}`;
         }
-      } else {
-        link = this.next_pertes
       }
       axios.get(link, this.headers)
       .then((response) => {
@@ -593,22 +569,16 @@ export default {
       });
     },
     getProduits(){
-      let link;
+      let link = this.next_produits;
       this.receiving_produits = true
       if(!this.in_action) return
       if(!this.next_produits){
-        let produits = Object.values(this.$store.state.produits)
-        if(produits.length > 0){
-          let last_dates = Array.from(produits, x => {
-            return new Date(x.updated_at).getTime()
-          })
-          let max_time = new Date(Math.max(...last_dates)).toISOString()
+        let max_time = this.getMaxTime("produits")
+        if(max_time != null){
           link = this.url+`/produit/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
           link = this.url+`/produit/?kiosk=${this.kiosk_id}`;
         }
-      } else {
-        link = this.next_produits
       }
       axios.get(link, this.headers)
       .then((response) => {
@@ -626,26 +596,16 @@ export default {
       });
     },
     getClients(){
-      let link;
+      let link = this.next_clients;
       this.receiving_clients = true
       if(!this.in_action) return
       if(!this.next_clients){
-        
-        let clients = Object.values(this.$store.state.clients).filter(x => !!x.updated_at)
-        this.$store.state.clients = {}
-        clients.forEach(x => this.$store.state.clients[x.id]=x)
-
-        if(clients.length > 0){
-          let last_dates = Array.from(clients, x => {
-            return new Date(x.updated_at).getTime()
-          })
-          let max_time = new Date(Math.max(...last_dates)).toISOString()
+        let max_time = this.getMaxTime("clients")
+        if(max_time != null){
           link = this.url+`/client/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
         } else {
           link = this.url+`/client/?kiosk=${this.kiosk_id}`;
         }
-      } else {
-        link = this.next_clients
       }
       axios.get(link, this.headers)
       .then((response) => {
