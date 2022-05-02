@@ -176,7 +176,7 @@ app.mixin({
     },
     getMaxTime(storage){
       let date = null
-      let db = JSON.parse(localStorage[storage])
+      let db = JSON.parse(localStorage.getItem(storage))
       if(!db){
         db = []
         localStorage[storage] = "[]"
@@ -189,6 +189,17 @@ app.mixin({
         }
       }
       return date
+    },
+    getCreated(storage){
+      let results = []
+      let db = JSON.parse(localStorage.getItem(storage))
+      if(!db){
+        db = []
+        localStorage[storage] = "[]"
+      } else if(db.length > 0){
+        results = db.filter(x => x.kiosk == this.getActiveKiosk().id && !!x.created)
+      }
+      return results
     }
   },
   computed:{

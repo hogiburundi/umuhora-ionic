@@ -183,25 +183,15 @@ export default {
 
         let kiosk_id = this.getActiveKiosk().id
 
-        this.created_commandes = Object.values(this.$store.state.db_commandes).filter(x => {
-          return x.kiosk_id == kiosk_id && !!x.created
-        })
+        this.created_commandes = this.getCreated("commandes")
         this.created_commandes_count = this.created_commandes.length
-        this.created_payments = Object.values(this.$store.state.db_payments).filter(x => {
-          return x.kiosk_id == kiosk_id && !!x.created
-        })
+        this.created_payments = this.getCreated("payments")
         this.created_payments_count = this.created_payments.length
-        this.created_stocks = Object.values(this.$store.state.db_stocks).filter(x => {
-          return x.kiosk_id == kiosk_id && !!x.created
-        })
+        this.created_stocks = this.getCreated("stocks")
         this.created_stocks_count = this.created_stocks.length
-        this.created_pertes = Object.values(this.$store.state.db_pertes).filter(x => {
-          return x.kiosk_id == kiosk_id && !!x.created
-        })
+        this.created_pertes = this.getCreated("pertes")
         this.created_pertes_count = this.created_pertes.length
-        this.created_produits = Object.values(this.$store.state.db_produits).filter(x => {
-          return x.kiosk_id == kiosk_id && !!x.created
-        })
+        this.created_produits = this.getCreated("produits")
         this.created_produits_count = this.created_produits.length
       }
     }
