@@ -169,8 +169,8 @@ export default {
         this.sending_pertes= false
         this.sending_produits= false
 
-        this.valid_pertes = this.$store.state.validated_pertes
-        this.valid_stocks = this.$store.state.validated_stocks
+        this.valid_pertes = this.$store.state.valid_pertes
+        this.valid_stocks = this.$store.state.valid_stocks
         this.deleted_commandes = this.$store.state.deleted_commandes
         this.deleted_stocks = this.$store.state.deleted_stocks
         this.deleted_pertes = this.$store.state.deleted_pertes
@@ -183,23 +183,23 @@ export default {
 
         let kiosk_id = this.getActiveKiosk().id
 
-        this.created_commandes = Object.values(this.$store.state.commandes).filter(x => {
+        this.created_commandes = Object.values(this.$store.state.db_commandes).filter(x => {
           return x.kiosk_id == kiosk_id && !!x.created
         })
         this.created_commandes_count = this.created_commandes.length
-        this.created_payments = Object.values(this.$store.state.payments).filter(x => {
+        this.created_payments = Object.values(this.$store.state.db_payments).filter(x => {
           return x.kiosk_id == kiosk_id && !!x.created
         })
         this.created_payments_count = this.created_payments.length
-        this.created_stocks = Object.values(this.$store.state.stocks).filter(x => {
+        this.created_stocks = Object.values(this.$store.state.db_stocks).filter(x => {
           return x.kiosk_id == kiosk_id && !!x.created
         })
         this.created_stocks_count = this.created_stocks.length
-        this.created_pertes = Object.values(this.$store.state.pertes).filter(x => {
+        this.created_pertes = Object.values(this.$store.state.db_pertes).filter(x => {
           return x.kiosk_id == kiosk_id && !!x.created
         })
         this.created_pertes_count = this.created_pertes.length
-        this.created_produits = Object.values(this.$store.state.produits).filter(x => {
+        this.created_produits = Object.values(this.$store.state.db_produits).filter(x => {
           return x.kiosk_id == kiosk_id && !!x.created
         })
         this.created_produits_count = this.created_produits.length

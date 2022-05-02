@@ -7,15 +7,34 @@ export default createStore({
     // base_url: "http://127.0.0.1:8000",
     // base_url: "",
     api: "/api",
-    dialog_produit_shown:false, dialog_achat_shown:false, active_stock_item:null,
+    dialog_produit_shown:false,
+    dialog_achat_shown:false,
+    active_stock_item:null,
+    
     notifs:[], read_notif:new Set(),
 
-    db_commandes:{}, commandes:[], deleted_commandes:new Set(),
-    db_stocks:{}, stocks:[], deleted_stocks:new Set(), validated_stocks:new Set(),
-    db_pertes:{}, pertes:[], deleted_pertes:new Set(), validated_pertes:new Set(),
-    db_produits:{}, produits:[], ibidandazwa:[],
-    db_payments:{}, payments:[],
-    db_clients:{}, clients:[],
+    commandes:new Set(),
+    stocks:new Set(), 
+    pertes:new Set(), 
+    produits:new Set(),
+    ibidandazwa:new Set(),
+    payments:new Set(),
+    clients:new Set(),
+
+    valid_stocks:new Set(),
+    valid_pertes:new Set(),
+
+    deleted_commandes:new Set(), 
+    deleted_stocks:new Set(), 
+    deleted_pertes:new Set(), 
+
+    last_commande:-1,
+    last_stock:-1,
+    last_perte:-1,
+    last_produit:-1,
+    last_payment:-1,
+    last_client:-1,
+
     versements:[],
     stats_clients:[],
 

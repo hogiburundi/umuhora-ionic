@@ -12,7 +12,7 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      chunk:this.$store.state.ibidandazwa.slice(0, 21),
+      chunk:this.$store.state.ibidandazwa,
       last:21, load_more:false
     }
   },
@@ -21,13 +21,14 @@ export default {
       deep:true,
       handler(new_val){
         this.last = 21
-        this.chunk = new_val.slice(0, this.last)
+        this.chunk = new_val
       }
     },
     "$store.state.home_keyword"(new_val){
       this.last = 21
       if(this.$route.path != "/home/vente") return
-      this.chunk = this.$store.state.ibidandazwa.filter(x => {
+      let ibidandazwa = JSON.parse(localStorage.produits)
+      this.chunk = ibidandazwa.filter(x => {
         return x.nom.toLowerCase().includes(new_val)
       }).slice(0, this.last)
     }
@@ -43,10 +44,9 @@ export default {
       this.load_more = size_ventes + size_ventes_parent == size_total;
 
       if(this.load_more) {
+        let ibidandazwa = JSON.parse(localStorage.produits)
         this.chunk.push(
-          ...this.this.$store.state.ibidandazwa.slice(
-            this.chunk.length, this.chunk.length+this.last
-          )
+          ...ibidandazwa.slice(this.chunk.length, this.chunk.length+this.last)
         )
         this.load_more = false
       }

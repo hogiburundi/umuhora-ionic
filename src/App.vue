@@ -125,13 +125,11 @@ export default {
       if(!user || !active_kiosk) return
 
       var db_produits = JSON.parse(localStorage.getItem('produits')) || []
-      
-      this.$store.state.db_produits = db_produits
 
       var produits = Object.values(db_produits).filter(x => x.kiosk == active_kiosk.id)
 
-      this.$store.state.produits = produits
-      this.$store.state.ibidandazwa = produits.filter(x => x.quantite > 0)
+      this.$store.state.produits = new Set(produits.slice(0, 21))
+      this.$store.state.ibidandazwa = new Set(produits.filter(x => x.quantite > 0).slice(0, 21))
     }
   },
   mounted(){
