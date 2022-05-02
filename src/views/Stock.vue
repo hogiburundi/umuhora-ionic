@@ -18,7 +18,7 @@ export default {
   components:{ StockItem },
   data(){
     return  {
-      chunk:this.$store.state.produits.slice(0, 21),
+      chunk:this.$store.state.produits,
       last:21, load_more:false
     }
   },
@@ -27,13 +27,14 @@ export default {
       deep:true,
       handler(new_val){
         this.last = 21
-        this.chunk = new_val.slice(0, this.last)
+        this.chunk = new_val
       }
     },
     "$store.state.home_keyword"(new_val){
       this.last = 21
       if(this.$route.path != "/home/stock") return
-      this.chunk = this.$store.state.produits.filter(x => {
+      let produits = JSON.parse(localStorage.produits)
+      this.chunk = produits.filter(x => {
         return x.nom.toLowerCase().includes(new_val)
       }).slice(0, 21)
     }
@@ -61,8 +62,9 @@ export default {
       this.load_more = size_stock + size_stock_parent == size_total;
 
       if(this.load_more) {
+        let produits = JSON.parse(localStorage.produits)
         this.chunk.push(
-          ...this.$store.state.produits.slice(this.chunk.length, this.chunk.length+this.last)
+          ...produits.slice(this.chunk.length, this.chunk.length+this.last)
         )
         this.load_more = false
       };

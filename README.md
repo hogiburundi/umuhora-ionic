@@ -19,7 +19,7 @@ npm run build
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 offline item looks like this:
-
+```
 Item:{
 	key_1:value_1,
 	key_2:value_3,
@@ -35,5 +35,6 @@ Item:{
 		key_3:value_3
 	}
 }
+```
 there cannot be created and updated in the same time
 if we have created, or updated it means that the item is not yet synced
