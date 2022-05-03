@@ -183,9 +183,11 @@ app.mixin({
       if(!db){
         db = []
         localStorage.setItem(storage, "{}")
-      } else if(db.length > 0){
-        db = db.filter(x => {
-          return x.kiosk == kiosk_id || x.produit.kiosk == kiosk_id
+      } else {
+        let cond
+        db = Object.values(db).filter(x => {
+          cond = !!x.produit? x.produit.kiosk == kiosk_id : x.kiosk == kiosk_id 
+          return cond
         })
         if(db.length == 0) return id
         id = db[0].id
@@ -202,12 +204,14 @@ app.mixin({
       if(!db){
         db = []
         localStorage.setItem(storage, "{}")
-      } else if(db.length > 0){
-        db = db.filter(x => {
-          return (x.kiosk == kiosk_id || x.produit.kiosk == kiosk_id) && x.id < 0
+      } else {
+        let cond
+        db = Object.values(db).filter(x => {
+          cond = !!x.produit? x.produit.kiosk == kiosk_id : x.kiosk == kiosk_id 
+          return cond && x.id < 0
         })
         if(db.length == 0) return id
-        let ids = Object.keys(db)
+        let ids = db.map(x => x.id)
         return Math.min(...ids) -1
       }
       return id
@@ -219,9 +223,11 @@ app.mixin({
       if(!db){
         db = []
         localStorage.setItem(storage, "{}")
-      } else if(db.length > 0){
-        db = db.filter(x => {
-          return x.kiosk == kiosk_id || x.produit.kiosk == kiosk_id
+      } else {
+        let cond
+        db = Object.values(db).filter(x => {
+          cond = !!x.produit? x.produit.kiosk == kiosk_id : x.kiosk == kiosk_id 
+          return cond
         })
         if(db.length == 0) return id
         date = new Date(db[0].updated_at)
@@ -239,8 +245,10 @@ app.mixin({
       if(!db){
         db = []
         localStorage.setItem(storage, "{}")
-      } else if(db.length > 0){
-        results = db.filter(x => x.kiosk == this.getActiveKiosk().id && !!x.created)
+      } else {
+        results = Object.values(db).filter(x => {
+          return x.kiosk == this.getActiveKiosk().id && !!x.created
+        })
       }
       return results
     },

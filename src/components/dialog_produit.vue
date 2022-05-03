@@ -78,7 +78,6 @@ export default {
         .values(JSON.parse(localStorage.getItem("produits")))
         .filter(x => x.kiosk == kiosk_id)
       for(let item of produits){
-        console.log(item.nom.toLowerCase(), nom, item.nom.toLowerCase()==nom)
         if(item.nom.toLowerCase() == nom) return true
       }
     },
@@ -115,7 +114,6 @@ export default {
         }
         this.item.updated = data
       }
-      console.log(data)
       this.close()
     }
   }
