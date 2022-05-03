@@ -86,11 +86,6 @@ export default {
         this.nom_error = "le nom est obligatiore"
         return
       }
-      if(this.isNotUnique(this.nom)) {
-        this.nom_error = `le produit "${this.nom}" existe dejà!`
-        return
-      }
-      this.nom_error = ""
       let data = {
         nom: this.nom,
         unite_entrante: this.unite_entrante,
@@ -103,6 +98,11 @@ export default {
         kiosk_id: this.getActiveKiosk().id
       }
       if(!this.item){
+        if(this.isNotUnique(this.nom)) {
+          this.nom_error = `le produit "${this.nom}" existe dejà!`
+          return
+        }
+        this.nom_error = ""
         let id = this.generateId("produits")
         data.created = JSON.parse(JSON.stringify(data))
         data.id = id
@@ -113,7 +113,13 @@ export default {
         for(let key of Object.keys(data)){
           this.item[key] = data[key]
         }
-        this.item.updated = data
+        if(this.item.id < 0){
+          this.item.created = JSON.parse(JSON.stringify(data))
+          this.item.updated = null
+        } else {
+          this.item.updated = data
+        }
+        this.saveInDB('produits', this.item)
       }
       this.close()
     }

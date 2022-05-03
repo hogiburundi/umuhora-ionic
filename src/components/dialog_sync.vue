@@ -325,7 +325,7 @@ export default {
         .then((response) => {
           this.created_commandes.splice(0, 1)
           delete(this.$store.state.commandes[item.id])
-          this.$store.state.commandes[response.data.id] = response.data
+          this.saveInDB("commandes", response.data)
           this.postCommandes()
         }).catch((error) => {
           if(!!error.response && error.response.status == 400){
@@ -354,7 +354,7 @@ export default {
         .then((response) => {
           this.created_payments.splice(0, 1)
           delete(this.$store.state.payments[item.id])
-          this.$store.state.payments[response.data.id] = response.data
+          this.saveInDB("payments", response.data)
           this.postPayments()
         }).catch((error) => {
           if(!!error.response && error.response.status == 400){
@@ -382,8 +382,8 @@ export default {
         axios.post(this.url+`/stock/`, item.created, this.headers)
         .then((response) => {
           this.created_stocks.splice(0, 1)
-          delete(this.$store.state.stocks[item.id])
-          this.$store.state.stocks[response.data.id] = response.data
+          this.deleteFromDB("stocks", item.id)
+          this.saveInDB("stocks", response.data)
           this.postStocks()
         }).catch((error) => {
           if(!!error.response && error.response.status == 400){
@@ -411,7 +411,7 @@ export default {
         .then((response) => {
           this.created_pertes.splice(0, 1)
           delete(this.$store.state.pertes[item.id])
-          this.$store.state.pertes[response.data.id] = response.data
+          this.saveInDB("pertes", response.data)
           this.postPertes()
         }).catch((error) => {
           if(!!error.response && error.response.status == 400){
@@ -439,7 +439,7 @@ export default {
         .then((response) => {
           this.created_produits.splice(0, 1)
           delete(this.$store.state.produits[item.id])
-          this.$store.state.produits[response.data.id] = response.data
+          this.saveInDB("produits", response.data)
           this.postProduits()
         }).catch((error) => {
           if(!!error.response && error.response.status == 400){
