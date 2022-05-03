@@ -7,6 +7,7 @@
           <ion-input type=text placeholder="Nom du produit" :value="nom"
             @IonChange="nom=$event.target.value" clearInput/>
         </ion-item>
+        <ion-label class="error" v-if="nom_error">{{ nom_error }}</ion-label>
         <ion-item class="ion-no-padding">
           <ion-label position="floating">Unité entrante</ion-label>
           <ion-input type=text placeholder="Unité entrante" :value="unite_entrante"
@@ -43,6 +44,12 @@ export default {
     active:{type:Boolean, required:true},
     item:{type:Object, required:false},
   },
+  data(){
+    return {
+      nom : "", unite_entrante : "", unite : "", rapport:1,
+      prix_vente : "", nom_error:""
+    }
+  },
   watch:{
     item(new_val){
       if(!!new_val){
@@ -60,17 +67,31 @@ export default {
       }
     }
   },
-  data(){
-    return {
-      nom : "", unite_entrante : "", unite : "", rapport:1,
-      prix_vente : "",
-    }
-  },
   methods: {
     close(){
       this.$emit("close")
     },
+    isNotUnique(nom){
+      nom = nom.toLowerCase()
+      let kiosk_id = this.getActiveKiosk().id
+      let produits = Object
+        .values(JSON.parse(localStorage.getItem("produits")))
+        .filter(x => x.kiosk == kiosk_id)
+      for(let item of produits){
+        console.log(item.nom.toLowerCase(), nom, item.nom.toLowerCase()==nom)
+        if(item.nom.toLowerCase() == nom) return true
+      }
+    },
     save(){
+      if(!this.nom) {
+        this.nom_error = "le nom est obligatiore"
+        return
+      }
+      if(this.isNotUnique(this.nom)) {
+        this.nom_error = `le produit "${this.nom}" existe dejà!`
+        return
+      }
+      this.nom_error = ""
       let data = {
         nom: this.nom,
         unite_entrante: this.unite_entrante,
