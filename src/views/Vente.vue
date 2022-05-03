@@ -22,9 +22,9 @@ export default {
     "$store.state.home_keyword"(new_val){
       this.last = 21
       if(this.$route.path != "/home/vente") return
-      let ibidandazwa = JSON.parse(localStorage.produits)
+      let ibidandazwa = Object.values(JSON.parse(localStorage.getItem("produits")))
       this.chunk = ibidandazwa.filter(x => {
-        return x.nom.toLowerCase().includes(new_val)
+        return x.quantite > 0 && x.nom.toLowerCase().includes(new_val)
       }).slice(0, this.last)
     }
   },

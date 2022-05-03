@@ -68,6 +68,12 @@ app.mixin({
     },
     logOut(x) {
       let commandes = JSON.parse(localStorage.getItem("commandes"))
+      let stocks = JSON.parse(localStorage.getItem("stocks"))
+      let pertes = JSON.parse(localStorage.getItem("pertes"))
+      let produits = JSON.parse(localStorage.getItem("produits"))
+      let payments = JSON.parse(localStorage.getItem("payments"))
+      let clients = JSON.parse(localStorage.getItem("clients"))
+
       if(!!commandes){
         commandes = Object.keys(commandes).filter(x => x < 0)
         if(commandes.length > 0) {
@@ -76,7 +82,6 @@ app.mixin({
         }
         localStorage.setItem("commandes", "{}")
       }
-      let stocks = JSON.parse(localStorage.getItem("stocks"))
       if(!!stocks){
         stocks = Object.keys(stocks).filter(x => x < 0)
         if(stocks.length > 0) {
@@ -85,7 +90,6 @@ app.mixin({
         }
         localStorage.setItem("stocks", "{}")
       } 
-      let pertes = JSON.parse(localStorage.getItem("pertes"))
       if(!!pertes){
         pertes = Object.keys(pertes).filter(x => x < 0)
         if(pertes.length > 0) {
@@ -94,7 +98,6 @@ app.mixin({
         }
         localStorage.setItem("pertes", "{}")
       } 
-      let produits = JSON.parse(localStorage.getItem("produits"))
       if(!!produits){
         produits = Object.keys(produits).filter(x => x < 0)
         if(produits.length > 0) {
@@ -103,7 +106,6 @@ app.mixin({
         }
         localStorage.setItem("produits", "{}")
       }
-      let payments = JSON.parse(localStorage.getItem("payments"))
       if(!!payments){
         payments = Object.keys(payments).filter(x => x < 0)
         if(payments.length > 0) {
@@ -112,7 +114,6 @@ app.mixin({
         }
         localStorage.setItem("payments", "{}")
       }
-      let clients = JSON.parse(localStorage.getItem("clients"))
       if(!!clients){
         clients = Object.keys(clients).filter(x => x < 0)
         if(clients.length > 0) {

@@ -33,7 +33,7 @@ export default {
     "$store.state.home_keyword"(new_val){
       this.last = 21
       if(this.$route.path != "/home/stock") return
-      let produits = JSON.parse(localStorage.getItem("produits"))
+      let produits = Object.values(JSON.parse(localStorage.getItem("produits")))
       this.chunk = produits.filter(x => {
         return x.nom.toLowerCase().includes(new_val)
       }).slice(0, 21)
