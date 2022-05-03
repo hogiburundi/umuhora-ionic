@@ -1,8 +1,11 @@
 <template>
   <ion-page>
     <ion-content id="ventes_parent">
-      <ion-col id="ventes" @scroll="e => loadMore(e)">
+      <ion-col id="ventes">
         <VenteItem v-for="item in chunk" :item="item" :key="item.id"/>
+        <ion-col v-if="chunk.size > 0" class="loadmore">
+          <a @click="loadMore()">load more</a>
+        </ion-col>
       </ion-col>
     </ion-content>
   </ion-page>
@@ -12,8 +15,7 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      chunk:this.$store.state.ibidandazwa,
-      last:21, load_more:false
+      chunk:this.$store.state.ibidandazwa, last:21, load_more:false
     }
   },
   watch:{
@@ -39,21 +41,12 @@ export default {
       let db = Object.values(JSON.parse(localStorage.produits))
       let chunk = db.filter(x => x.quantite > 0).slice(0, 21)
     },
-    loadMore(event){
-      let div_ventes = event.target
-      let div_ventes_parent = document.getElementById("ventes_parent")
-      let size_ventes = div_ventes.scrollTop
-      let size_ventes_parent = div_ventes_parent.clientHeight
-      let size_total = div_ventes.scrollHeight
-      this.load_more = size_ventes + size_ventes_parent == size_total;
-
-      if(this.load_more) {
-        let ibidandazwa = JSON.parse(localStorage.produits)
-        this.chunk.push(
-          ...ibidandazwa.slice(this.chunk.length, this.chunk.length+this.last)
-        )
-        this.load_more = false
-      }
+    loadMore(){
+      let ibidandazwa = Object.values(JSON.parse(localStorage.produits))
+      this.chunk.push(
+        ...ibidandazwa.slice(this.chunk.length, this.chunk.length+this.last)
+      )
+      this.load_more = false
     }
   },
   mounted(){
@@ -72,5 +65,11 @@ ion-col{
   grid-gap: 5px;
   max-width: 100vw;
   align-content: flex-start;
+}
+.loadmore{
+  width: 100%;
+  grid-column: 1 / span 3;
+  display: flex;
+  justify-content: center;
 }
 </style>

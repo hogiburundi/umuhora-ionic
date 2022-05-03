@@ -195,6 +195,23 @@ app.mixin({
       }
       return id
     },
+    generateId(storage){
+      let kiosk_id = this.getActiveKiosk().id;
+      let id = -1
+      let db = JSON.parse(localStorage.getItem(storage))
+      if(!db){
+        db = []
+        localStorage.setItem(storage, "{}")
+      } else if(db.length > 0){
+        db = db.filter(x => {
+          return (x.kiosk == kiosk_id || x.produit.kiosk == kiosk_id) && x.id < 0
+        })
+        if(db.length == 0) return id
+        let ids = Object.keys(db)
+        return Math.min(...ids) -1
+      }
+      return id
+    },
     getMaxTime(storage){
       let kiosk_id = this.getActiveKiosk().id;
       let date = null
