@@ -13,14 +13,6 @@ export default createStore({
     
     notifs:[], read_notif:new Set(),
 
-    commandes:new Set(),
-    stocks:new Set(), 
-    pertes:new Set(), 
-    produits:new Set(),
-    ibidandazwa:new Set(),
-    payments:new Set(),
-    clients:new Set(),
-
     valid_stocks:new Set(),
     valid_pertes:new Set(),
 

@@ -106,8 +106,9 @@ export default {
         let id = this.generateId("produits")
         data.created = JSON.parse(JSON.stringify(data))
         data.id = id
+
         this.saveInDB('produits', data)
-        this.$store.state.produits[data.id] = data
+        this.makeToast("Success", `"${this.nom}" a été bien créé!`)
       } else {
         for(let key of Object.keys(data)){
           this.item[key] = data[key]

@@ -43,7 +43,7 @@
               <ion-label>Edition</ion-label>
               <ion-icon :src="getIcon('personOutline')"/>
             </ion-item>
-            <ion-item button @click="logout">
+            <ion-item button @click="logOut">
               <ion-label>Deconnexion</ion-label>
               <ion-icon :src="getIcon('logOutOutline')"/>
             </ion-item>
@@ -156,11 +156,7 @@ export default {
     },
     openWhatsapp(){
       CustomPlugins.openWhatsapp()
-    },
-    logout(){
-      this.$store.state.active_kiosk = null
-      this.$store.state.user = null
-    },
+    }
   },
   mounted(){
   }
