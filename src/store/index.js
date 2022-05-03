@@ -26,14 +26,7 @@ export default createStore({
 
     deleted_commandes:new Set(), 
     deleted_stocks:new Set(), 
-    deleted_pertes:new Set(), 
-
-    last_commande:-1,
-    last_stock:-1,
-    last_perte:-1,
-    last_produit:-1,
-    last_payment:-1,
-    last_client:-1,
+    deleted_pertes:new Set(),
 
     versements:[],
     stats_clients:[],

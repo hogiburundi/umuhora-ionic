@@ -246,8 +246,12 @@ app.mixin({
     },
     saveInDB(storage, data){
       let db = JSON.parse(localStorage.getItem(storage))
-      for(let item of data){
-        db[item.id.toString()] = item
+      if(Array.isArray(data)){
+        for(let item of data){
+          db[item.id.toString()] = item
+        }
+      } else {
+        db[data.id.toString()] = data
       }
       localStorage.setItem(storage, JSON.stringify(db))
       console.log(`${storage.toUpperCase()} SAVED`)

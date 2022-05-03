@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-content id="stock_parent">
-      <ion-col id="stock" @scroll="loadMore">
+      <ion-col id="stock">
         <ion-button style="margin: 0 10px 5px 10px;" size=block @click="createProduit">
           Ajouter un produit
         </ion-button>
@@ -33,7 +33,7 @@ export default {
     "$store.state.home_keyword"(new_val){
       this.last = 21
       if(this.$route.path != "/home/stock") return
-      let produits = JSON.parse(localStorage.produits)
+      let produits = JSON.parse(localStorage.getItem("produits"))
       this.chunk = produits.filter(x => {
         return x.nom.toLowerCase().includes(new_val)
       }).slice(0, 21)
@@ -57,21 +57,11 @@ export default {
       let chunk = db.slice(0, 21)
     },
     loadMore(event){
-      let div_stock = document.getElementById("stock")
-      let div_stock_parent = document.getElementById("stock_parent")
-      let size_stock = div_stock.scrollTop
-      let size_stock_parent = div_stock_parent.clientHeight
-      let size_total = div_stock.scrollHeight
-
-      this.load_more = size_stock + size_stock_parent == size_total;
-
-      if(this.load_more) {
-        let produits = JSON.parse(localStorage.produits)
-        this.chunk.push(
-          ...produits.slice(this.chunk.length, this.chunk.length+this.last)
-        )
-        this.load_more = false
-      };
+      let produits = JSON.parse(localStorage.produits)
+      this.chunk.push(
+        ...produits.slice(this.chunk.length, this.chunk.length+this.last)
+      )
+      this.load_more = false
     }
   },
   mounted(){

@@ -86,16 +86,16 @@ export default {
         let id = this.generateId("produits")
         data.created = JSON.parse(JSON.stringify(data))
         data.id = id
-        // this.$store.state.db_produits[id] = data
-        // this.$store.state.produits.unshift(data)
+        this.saveInDB('produits', data)
+        this.$store.state.produits[data.id] = data
       } else {
         for(let key of Object.keys(data)){
           this.item[key] = data[key]
         }
-        // this.item.updated = data
+        this.item.updated = data
       }
       console.log(data)
-      // this.close()
+      this.close()
     }
   }
 };
