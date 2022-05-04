@@ -105,12 +105,6 @@ export default {
     }
   },
   watch:{
-    "$store.state.commandes":{
-      deep:true,
-      handler(new_val){
-        this.commandes = this.getCurrrentCommands()
-      }
-    },
     commandes(new_val){
       this.montant = 0;
       this.payee = 0;
@@ -169,8 +163,10 @@ export default {
     },
   },
   mounted(){
-    let commandes = Object.values(JSON.parse(localStorage.getItem("commandes"))).reverse()
-    this.commandes = commandes.slice(1, 21)
+    let commandes = Object.values(JSON.parse(localStorage.getItem("commandes"))).sort((x, y) => {
+      return Math.abs(y.id) - Math.abs(x.id)
+    })
+    this.commandes = commandes.slice(0, 21)
     commandes.forEach(x => {
       this.montant += x.prix;
       this.payee += x.payee;

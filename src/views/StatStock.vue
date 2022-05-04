@@ -27,9 +27,7 @@
     <ion-footer>
       <div class="group">
         <div>Montant: </div>
-        <div>BIF {{ money(
-          stocks.reduce((acc, x) => acc+= parseInt(x.prix_total), 0)
-        )}}</div>
+        <div>BIF {{ money(montant)}}</div>
       </div>
     </ion-footer>
   </ion-page>
@@ -49,16 +47,8 @@ export default {
   components:{StatStockItem, DialogDateFilter, DialogPerte},
   data(){
     return {
-      date_shown:false, stocks:[], perte_shown:false, active_item:null,
+      date_shown:false, stocks:[], perte_shown:false, active_item:null, montant:0
     }
-  },
-  watch:{
-    "$store.state.stocks":{
-      deep:true,
-      handler(new_val){
-        this.stocks = Object.values(new_val).sort((x, y) => Math.abs(y.id) - Math.abs(x.id))
-      }
-    },
   },
   methods:{
     perdre(item){
@@ -86,9 +76,9 @@ export default {
     }
   },
   mounted(){
-    this.stocks = Object.values(this.$store.state.stocks).sort((x, y) => {
-      return Math.abs(y.id) - Math.abs(x.id)
-    })
+    let stocks = Object.values(JSON.parse(localStorage.getItem("stocks"))).reverse()
+    this.stocks = stocks.slice(0, 21)
+    this.montant = stocks.reduce((acc, x) => acc+= parseInt(x.prix_total), 0)
   }
 }
 </script>
