@@ -169,8 +169,9 @@ export default {
     },
   },
   mounted(){
-    this.commandes = this.getCurrrentCommands()
-    this.commandes.forEach(x => {
+    let commandes = Object.values(JSON.parse(localStorage.getItem("commandes"))).reverse()
+    this.commandes = commandes.slice(1, 21)
+    commandes.forEach(x => {
       this.montant += x.prix;
       this.payee += x.payee;
       this.reste += x.prix-x.payee;

@@ -102,6 +102,7 @@ export default {
       }
       this.saveInDB("stocks", new_stock)
       this.item.quantite = parseInt(this.item.quantite) + parseInt(this.qtt)
+      this.saveInDB("produits", this.item)
       this.close()
     },
   }
