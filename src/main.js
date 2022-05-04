@@ -276,7 +276,7 @@ app.mixin({
       } else {
         let cond
         db = Object.values(db)
-        if(db.length == 0) return id
+        if(db.length == 0) return date
         date = new Date(db[0].updated_at)
         for(let item of db){
           let new_date = new Date(item.updated_at)
@@ -312,11 +312,11 @@ app.mixin({
     deleteFromDB(storage, data){
       let db = JSON.parse(localStorage.getItem(storage))
       if(Array.isArray(data)){
-        for(let item of data){
-          delete(db[item.id.toString()])
+        for(let id of data){
+          delete(db[id])
         }
       } else {
-        delete(db[data.id.toString()])
+        delete(db[id])
       }
       localStorage.setItem(storage, JSON.stringify(db))
       console.log(`${storage.toUpperCase()} SAVED`)

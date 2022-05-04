@@ -324,7 +324,7 @@ export default {
         axios.post(this.url+`/commande/`, item.created, this.headers)
         .then((response) => {
           this.created_commandes.splice(0, 1)
-          delete(this.$store.state.commandes[item.id])
+          this.deleteFromDB("commandes", item.id)
           this.saveInDB("commandes", response.data)
           this.postCommandes()
         }).catch((error) => {
@@ -353,7 +353,7 @@ export default {
         axios.post(this.url+`/payment/`, item.created, this.headers)
         .then((response) => {
           this.created_payments.splice(0, 1)
-          delete(this.$store.state.payments[item.id])
+          this.deleteFromDB("payments", item.id)
           this.saveInDB("payments", response.data)
           this.postPayments()
         }).catch((error) => {
@@ -410,7 +410,7 @@ export default {
         axios.post(this.url+`/perte/`, item.created, this.headers)
         .then((response) => {
           this.created_pertes.splice(0, 1)
-          delete(this.$store.state.pertes[item.id])
+          this.deleteFromDB("pertes", item.id)
           this.saveInDB("pertes", response.data)
           this.postPertes()
         }).catch((error) => {
@@ -438,7 +438,7 @@ export default {
         axios.post(this.url+`/produit/`, item.created, this.headers)
         .then((response) => {
           this.created_produits.splice(0, 1)
-          delete(this.$store.state.produits[item.id])
+          this.deleteFromDB("produits", item.id)
           this.saveInDB("produits", response.data)
           this.postProduits()
         }).catch((error) => {
