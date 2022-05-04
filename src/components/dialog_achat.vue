@@ -74,10 +74,6 @@ export default {
     showDu(){
       this.du_shown = !this.du_shown
     },
-    generateId(){
-      let ids = Array.from(Object.values(this.$store.state.stocks), x => Math.abs(x.id))
-      return -1 * (Math.max(...ids)+ 1)
-    },
     postStock(){
       let created = {
         quantite_actuelle:this.qtt,
@@ -88,7 +84,7 @@ export default {
         kiosk:this.getActiveKiosk().id,
         date:new Date().toISOString().split('T')[0]
       }
-      let id = this.generateId()
+      let id = this.generateId("stocks")
       let new_stock = {
         id: id,
         quantite_initiale: this.qtt,
@@ -104,8 +100,7 @@ export default {
         user_id: this.active_user.id,
         kiosk_id: this.getActiveKiosk().id
       }
-      this.$store.state.db_stocks[id] = new_stock
-      this.$store.state.stocks.unshift(new_stock)
+      this.saveInDB("stocks", new_stock)
       this.item.quantite = parseInt(this.item.quantite) + parseInt(this.qtt)
       this.close()
     },

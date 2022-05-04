@@ -316,7 +316,7 @@ app.mixin({
           delete(db[id])
         }
       } else {
-        delete(db[id])
+        delete(db[data])
       }
       localStorage.setItem(storage, JSON.stringify(db))
       console.log(`${storage.toUpperCase()} SAVED`)
