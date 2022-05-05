@@ -59,23 +59,19 @@ export default {
     close(){
       this.$emit("close")
     },
-    generateId(){
-      let ids = Array.from(Object.values(this.$store.state.payments), x => Math.abs(x.id))
-      return -1 * (Math.max(...ids)+ 1)
-    },
     save(){
       if(!this.payee || this.payee <= 10){
         this.makeToast("Erreur", "Ayo mahera yarishwe ntashoboka")
         return;
       }
-      let id = this.generateId()
+      let id = this.generateId("payments")
       let data = {
         id: id,
         client: this.item.client,
         montant: this.payee,
-        date: null,
+        date: new Date().toISOString(),
         details: "",
-        updated_at: null,
+        updated_at: new Date().toISOString(),
         commande: this.item.id,
         user: this.active_user.username,
         created:{
@@ -86,9 +82,9 @@ export default {
         user_id: this.active_user.id,
         kiosk_id: this.getActiveKiosk().id
       }
-      this.$store.state.db_payments[id] = data
-      this.$store.state.payments.unshift(data)
-      this.item.payee += this.payee
+      this.saveInDB("payments", data)
+      this.item.payee = parseInt(this.item.payee) + parseInt(this.payee)
+      this.saveInDB("commandes", this.item)
       this.close()
     }
   }

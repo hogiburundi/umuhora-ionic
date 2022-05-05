@@ -240,7 +240,6 @@ app.mixin({
         db = []
         localStorage.setItem(storage, "{}")
       } else {
-        let cond
         db = Object.values(db)
         if(db.length == 0) return id
         id = db[0].id
@@ -258,8 +257,7 @@ app.mixin({
         db = []
         localStorage.setItem(storage, "{}")
       } else {
-        let cond
-        db = Object.values(db).filter(x => cond && x.id < 0)
+        db = Object.values(db).filter(x => x.id < 0)
         if(db.length == 0) return id
         let ids = db.map(x => x.id)
         return Math.min(...ids) -1
@@ -274,7 +272,6 @@ app.mixin({
         db = []
         localStorage.setItem(storage, "{}")
       } else {
-        let cond
         db = Object.values(db)
         if(db.length == 0) return date
         date = new Date(db[0].updated_at)
