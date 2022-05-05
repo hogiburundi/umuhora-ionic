@@ -12,7 +12,7 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <PerteItem v-for="perte in pertes" :item="perte"/>
+        <PerteItem v-for="perte in pertes" :item="perte" @changed="readPertes"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -35,17 +35,20 @@ export default {
     }
   },
   watch:{
-    "$store.state.pertes":{
+    pertes:{
       deep:true,
-      handle(new_val){
-        this.pertes = Object.values(new_val)
+      handler(new_val){
+        this.readPertes()
       }
     }
   },
   methods:{
+    readPertes(){
+      this.pertes = Object.values(JSON.parse(localStorage.getItem("pertes")))
+    }
   },
   mounted(){
-    this.pertes = Object.values(this.$store.state.pertes)
+    this.readPertes()
   },
 }
 </script>
