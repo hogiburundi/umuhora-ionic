@@ -95,7 +95,6 @@ export default {
         .filter(x => x.prix > x.payee).sort((x, y) => {
           return Math.abs(y.id) - Math.abs(x.id)
         })
-      console.log(commandes)
       this.commandes = commandes.slice(0, 21)
       commandes.forEach(x => {
         this.montant += x.prix;

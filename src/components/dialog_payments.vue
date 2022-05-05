@@ -35,7 +35,7 @@ export default {
           user: this.item.user_id
         }]
       }
-      return Object.values(this.$store.state.payments).filter(x => {
+      return Object.values(JSON.parse(localStorage.getItem("payments"))).filter(x => {
         return x.commande == this.item.id
       })
     }
