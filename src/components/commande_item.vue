@@ -18,7 +18,7 @@
       </div>
       <div class="group">
         <div class="key">Client: </div>
-        <div>{{ item.client }}</div>
+        <div>{{ item.id>0?item.client:`${item.client.nom} ${item.client.tel}` }}</div>
       </div>
     </div>
     <div class="inline" text-center button>

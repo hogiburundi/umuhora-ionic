@@ -28,7 +28,7 @@
     <ion-footer>
       <div class="group">
         <div>Montant: </div>
-        <div>{{ money(prix)}}</div>
+        <div>{{ money(montant)}}</div>
       </div>
       <div class="group">
         <div>Payée: </div>
@@ -138,7 +138,6 @@ export default {
         axios.get(this.url+`/commande/${commande.id}/`, this.headers)
         .then((response) => {
           this.active_commande = response.data
-          console.log(this.active_commande)
           let invoice = document.getElementById("invoice")
           CustomPlugins.launchPrint({"html":invoice.innerHTML})
         }).catch((error) => {
@@ -148,7 +147,7 @@ export default {
         let ventes = []
         let produit
         for(let vente of commande.created.ventes){
-          produit = this.$store.state.produits[vente.produit]
+          produit = JSON.parse(localStorage.getItem("produits"))[vente.produit]
           ventes.push({
             produit: produit.nom,
             prix_unitaire: produit.prix_vente,
