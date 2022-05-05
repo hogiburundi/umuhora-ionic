@@ -332,7 +332,7 @@ export default {
             this.created_commandes.splice(0, 1)
             this.postCommandes()
           } else{
-            this.displayErrorOrRefreshToken(error, this.postCommandes)
+            this.displayErrorOrRefreshToken(error, this.postCommandes, this.postPayments)
           }
         });
       } else {
@@ -603,9 +603,9 @@ export default {
       this.receiving_clients = true
       if(!this.in_action) return
       if(!this.next_clients){
-        let max_time = this.getMaxTime("clients")
+        let max_time = this.getMaxID("clients")
         if(max_time != null){
-          link = this.url+`/client/?kiosk=${this.kiosk_id}&updated_at__gt=${max_time}`;
+          link = this.url+`/client/?kiosk=${this.kiosk_id}&id__gt=${max_time}`;
         } else {
           link = this.url+`/client/?kiosk=${this.kiosk_id}`;
         }

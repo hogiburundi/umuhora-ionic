@@ -166,6 +166,7 @@ export default {
       }
       for(let item of this.cart.content){
         item.product.quantite -= item.quantite
+        this.saveInDB("produits", item.product)
       }
       this.saveInDB("commandes", command)
       this.cart.content = []
