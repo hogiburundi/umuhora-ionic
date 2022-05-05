@@ -160,17 +160,19 @@ export default {
         CustomPlugins.launchPrint({"html":invoice.innerHTML})
       }
     },
+    calculateTotal(){
+      this.commandes.forEach(x => {
+        this.montant += x.prix;
+        this.payee += x.payee;
+        this.reste += x.prix-x.payee;
+      })
+    }
   },
   mounted(){
-    let commandes = Object.values(JSON.parse(localStorage.getItem("commandes"))).sort((x, y) => {
+    this.commandes = Object.values(JSON.parse(localStorage.getItem("commandes"))).sort((x, y) => {
       return Math.abs(y.id) - Math.abs(x.id)
     })
-    this.commandes = commandes.slice(0, 21)
-    commandes.forEach(x => {
-      this.montant += x.prix;
-      this.payee += x.payee;
-      this.reste += x.prix-x.payee;
-    })
+    this.calculateTotal()
   },
 }
 </script>

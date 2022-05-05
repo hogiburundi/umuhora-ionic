@@ -39,8 +39,7 @@ export default {
   },
   data(){
     return {
-      cart : this.$store.state.cart,
-      editable:false
+      cart : this.$store.state.cart, editable:false
     }
   },
   methods: {

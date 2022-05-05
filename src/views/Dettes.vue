@@ -22,7 +22,8 @@
     <ion-content>
       <ion-col>
         <DetteItem v-for="commande in commandes" :item="commande"
-          @pay="makePay(commande)" @payments="showPayments(commande)"/>
+          @changed="calculateTotal" @pay="makePay(commande)"
+          @payments="showPayments(commande)"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -90,17 +91,18 @@ export default {
         return x.prix > x.payee && JSON.stringify(x).toLowerCase().includes(keyword)
       })
     },
-    getCurrrentCommands(){
-      let commandes = Object.values(JSON.parse(localStorage.getItem("commandes")))
-        .filter(x => x.prix > x.payee).sort((x, y) => {
-          return Math.abs(y.id) - Math.abs(x.id)
-        })
-      this.commandes = commandes.slice(0, 21)
-      commandes.forEach(x => {
+    calculateTotal(){
+      this.commandes.forEach(x => {
         this.montant += x.prix;
         this.payee += x.payee;
         this.reste += x.prix-x.payee;
       })
+    },
+    getCurrrentCommands(){
+      this.commandes = Object.values(JSON.parse(localStorage.getItem("commandes")))
+        .filter(x => x.prix > x.payee).sort((x, y) => {
+          return Math.abs(y.id) - Math.abs(x.id)
+        })
     }
   },
   mounted(){

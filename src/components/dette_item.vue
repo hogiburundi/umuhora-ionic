@@ -43,6 +43,11 @@ export default {
     return {
     }
   },
+  watch:{
+    "item.payee"(new_val){
+      this.$emit("changed")
+    }
+  },
   methods: {
     pay(){
       this.$emit("pay")
