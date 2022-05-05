@@ -62,7 +62,7 @@ export default {
   components:{ CartItem },
   data(){
     return {
-      nom:"", tel:"", paid:this.$store.state.cart.getTotal(),
+      nom:"", tel:"", paid:this.$store.state.cart.getTotal(), clients:[],
       active_client:null, found_clients:[]
     }
   },
@@ -105,12 +105,12 @@ export default {
         this.found_clients = []
         return
       }
-      this.nom = this.nom.toLowerCase()
-      this.tel = this.tel.toLowerCase()
+      let nom = this.nom.toLowerCase()
+      let tel = this.tel.toLowerCase()
 
-      this.found_clients = Object.values(this.$store.state.clients).filter(x => {
-        return (this.nom.length>0 && x.nom.toLowerCase().includes(this.nom)) ||
-              (this.tel.length>0 && x.tel.toLowerCase().includes(this.tel))
+      this.found_clients = this.clients.filter(x => {
+        return (nom.length>0 && x.nom.toLowerCase().includes(nom)) ||
+              (tel.length>0 && x.tel.toLowerCase().includes(tel))
       })
       this.active_client = null
     },
@@ -118,7 +118,7 @@ export default {
       let client_infos_are_correct = (this.tel.length>=7)&&(this.nom.length>=3)
       if(this.ingaru > 0){
         if(!client_infos_are_correct){
-          this.makeToast("Erreur", "pour les dettes le client est obligatiore")
+          this.makeToast("Erreur", "pour les dettes le client est obligatoire")
           return;
         }
       }
@@ -127,10 +127,11 @@ export default {
       let client = null;
       if(client_infos_are_correct){
         client = {
+          "id":this.generateId("clients"),
           "nom":this.nom,
           "tel":this.tel
         }
-        this.$store.state.clients[this.tel] = client
+        this.saveInDB("clients", client)
       }
       for(let item of this.cart.content){
         items.unshift({"produit":item.product.id, "quantite":item.quantite})
@@ -166,7 +167,7 @@ export default {
       for(let item of this.cart.content){
         item.product.quantite -= item.quantite
       }
-      this.$store.state.commandes[id] = command
+      this.saveInDB("commandes", command)
       this.cart.content = []
       this.$router.push("/")
     },
@@ -183,8 +184,8 @@ export default {
       }
       axios.get(link, this.headers)
       .then((response) => {
-        this.$store.state.clients.push(...response.data.results)
-        if(response.data.next.length > 0){
+        this.saveInDB("clients", response.data.results)
+        if(!!response.data.next){
           this.next = response.data.next
           this.fetchData()
         } else {
@@ -194,13 +195,10 @@ export default {
         this.displayErrorOrRefreshToken(error, this.fetchData)
       });
     },
-    generateId(){
-      let ids = Array.from(Object.keys(this.$store.state.commandes), x => Math.abs(x))
-      return -1 * (Math.max(...ids)+ 1)
-    }
   },
   mounted(){
-    if(this.$store.state.clients.length<1){
+    this.clients = Object.values(JSON.parse(localStorage.getItem("clients")))
+    if(this.clients.length<1){
       this.fetchData()
     }
   }
