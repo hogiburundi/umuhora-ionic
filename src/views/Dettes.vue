@@ -28,21 +28,15 @@
     <ion-footer>
       <div class="group">
         <div>Montant: </div>
-        <div>{{ money(
-          commandes.reduce((acc, x) => acc+=x.prix, 0)
-        )}}</div>
+        <div>{{ money(montant)}}</div>
       </div>
       <div class="group">
         <div>Payée: </div>
-        <div>{{ money(
-          commandes.reduce((acc, x) => acc+=x.payee, 0)
-        )}}</div>
+        <div>{{ money(payee)}}</div>
       </div>
       <div class="group">
         <div>Reste: </div>
-        <div>{{ money(
-          commandes.reduce((acc, x) => acc+=x.prix-x.payee, 0)
-        )}}</div>
+        <div>{{ money(reste)}}</div>
       </div>
     </ion-footer>
   </ion-page>
@@ -64,15 +58,7 @@ export default {
   data(){
     return {
       commandes:[], date_shown:false, payments_shown:false, pay_shown:false,
-      active_item:null
-    }
-  },
-  watch:{
-    "$store.state.commandes":{
-      deep:true,
-      handler(new_val){
-        this.commandes = this.getCurrrentCommands()
-      }
+      active_item:null, montant:0, payee:0, reste:0
     }
   },
   methods:{
@@ -105,11 +91,21 @@ export default {
       })
     },
     getCurrrentCommands(){
-      return Object.values(this.$store.state.commandes).filter(x => x.prix > x.payee)
+      let commandes = Object.values(JSON.parse(localStorage.getItem("commandes")))
+        .filter(x => x.prix > x.payee).sort((x, y) => {
+          return Math.abs(y.id) - Math.abs(x.id)
+        })
+      console.log(commandes)
+      this.commandes = commandes.slice(0, 21)
+      commandes.forEach(x => {
+        this.montant += x.prix;
+        this.payee += x.payee;
+        this.reste += x.prix-x.payee;
+      })
     }
   },
   mounted(){
-    this.commandes = this.getCurrrentCommands()
+    this.getCurrrentCommands()
   },
 }
 </script>
