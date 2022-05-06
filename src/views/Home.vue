@@ -126,7 +126,7 @@ export default {
     startScan(){
       Camera.requestPermissions()
       CustomPlugins.startScan().then((result) => {
-        let item = this.$store.state.produits[result.value.toString()]
+        let item = JSON.parse(localStorage.getItem('produits'))[result.value.toString()]
         if(item.quantite > 0){
           this.$store.state.cart.add(item)
         }

@@ -18,7 +18,7 @@
       </div>
       <div class="group">
         <div class="key">Client: </div>
-        <div>{{ item.id>0?item.client:`${item.client.nom} ${item.client.tel}` }}</div>
+        <div>{{ client }}</div>
       </div>
     </div>
     <div class="inline" text-center button>
@@ -37,15 +37,20 @@ export default {
   props: {
     item:{type:Object, required:true}
   },
-  data(){
-    return {
-      cart : this.$store.state.cart, editable:false
+  computed:{
+    client(){
+      if(!!this.item.client){
+        if(this.item.id > 0){
+          return this.item.client
+        } else {
+          return `${this.item.client.nom} ${this.item.client.tel}`
+        }
+      } else {
+        return "-"
+      }
     }
   },
   methods: {
-    enableEdition(){
-      if(this.item.quantite!=0) this.editable=true
-    },
     deleteCommande(){
       alertController.create({
         header: 'Attention!',
@@ -73,18 +78,6 @@ export default {
       });
     }
   },
-  computed:{
-    qtt:{
-      get(){
-        return 0
-        // return this.cart.getQuantite(this.item.id);
-      },
-      set(value){
-        if(value.length==0) return;
-        this.cart.add(this.item, value);
-      }
-    }
-  }
 };
 </script>
 <style scoped>

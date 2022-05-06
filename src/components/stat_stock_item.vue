@@ -76,7 +76,8 @@ export default {
                 id:this.item.id,
                 user:this.active_user.id
               }
-              this.$store.state.validated_stocks.add(data)
+              this.saveInListDB("validated_stocks", data)
+              this.saveInDB("stocks", data)
             },
           },
         ],
