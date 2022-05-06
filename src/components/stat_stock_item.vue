@@ -71,13 +71,13 @@ export default {
                 this.makeToast("Erreur", "ce stock n'est pas encore synchronisée")
                 return
               }
-              this.item.validated_by = this.active_user
-              let data = {
-                id:this.item.id,
-                user:this.active_user.id
+              if(this.item.user == this.active_user.username){
+                this.makeToast("Erreur", "Vous ne puvez pas valider vos propres faits")
+                return
               }
-              this.saveInListDB("validated_stocks", data.id)
-              this.saveInDB("stocks", data)
+              this.item.validated_by = this.active_user.id
+              this.saveInListDB("validated_stocks", this.item.id)
+              this.saveInDB("stocks", this.item)
             },
           },
         ],
