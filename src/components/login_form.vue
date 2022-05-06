@@ -46,6 +46,7 @@ export default {
         {"username": this.username, "password":this.password}
       ).then((response) => {
         this.$store.state.user = response.data
+        this.$store.state.user.username = this.username
       }).catch((error) => {
         console.log(error)
         this.logs = error.response.data

@@ -71,6 +71,7 @@ export default {
                 this.makeToast("Erreur", "ce stock n'est pas encore synchronisée")
                 return
               }
+              console.log(this.item.user, this.active_user.username)
               if(this.item.user == this.active_user.username){
                 this.makeToast("Erreur", "Vous ne puvez pas valider vos propres faits")
                 return
