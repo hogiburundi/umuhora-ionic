@@ -116,11 +116,7 @@ app.mixin({
       }
       if(!!clients){
         clients = Object.keys(clients).filter(x => x < 0)
-        if(clients.length > 0) {
-          this.makeToast("Erreur", "synchronisation des clients obligatoire")
-          return
-        }
-        localStorage.setItem("clients", "{}")
+        this.deleteFromDB("clients", clients)
       }
 
       if(confirm("Voulez-vous vraiment deconnecter?")){
