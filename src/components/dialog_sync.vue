@@ -269,6 +269,8 @@ export default {
         let item = Array.from(this.deleted_commandes)[0]
         axios.delete(`${this.url}/commande/${item}/`, this.headers)
         .then((response) => {
+          this.deleteFromListDB("deleted_commandes", item)
+          this.deleted_commandes.delete(item)
           this.delCommandes()
         }).catch((error) => {
           this.deleted_commandes.delete(item)
@@ -286,6 +288,7 @@ export default {
         let item = Array.from(this.deleted_stocks)[0]
         axios.delete(`${this.url}/stock/${item}/`, this.headers)
         .then((response) => {
+          this.deleteFromListDB("deleted_stocks", item)
           this.deleted_stocks.delete(item)
           this.delStocks()
         }).catch((error) => {
@@ -303,6 +306,7 @@ export default {
         let item = Array.from(this.deleted_pertes)[0]
         axios.delete(`${this.url}/perte/${item}/`, this.headers)
         .then((response) => {
+          this.deleteFromListDB("deleted_pertes", item)
           this.deleted_pertes.delete(item)
           this.delPertes()
         }).catch((error) => {
