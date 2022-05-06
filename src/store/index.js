@@ -10,6 +10,7 @@ export default createStore({
     dialog_produit_shown:false,
     dialog_achat_shown:false,
     active_stock_item:null,
+    synchronized:false,
     
     notifs:[], read_notif:new Set(),
 

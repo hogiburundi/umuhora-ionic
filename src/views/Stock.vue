@@ -18,8 +18,7 @@ export default {
   components:{ StockItem },
   data(){
     return  {
-      chunk:this.$store.state.produits,
-      last:21, load_more:false
+      chunk:[], last:21, load_more:false
     }
   },
   watch:{
@@ -37,6 +36,11 @@ export default {
       this.chunk = produits.filter(x => {
         return x.nom.toLowerCase().includes(new_val)
       }).slice(0, 21)
+    },
+    "$store.state.synchronized"(new_val){
+      if(new_val){
+        this.loadData()
+      }
     }
   },
   methods:{
@@ -54,7 +58,7 @@ export default {
     },
     loadData(){
       let db = Object.values(JSON.parse(localStorage.produits))
-      let chunk = db.slice(0, 21)
+      this.chunk = db.slice(0, 21)
     },
     loadMore(event){
       let produits = JSON.parse(localStorage.produits)
@@ -65,7 +69,7 @@ export default {
     }
   },
   mounted(){
-    if(this.chunk == 0){
+    if(this.chunk.length == 0){
       this.loadData()
     }
   },

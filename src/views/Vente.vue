@@ -15,7 +15,7 @@ import VenteItem from "../components/vente_item"
 export default {
   data(){
     return {
-      chunk:this.$store.state.ibidandazwa, last:21, load_more:false
+      chunk:[], last:21, load_more:false
     }
   },
   watch:{
@@ -26,13 +26,18 @@ export default {
       this.chunk = ibidandazwa.filter(x => {
         return x.quantite > 0 && x.nom.toLowerCase().includes(new_val)
       }).slice(0, this.last)
+    },
+    "$store.state.synchronized"(new_val){
+      if(new_val){
+        this.loadData()
+      }
     }
   },
   components:{VenteItem},
   methods:{
     loadData(){
       let db = Object.values(JSON.parse(localStorage.produits))
-      let chunk = db.filter(x => x.quantite > 0).slice(0, 21)
+      this.chunk = db.filter(x => x.quantite > 0).slice(0, 21)
     },
     loadMore(){
       let ibidandazwa = Object.values(JSON.parse(localStorage.produits))
@@ -43,7 +48,7 @@ export default {
     }
   },
   mounted(){
-    if(this.chunk.size == 0){
+    if(this.chunk.length == 0){
       this.loadData()
     }
   }

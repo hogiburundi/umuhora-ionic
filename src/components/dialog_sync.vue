@@ -88,7 +88,7 @@
       </div>
       <ion-col class="options">
         <ion-button fill=clear color="medium" @click="stopper">
-          ANULLER
+          {{ in_action?"STOPPER":"FERMER" }}
         </ion-button>
         <ion-button fill=clear @click="fetch"  v-if="!in_action">
           COMMENCER
@@ -197,6 +197,9 @@ export default {
         this.created_produits = this.getCreated("produits")
         this.created_produits_count = this.created_produits.length
       }
+    },
+    in_action(new_val){
+      this.$store.state.synchronized = !new_val
     }
   },
   methods: {
