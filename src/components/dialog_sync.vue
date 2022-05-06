@@ -172,11 +172,11 @@ export default {
         this.sending_pertes= false
         this.sending_produits= false
 
-        this.valid_pertes = this.$store.state.valid_pertes
-        this.valid_stocks = this.$store.state.valid_stocks
-        this.deleted_commandes = this.$store.state.deleted_commandes
-        this.deleted_stocks = this.$store.state.deleted_stocks
-        this.deleted_pertes = this.$store.state.deleted_pertes
+        this.valid_pertes = new Set(JSON.parse(localStorage.getItem("validated_pertes")))
+        this.valid_stocks = new Set(JSON.parse(localStorage.getItem("validated_stocks")))
+        this.deleted_commandes = new Set(JSON.parse(localStorage.getItem("deleted_commandes")))
+        this.deleted_stocks = new Set(JSON.parse(localStorage.getItem("deleted_stocks")))
+        this.deleted_pertes = new Set(JSON.parse(localStorage.getItem("deleted_pertes")))
 
         this.valid_pertes_count = this.valid_pertes.size
         this.valid_stocks_count = this.valid_stocks.size
@@ -227,6 +227,7 @@ export default {
         let item = Array.from(this.valid_pertes)[0]
         axios.get(`${this.url}/perte/${item}/valider/`, this.headers)
         .then((response) => {
+          this.deleteFromListDB("validated_pertes", item)
           this.valid_pertes.delete(item)
           this.validPertes()
         }).catch((error) => {
@@ -245,8 +246,9 @@ export default {
       if(!this.in_action) return
       if(this.valid_stocks.size > 0){
         let item = Array.from(this.valid_stocks)[0]
-        axios.get(`${this.url}/stock/${item.id}/valider/`, this.headers)
+        axios.get(`${this.url}/stock/${item}/valider/`, this.headers)
         .then((response) => {
+          this.deleteFromListDB("validated_stocks", item)
           this.valid_stocks.delete(item)
           this.validStocks()
         }).catch((error) => {

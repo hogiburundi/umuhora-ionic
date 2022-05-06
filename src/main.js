@@ -346,6 +346,17 @@ app.mixin({
       }
       localStorage.setItem(storage, JSON.stringify(db))
       console.log(`${storage.toUpperCase()} SAVED`)
+    },
+    deleteFromListDB(storage, data){
+      let db = JSON.parse(localStorage.getItem(storage))
+      if(Array.isArray(data)){
+        // remove items in list using filter
+        db = db.filter(x => !data.includes(x))
+      } else {
+        db.splice(db.indexOf(data), 1)
+      }
+      localStorage.setItem(storage, JSON.stringify(db))
+      console.log(`${storage.toUpperCase()} SAVED`)
     }
   },
   computed:{
