@@ -21,7 +21,8 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <StatStockItem v-for="stock in stocks" :item="stock" @perte="perdre(stock)"/>
+        <StatStockItem v-for="stock in stocks" :item="stock"
+          @perte="perdre(stock)" @deleted="remove(stock)"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -73,6 +74,9 @@ export default {
       this.stocks = Object.values(this.$store.state.stocks).filter(x => {
         return JSON.stringify(x).toLowerCase().includes(keyword)
       })
+    },
+    remove(item){
+      this.stocks.splice(this.stocks.indexOf(item), 1)
     }
   },
   mounted(){

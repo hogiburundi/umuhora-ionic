@@ -101,22 +101,20 @@ export default {
               let elapsed = (new Date() - new Date(this.item.updated_at)) / (1000*60)
               if(elapsed > 120){
                 this.makeToast("Erreur", "durrée de suppression écoulée")
-              } else {
-                let index = this.$store.state.stocks.indexOf(this.item)
-                if(index>=0){
-                  this.$store.state.stocks.splice(index, 1)
-                  if(!!this.item.id){
-                    let data = {
-                      id:this.item.id,
-                      user:this.active_user.id
-                    }
-                    this.$store.state.deleted_stocks.add(data)
-                  }
-                } else {
-                  this.makeToast("Erreur", "une erreur est survenue")
-                  console.error(`erreur de suppression du stock ${this.item}`)
-                }
+                return
               }
+              if(this.item.quantite_initiale != this.item.quantite_actuelle){
+                this.makeToast("Erreur", "les stocks changés ne peuvent pas être annulé")
+                return
+              }
+              let produit = this.item.produit
+              produit.quantite -= this.item.quantite_initiale
+              if(this.item.id > 0){
+                this.saveInListDB("deleted_stocks", this.item.id)
+              } 
+              this.deleteFromDB("stocks", this.item.id)
+              this.saveInDB("produits", produit)
+              this.$emit("deleted")
             },
           },
         ],
