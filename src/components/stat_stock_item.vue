@@ -76,7 +76,7 @@ export default {
                 id:this.item.id,
                 user:this.active_user.id
               }
-              this.saveInListDB("validated_stocks", data)
+              this.saveInListDB("validated_stocks", data.id)
               this.saveInDB("stocks", data)
             },
           },

@@ -318,7 +318,13 @@ app.mixin({
       console.log(`${storage.toUpperCase()} SAVED`)
     },
     saveInListDB(storage, data){
-      let db = new Set(JSON.parse(localStorage.getItem(storage)))
+      let db = JSON.parse(localStorage.getItem(storage))
+      if(!db){
+        db = new Set()
+        localStorage.setItem(storage, "[]")
+      } else {
+        db = new Set(db)
+      }
       if(Array.isArray(data)){
         for(let item of data){
           db.add(item)

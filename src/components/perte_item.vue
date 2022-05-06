@@ -65,7 +65,7 @@ export default {
                 id:this.item.id,
                 user:this.active_user.id
               }
-              this.saveInListDB("validated_pertes", data)
+              this.saveInListDB("validated_pertes", data.id)
               this.saveInDB("pertes", data)
             },
           },
