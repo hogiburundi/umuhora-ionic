@@ -61,12 +61,8 @@ export default {
                 return
               }
               this.item.validated_by = this.active_user
-              let data = {
-                id:this.item.id,
-                user:this.active_user.id
-              }
-              this.saveInListDB("validated_pertes", data.id)
-              this.saveInDB("pertes", data)
+              this.saveInListDB("validated_pertes", this.item.id)
+              this.saveInDB("pertes", this.item)
             },
           },
         ],

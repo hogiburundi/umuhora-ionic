@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="line" :class="{'active':deleting_commandes}">
-        <div class="key">suppression payments</div>
+        <div class="key">suppression ventes</div>
         <div>
           {{ deleted_commandes_count-deleted_commandes.size }}/{{ deleted_commandes_count }}
         </div>

@@ -67,8 +67,20 @@ export default {
               if(elapsed > 60){
                 this.makeToast("Erreur", "Le temps de suppression expirée")
               } else {
-                this.$store.state.deleted_commandes.add(this.item.id)
-                delete(this.$store.state.commandes[this.item.id])
+                if(this.item.id < 0){
+                  let produits = []
+                  let produit = null
+                  for(let vente of this.item.created.ventes){
+                    produit = JSON.parse(localStorage.getItem("produits"))[vente.produit]
+                    produit.quantite += vente.quantite
+                    produits.push(produit)
+                  }
+                  this.saveInDB("produits", produits)
+                } else {
+                  this.saveInListDB("deleted_commandes", this.item.id)
+                }
+                this.deleteFromDB("commandes", this.item.id)
+                this.$emit("deleted")
               }
             },
           },

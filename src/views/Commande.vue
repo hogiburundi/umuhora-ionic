@@ -22,7 +22,7 @@
     <ion-content>
       <ion-col>
         <CommandeItem v-for="commande in commandes" :item="commande"
-          @click="displayFacture(commande)"/>
+          @click="displayFacture(commande)" @deleted="remove(commande)"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -166,6 +166,9 @@ export default {
         this.payee += x.payee;
         this.reste += x.prix-x.payee;
       })
+    },
+    remove(item){
+      this.commandes.splice(this.commandes.indexOf(item), 1)
     }
   },
   mounted(){
