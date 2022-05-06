@@ -12,7 +12,8 @@
     </ion-header>
     <ion-content>
       <ion-col>
-        <PerteItem v-for="perte in pertes" :item="perte" @changed="readPertes"/>
+        <PerteItem v-for="perte in pertes" :item="perte"
+          @changed="readPertes" @deleted="remove(item)"/>
       </ion-col>
     </ion-content>
     <ion-footer>
@@ -45,6 +46,9 @@ export default {
   methods:{
     readPertes(){
       this.pertes = Object.values(JSON.parse(localStorage.getItem("pertes")))
+    },
+    remove(item){
+      this.pertes.splice(this.pertes.indexOf(item), 1)
     }
   },
   mounted(){

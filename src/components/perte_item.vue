@@ -82,9 +82,11 @@ export default {
           {
             text: 'OUI',
             handler: () => {
-              console.log(this.$store.state.pertes)
-              this.$store.state.deleted_pertes.add(this.item.id)
-              delete(this.$store.state.pertes[this.item.id])
+              if(this.item.id > 0){
+                this.saveInListDB("deleted_pertes", this.item.id)
+              } 
+              this.deleteFromDB("pertes", this.item.id)
+              this.$emit("deleted")
             },
           },
         ],
