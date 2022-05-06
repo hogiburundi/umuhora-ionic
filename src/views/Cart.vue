@@ -149,7 +149,7 @@ export default {
         date:new Date(),
         kiosk:this.getActiveKiosk().id
       };
-      let id = this.generateId()
+      let id = this.generateId("commandes")
       let command = {
         id: id,
         prix: this.cart.getTotal(),

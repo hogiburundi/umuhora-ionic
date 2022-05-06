@@ -260,6 +260,7 @@ app.mixin({
       return id
     },
     generateId(storage){
+      if(!storage) throw(`la table ${storage} est introuvable`)
       let kiosk_id = this.getActiveKiosk().id;
       let id = -1
       let db = JSON.parse(localStorage.getItem(storage))

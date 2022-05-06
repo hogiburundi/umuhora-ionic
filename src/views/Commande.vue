@@ -170,7 +170,7 @@ export default {
   },
   mounted(){
     this.commandes = Object.values(JSON.parse(localStorage.getItem("commandes"))).sort((x, y) => {
-      return Math.abs(y.id) - Math.abs(x.id)
+      return new Date(y.date) - new Date(x.date)
     })
     this.calculateTotal()
   },
