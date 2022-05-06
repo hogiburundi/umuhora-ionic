@@ -9,7 +9,7 @@ import {
   IonTabBar, IonTitle, IonToolbar, IonHeader, IonMenuButton, IonFabButton,
   IonList, IonMenu, IonToggle, IonFooter, IonItemDivider, IonPopover, IonBadge,
   IonSelectOption, IonSelect, IonText, IonDatetime, toastController, IonSearchbar,
-  IonSpinner
+  IonSpinner, alertController
 } from '@ionic/vue';
 import '@ionic/core/css/ionic.bundle.css'
 import * as allIcons from "ionicons/icons";
@@ -67,62 +67,76 @@ app.mixin({
       return false;
     },
     logOut(x) {
-      let commandes = JSON.parse(localStorage.getItem("commandes"))
-      let stocks = JSON.parse(localStorage.getItem("stocks"))
-      let pertes = JSON.parse(localStorage.getItem("pertes"))
-      let produits = JSON.parse(localStorage.getItem("produits"))
-      let payments = JSON.parse(localStorage.getItem("payments"))
-      let clients = JSON.parse(localStorage.getItem("clients"))
+      alertController.create({
+        header: 'Attention!',
+        message: 'Voulez-vous vraiment vous deconnecter?',
+        buttons: [
+          {
+            text: 'laisser',
+            role: 'cancel'
+          },
+          {
+            text: 'OUI',
+            handler: () => {
+              let commandes = JSON.parse(localStorage.getItem("commandes"))
+              let stocks = JSON.parse(localStorage.getItem("stocks"))
+              let pertes = JSON.parse(localStorage.getItem("pertes"))
+              let produits = JSON.parse(localStorage.getItem("produits"))
+              let payments = JSON.parse(localStorage.getItem("payments"))
+              let clients = JSON.parse(localStorage.getItem("clients"))
 
-      if(!!commandes){
-        commandes = Object.keys(commandes).filter(x => x < 0)
-        if(commandes.length > 0) {
-          this.makeToast("Erreur", "synchronisation des commandes obligatoire")
-          return
-        }
-        localStorage.setItem("commandes", "{}")
-      }
-      if(!!stocks){
-        stocks = Object.keys(stocks).filter(x => x < 0)
-        if(stocks.length > 0) {
-          this.makeToast("Erreur", "synchronisation des stocks obligatoire")
-          return
-        }
-        localStorage.setItem("stocks", "{}")
-      } 
-      if(!!pertes){
-        pertes = Object.keys(pertes).filter(x => x < 0)
-        if(pertes.length > 0) {
-          this.makeToast("Erreur", "synchronisation des pertes obligatoire")
-          return
-        }
-        localStorage.setItem("pertes", "{}")
-      } 
-      if(!!produits){
-        produits = Object.keys(produits).filter(x => x < 0)
-        if(produits.length > 0) {
-          this.makeToast("Erreur", "synchronisation des produits obligatoire")
-          return
-        }
-        localStorage.setItem("produits", "{}")
-      }
-      if(!!payments){
-        payments = Object.keys(payments).filter(x => x < 0)
-        if(payments.length > 0) {
-          this.makeToast("Erreur", "synchronisation des payments obligatoire")
-          return
-        }
-        localStorage.setItem("payments", "{}")
-      }
-      if(!!clients){
-        clients = Object.keys(clients).filter(x => x < 0)
-        this.deleteFromDB("clients", clients)
-      }
-
-      if(confirm("Voulez-vous vraiment deconnecter?")){
-        this.$store.state.user = null
-        this.$store.state.active_kiosk = null
-      }
+              if(!!commandes){
+                commandes = Object.keys(commandes).filter(x => x < 0)
+                if(commandes.length > 0) {
+                  this.makeToast("Erreur", "synchronisation des commandes obligatoire")
+                  return
+                }
+                localStorage.setItem("commandes", "{}")
+              }
+              if(!!stocks){
+                stocks = Object.keys(stocks).filter(x => x < 0)
+                if(stocks.length > 0) {
+                  this.makeToast("Erreur", "synchronisation des stocks obligatoire")
+                  return
+                }
+                localStorage.setItem("stocks", "{}")
+              } 
+              if(!!pertes){
+                pertes = Object.keys(pertes).filter(x => x < 0)
+                if(pertes.length > 0) {
+                  this.makeToast("Erreur", "synchronisation des pertes obligatoire")
+                  return
+                }
+                localStorage.setItem("pertes", "{}")
+              } 
+              if(!!produits){
+                produits = Object.keys(produits).filter(x => x < 0)
+                if(produits.length > 0) {
+                  this.makeToast("Erreur", "synchronisation des produits obligatoire")
+                  return
+                }
+                localStorage.setItem("produits", "{}")
+              }
+              if(!!payments){
+                payments = Object.keys(payments).filter(x => x < 0)
+                if(payments.length > 0) {
+                  this.makeToast("Erreur", "synchronisation des payments obligatoire")
+                  return
+                }
+                localStorage.setItem("payments", "{}")
+              }
+              if(!!clients){
+                clients = Object.keys(clients).filter(x => x < 0)
+                this.deleteFromDB("clients", clients)
+              }
+              this.$store.state.user = null
+              this.$store.state.active_kiosk = null
+            },
+          },
+        ],
+      }).then(res => {
+        res.present();
+      });
     },
     money(x) {
       let cash = parseFloat(x).toFixed(0)
