@@ -374,7 +374,37 @@ export default {
           }
         });
       } else {
-        this.postStocks()
+        this.postProduits()
+      }
+    },
+    postProduits(){
+      let link;
+      this.sending_produits = true
+      if(!this.in_action) return
+      if(this.created_produits.length > 0){
+        let item = this.created_produits[0]
+        if(!item.created){
+          this.created_produits.splice(0, 1)
+          this.postProduits()
+          return
+        }
+        axios.post(this.url+`/produit/`, item.created, this.headers)
+        .then((response) => {
+          this.created_produits.splice(0, 1)
+          this.deleteFromDB("produits", item.id)
+          this.updateProdsInDB(item.id, response.data)
+          this.saveInDB("produits", response.data)
+          this.postProduits()
+        }).catch((error) => {
+          if(!!error.response && error.response.status == 400){
+            this.created_produits.splice(0, 1)
+            this.postProduits()
+          } else{
+            this.displayErrorOrRefreshToken(error, this.postProduits)
+          }
+        });
+      } else {
+        this.getStocks()
       }
     },
     postStocks(){
@@ -428,35 +458,6 @@ export default {
             this.postPertes()
           }
           this.displayErrorOrRefreshToken(error, this.postPertes)
-        });
-      } else {
-        this.postProduits()
-      }
-    },
-    postProduits(){
-      let link;
-      this.sending_produits = true
-      if(!this.in_action) return
-      if(this.created_produits.length > 0){
-        let item = this.created_produits[0]
-        if(!item.created){
-          this.created_produits.splice(0, 1)
-          this.postProduits()
-          return
-        }
-        axios.post(this.url+`/produit/`, item.created, this.headers)
-        .then((response) => {
-          this.created_produits.splice(0, 1)
-          this.deleteFromDB("produits", item.id)
-          this.saveInDB("produits", response.data)
-          this.postProduits()
-        }).catch((error) => {
-          if(!!error.response && error.response.status == 400){
-            this.created_produits.splice(0, 1)
-            this.postProduits()
-          } else{
-            this.displayErrorOrRefreshToken(error, this.postProduits)
-          }
         });
       } else {
         this.getCommandes()
