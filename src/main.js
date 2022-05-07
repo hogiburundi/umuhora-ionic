@@ -242,7 +242,7 @@ app.mixin({
       }
       return this.$store.state.active_kiosk
     },
-    updateProdsInDB(old_id, new_data){
+    updateStocksInDB(old_id, new_data){
       let stocks = Object.values(JSON.parse(localStorage.getItem("stocks"))).filter(x => {
         return x.produit.id == old_id
       })
@@ -253,21 +253,21 @@ app.mixin({
       console.log(stocks)
       this.saveInDB("stocks", stocks)
     },
-    // updateProdsInDB(storage, old_id, new_id){
-    //   let stocks = Object.values(JSON.parse(localStorage.getItem("stocks"))).filter(x => {
-    //     return x.id < 0 && !!x.ventes
-    //   })
-    //   let updated = []
-    //   for(let stock of stocks){
-    //     for(var i=0; i<stock.ventes.length; i++){
-    //       if(stocks.ventes[i].produit == old_id){
-    //         stocks.ventes[i].produit = new_id
-    //       }
-    //     }
-    //     updated.push(stock)
-    //   }
-    //   this.saveInDB("stocks", updated)
-    // },
+    updateVentesInDB(storage, old_id, new_id){
+      let ventes = Object.values(JSON.parse(localStorage.getItem("commandes"))).filter(x => {
+        return x.id < 0 && !!x.ventes
+      })
+      let updated = []
+      for(let vente of ventes){
+        for(var i=0; i<vente.ventes.length; i++){
+          if(vente.ventes[i].produit == old_id){
+            vente.ventes[i].produit = new_id
+          }
+        }
+        updated.push(vente)
+      }
+      this.saveInDB("ventes", updated)
+    },
     getMaxID(storage){
       let kiosk_id = this.getActiveKiosk().id;
       let id = null

@@ -38,6 +38,12 @@
           {{ created_produits_count - created_produits.length }}/{{ created_produits_count }}
         </div>
       </div>
+      <div class="line" :class="{'active':sending_stocks}">
+        <div class="key">envoie stocks</div>
+        <div>
+          {{ created_stocks_count - created_stocks.length }}/{{ created_stocks_count }}
+        </div>
+      </div>
       <div class="line" :class="{'active':sending_commandes}">
         <div class="key">envoie commandes</div>
         <div>
@@ -48,12 +54,6 @@
         <div class="key">envoie payments</div>
         <div>
           {{ created_payments_count - created_payments.length }}/{{ created_payments_count }}
-        </div>
-      </div>
-      <div class="line" :class="{'active':sending_stocks}">
-        <div class="key">envoie stocks</div>
-        <div>
-          {{ created_stocks_count - created_stocks.length }}/{{ created_stocks_count }}
         </div>
       </div>
       <div class="line" :class="{'active':sending_pertes}">
@@ -334,7 +334,8 @@ export default {
         .then((response) => {
           this.created_produits.splice(0, 1)
           this.deleteFromDB("produits", item.id)
-          this.updateProdsInDB(item.id, response.data)
+          this.updateStocksInDB(item.id, response.data)
+          this.updateVentesInDB(item.id, response.data.id)
           this.saveInDB("produits", response.data)
           this.postProduits()
         }).catch((error) => {
@@ -344,6 +345,34 @@ export default {
           } else{
             this.displayErrorOrRefreshToken(error, this.postProduits)
           }
+        });
+      } else {
+        this.postStocks()
+      }
+    },
+    postStocks(){
+      let link;
+      this.sending_stocks = true
+      if(!this.in_action) return
+      if(this.created_stocks.length > 0){
+        let item = this.created_stocks[0]
+        if(!item.created){
+          this.created_stocks.splice(0, 1)
+          this.postStocks()
+          return
+        }
+        axios.post(this.url+`/stock/`, item.created, this.headers)
+        .then((response) => {
+          this.created_stocks.splice(0, 1)
+          this.deleteFromDB("stocks", item.id)
+          this.saveInDB("stocks", response.data)
+          this.postStocks()
+        }).catch((error) => {
+          if(!!error.response && error.response.status == 400){
+            this.created_stocks.splice(0, 1)
+            this.postStocks()
+          }
+          this.displayErrorOrRefreshToken(error, this.postStocks)
         });
       } else {
         this.postCommandes()
@@ -402,34 +431,6 @@ export default {
           } else{
             this.displayErrorOrRefreshToken(error, this.postPayments)
           }
-        });
-      } else {
-        this.postStocks()
-      }
-    },
-    postStocks(){
-      let link;
-      this.sending_stocks = true
-      if(!this.in_action) return
-      if(this.created_stocks.length > 0){
-        let item = this.created_stocks[0]
-        if(!item.created){
-          this.created_stocks.splice(0, 1)
-          this.postStocks()
-          return
-        }
-        axios.post(this.url+`/stock/`, item.created, this.headers)
-        .then((response) => {
-          this.created_stocks.splice(0, 1)
-          this.deleteFromDB("stocks", item.id)
-          this.saveInDB("stocks", response.data)
-          this.postStocks()
-        }).catch((error) => {
-          if(!!error.response && error.response.status == 400){
-            this.created_stocks.splice(0, 1)
-            this.postStocks()
-          }
-          this.displayErrorOrRefreshToken(error, this.postStocks)
         });
       } else {
         this.postPertes()
