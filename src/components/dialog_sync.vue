@@ -32,6 +32,12 @@
           {{ deleted_pertes_count-deleted_pertes.size }}/{{ deleted_pertes_count }}
         </div>
       </div>
+      <div class="line" :class="{'active':sending_produits}">
+        <div class="key">envoie produits</div>
+        <div>
+          {{ created_produits_count - created_produits.length }}/{{ created_produits_count }}
+        </div>
+      </div>
       <div class="line" :class="{'active':sending_commandes}">
         <div class="key">envoie commandes</div>
         <div>
@@ -54,12 +60,6 @@
         <div class="key">envoie pertes</div>
         <div>
           {{ created_pertes_count - created_pertes.length }}/{{ created_pertes_count }}
-        </div>
-      </div>
-      <div class="line" :class="{'active':sending_produits}">
-        <div class="key">envoie produits</div>
-        <div>
-          {{ created_produits_count - created_produits.length }}/{{ created_produits_count }}
         </div>
       </div>
       <div class="line" :class="{'active':receiving_commandes}">
@@ -316,6 +316,36 @@ export default {
           })
         });
       } else {
+        this.postProduits()
+      }
+    },
+    postProduits(){
+      let link;
+      this.sending_produits = true
+      if(!this.in_action) return
+      if(this.created_produits.length > 0){
+        let item = this.created_produits[0]
+        if(!item.created){
+          this.created_produits.splice(0, 1)
+          this.postProduits()
+          return
+        }
+        axios.post(this.url+`/produit/`, item.created, this.headers)
+        .then((response) => {
+          this.created_produits.splice(0, 1)
+          this.deleteFromDB("produits", item.id)
+          this.updateProdsInDB(item.id, response.data)
+          this.saveInDB("produits", response.data)
+          this.postProduits()
+        }).catch((error) => {
+          if(!!error.response && error.response.status == 400){
+            this.created_produits.splice(0, 1)
+            this.postProduits()
+          } else{
+            this.displayErrorOrRefreshToken(error, this.postProduits)
+          }
+        });
+      } else {
         this.postCommandes()
       }
     },
@@ -374,37 +404,7 @@ export default {
           }
         });
       } else {
-        this.postProduits()
-      }
-    },
-    postProduits(){
-      let link;
-      this.sending_produits = true
-      if(!this.in_action) return
-      if(this.created_produits.length > 0){
-        let item = this.created_produits[0]
-        if(!item.created){
-          this.created_produits.splice(0, 1)
-          this.postProduits()
-          return
-        }
-        axios.post(this.url+`/produit/`, item.created, this.headers)
-        .then((response) => {
-          this.created_produits.splice(0, 1)
-          this.deleteFromDB("produits", item.id)
-          this.updateProdsInDB(item.id, response.data)
-          this.saveInDB("produits", response.data)
-          this.postProduits()
-        }).catch((error) => {
-          if(!!error.response && error.response.status == 400){
-            this.created_produits.splice(0, 1)
-            this.postProduits()
-          } else{
-            this.displayErrorOrRefreshToken(error, this.postProduits)
-          }
-        });
-      } else {
-        this.getStocks()
+        this.postStocks()
       }
     },
     postStocks(){
