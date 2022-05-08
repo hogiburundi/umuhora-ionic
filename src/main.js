@@ -250,23 +250,22 @@ app.mixin({
         stock.created.produit = new_data.id
         stock.produit = new_data
       }
-      console.log(stocks)
       this.saveInDB("stocks", stocks)
     },
-    updateVentesInDB(storage, old_id, new_id){
+    updateVentesInDB(old_id, new_id){
       let ventes = Object.values(JSON.parse(localStorage.getItem("commandes"))).filter(x => {
-        return x.id < 0 && !!x.ventes
+        return x.id < 0 && !!x.created
       })
       let updated = []
       for(let vente of ventes){
-        for(var i=0; i<vente.ventes.length; i++){
-          if(vente.ventes[i].produit == old_id){
-            vente.ventes[i].produit = new_id
+        for(var i=0; i<vente.created.ventes.length; i++){
+          if(vente.created.ventes[i].produit == old_id){
+            vente.created.ventes[i].produit = new_id
           }
         }
         updated.push(vente)
       }
-      this.saveInDB("ventes", updated)
+      this.saveInDB("commandes", updated)
     },
     getMaxID(storage){
       let kiosk_id = this.getActiveKiosk().id;

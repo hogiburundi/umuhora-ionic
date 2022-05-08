@@ -347,6 +347,8 @@ export default {
           }
         });
       } else {
+        this.created_commandes = this.getCreated("commandes")
+        this.created_stocks = this.getCreated("stocks")
         this.postStocks()
       }
     },
