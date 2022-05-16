@@ -35,14 +35,6 @@ export default {
       pertes:[]
     }
   },
-  watch:{
-    pertes:{
-      deep:true,
-      handler(new_val){
-        this.readPertes()
-      }
-    }
-  },
   methods:{
     readPertes(){
       this.pertes = Object.values(JSON.parse(localStorage.getItem("pertes")))
