@@ -80,7 +80,7 @@
       </ion-button>
     </ion-footer>
     <ion-searchbar show-cancel-button="always" debounce="0" id="searchbar"
-      @ionCancel="closeSearch" @ionInput="search($event.target.value)"/>
+      @ionCancel="closeSearch" @search="search($event.target.value)"/>
     <DialogProduit :active="produit_shown" @close="closeDialog"
       :item="active_stock_item"/>
     <DialogSync :active="sync_shown" @close="closeDialog"/>

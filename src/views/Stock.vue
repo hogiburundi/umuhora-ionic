@@ -22,13 +22,6 @@ export default {
     }
   },
   watch:{
-    "$store.state.produits":{
-      deep:true,
-      handler(new_val){
-        this.last = 21
-        this.chunk = new_val
-      }
-    },
     "$store.state.home_keyword"(new_val){
       this.last = 21
       if(this.$route.path != "/home/stock") return
