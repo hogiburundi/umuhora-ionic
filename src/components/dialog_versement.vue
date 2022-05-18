@@ -50,7 +50,20 @@ export default {
         dettes: this.dettes,
         kiosk: kiosk_id
       }
-      this.close()
+      let link = this.url+`/versement/`;
+      axios.post(link, data, this.headers)
+      .then((response) => {
+        this.$store.state.versements.unshift(response.data)
+        this.en_cours = false
+      }).catch((error) => {
+        if(!!error.response){
+          this.makeToast("Erreur", error.response.data.status)
+        }
+        this.en_cours = false
+      }).finally(() => {
+        this.close()
+      });
+
     }
   }
 };
