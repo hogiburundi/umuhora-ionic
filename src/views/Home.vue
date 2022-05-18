@@ -134,6 +134,7 @@ export default {
     },
     closeSearch(event){
       let searchbar = document.getElementById("searchbar")
+      this.$store.state.home_keyword = ""
       searchbar.classList.remove("shown")
     },
     showSearch(){

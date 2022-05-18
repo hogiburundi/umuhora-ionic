@@ -55,18 +55,21 @@
     </ion-footer>
   </ion-page>
   <DialogDateFilter :active="date_shown" @close="date_shown=false"/>
+  <DialogVersement :active="versement_shown" :item="today_vers"
+    @close="versement_shown=false"/>
 </ion-page>
 </template>
 <script>
 import VersementItem from "../components/versement_item"
 import DialogDateFilter from "../components/dialog_date_filter"
+import DialogVersement from "../components/dialog_versement"
 
 export default {
-  components:{VersementItem, DialogDateFilter},
+  components:{VersementItem, DialogDateFilter, DialogVersement},
   data(){
     return {
       date_shown:false, versements:this.$store.state.versements,
-      today_vers:null, en_cours:false
+      today_vers:null, en_cours:false, versement_shown:false,
     }
   },
   watch:{
@@ -114,20 +117,7 @@ export default {
       });
     },
     verser(){
-      if(this.en_cours) return
-      this.en_cours = true
-      let kiosk_id = this.getActiveKiosk().id
-      let link = this.url+`/versement/`;
-      axios.post(link, this.today_vers, this.headers)
-      .then((response) => {
-        this.$store.state.versements.unshift(response.data)
-        this.en_cours = false
-      }).catch((error) => {
-        if(!!error.response){
-          this.makeToast("Erreur", error.response.data.status)
-        }
-        this.en_cours = false
-      });
+      this.versement_shown = true
     }
   },
   mounted(){
