@@ -330,7 +330,7 @@ app.mixin({
       }
       return results
     },
-    getCreated(storage){
+    getUpdated(storage){
       let results = []
       let db = JSON.parse(localStorage.getItem(storage))
       if(!db){

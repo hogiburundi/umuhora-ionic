@@ -33,9 +33,9 @@
         </div>
       </div>
       <div class="line" :class="{'active':updating_prods}">
-        <div class="key">Modification produits</div>
+        <div class="key">modification produits</div>
         <div>
-          {{ updated_prods_count-updated_prods.size }}/{{ updated_prods_count }}
+          {{ updated_prods_count-updated_prods.length }}/{{ updated_prods_count }}
         </div>
       </div>
       <div class="line" :class="{'active':sending_produits}">
@@ -132,7 +132,7 @@ export default {
       sending_produits: false, updating_prods:false,
 
       valid_pertes:new Set(), valid_stocks:new Set(), deleted_commandes:new Set(),
-      deleted_stocks:new Set(), deleted_pertes:new Set(), updated_prods:new Set(),
+      deleted_stocks:new Set(), deleted_pertes:new Set(), updated_prods:[],
 
       created_commandes:[], created_payments:[], created_stocks:[], created_pertes:[],
       created_produits:[],
@@ -334,22 +334,21 @@ export default {
       let link;
       this.updating_prods = true
       if(!this.in_action) return
-      if(this.updated_produits.length > 0){
-        let item = this.updated_produits[0]
-        if(!item.created){
-          this.updated_produits.splice(0, 1)
+      if(this.updated_prods.length > 0){
+        let item = this.updated_prods[0]
+        if(!item.updated){
+          this.updated_prods.splice(0, 1)
           this.putProduits()
           return
         }
-        axios.post(this.url+`/produit/`, item.created, this.headers)
+        axios.post(this.url+`/produit/`, item.updated, this.headers)
         .then((response) => {
-          this.updated_produits.splice(0, 1)
-          this.deleteFromDB("produits", item.id)
+          this.updated_prods.splice(0, 1)
           this.saveInDB("produits", response.data)
           this.putProduits()
         }).catch((error) => {
           if(!!error.response && error.response.status == 400){
-            this.updated_produits.splice(0, 1)
+            this.updated_prods.splice(0, 1)
             this.putProduits()
           } else{
             this.displayErrorOrRefreshToken(error, this.putProduits)
