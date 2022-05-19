@@ -32,6 +32,12 @@
           {{ deleted_pertes_count-deleted_pertes.size }}/{{ deleted_pertes_count }}
         </div>
       </div>
+      <div class="line" :class="{'active':updating_prods}">
+        <div class="key">Modification produits</div>
+        <div>
+          {{ updated_prods_count-updated_prods.size }}/{{ updated_prods_count }}
+        </div>
+      </div>
       <div class="line" :class="{'active':sending_produits}">
         <div class="key">envoie produits</div>
         <div>
@@ -113,7 +119,7 @@ export default {
       valid_pertes_count: 0, deleted_commandes_count: 0, deleted_stocks_count: 0,
       deleted_pertes_count: 0, created_commandes_count: 0, created_payments_count: 0,
       created_stocks_count: 0, created_pertes_count: 0, created_produits_count: 0,
-      count_commandes: 0, count_payments: 0, count_clients: 0,
+      count_commandes: 0, count_payments: 0, count_clients: 0, updated_prods_count:0,
 
       next_commandes: null, next_payments: null, next_stocks: null, next_pertes: null,
       next_produits: null, next_client:null,
@@ -123,10 +129,10 @@ export default {
       receiving_payments: false, receiving_stocks: false, receiving_pertes: false,
       receiving_produits: false, receiving_clients: false, sending_commandes: false,
       sending_payments: false, sending_stocks: false, sending_pertes: false,
-      sending_produits: false,
+      sending_produits: false, updating_prods:false,
 
       valid_pertes:new Set(), valid_stocks:new Set(), deleted_commandes:new Set(),
-      deleted_stocks:new Set(), deleted_pertes:new Set(),
+      deleted_stocks:new Set(), deleted_pertes:new Set(), updated_prods:new Set(),
 
       created_commandes:[], created_payments:[], created_stocks:[], created_pertes:[],
       created_produits:[],
@@ -141,6 +147,7 @@ export default {
         this.count_stocks= 0
         this.count_pertes= 0
         this.count_produits= 0
+        this.updated_prods_count= 0
         this.valid_stocks_count= 0
         this.valid_pertes_count= 0
         this.deleted_commandes_count= 0
@@ -155,6 +162,7 @@ export default {
         this.count_payments= 0
         this.count_clients= 0
         
+        this.updating_prods= false
         this.validating_pertes= false
         this.validating_stocks= false
         this.deleting_commandes= false
@@ -185,6 +193,9 @@ export default {
         this.deleted_pertes_count = this.deleted_pertes.size
 
         let kiosk_id = this.getActiveKiosk().id
+
+        this.updated_prods = this.getUpdated("produits")
+        this.updated_prods_count = this.updated_prods.length
 
         this.created_commandes = this.getCreated("commandes")
         this.created_commandes_count = this.created_commandes.length
@@ -316,6 +327,37 @@ export default {
           })
         });
       } else {
+        this.putProduits()
+      }
+    },
+    putProduits(){
+      let link;
+      this.updating_prods = true
+      if(!this.in_action) return
+      if(this.updated_produits.length > 0){
+        let item = this.updated_produits[0]
+        if(!item.created){
+          this.updated_produits.splice(0, 1)
+          this.putProduits()
+          return
+        }
+        axios.post(this.url+`/produit/`, item.created, this.headers)
+        .then((response) => {
+          this.updated_produits.splice(0, 1)
+          this.deleteFromDB("produits", item.id)
+          this.saveInDB("produits", response.data)
+          this.putProduits()
+        }).catch((error) => {
+          if(!!error.response && error.response.status == 400){
+            this.updated_produits.splice(0, 1)
+            this.putProduits()
+          } else{
+            this.displayErrorOrRefreshToken(error, this.putProduits)
+          }
+        });
+      } else {
+        this.created_commandes = this.getCreated("commandes")
+        this.created_stocks = this.getCreated("stocks")
         this.postProduits()
       }
     },

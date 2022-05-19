@@ -330,6 +330,17 @@ app.mixin({
       }
       return results
     },
+    getCreated(storage){
+      let results = []
+      let db = JSON.parse(localStorage.getItem(storage))
+      if(!db){
+        db = []
+        localStorage.setItem(storage, "{}")
+      } else {
+        results = Object.values(db).filter(x => !!x.updated)
+      }
+      return results
+    },
     saveInDB(storage, data){
       let db = JSON.parse(localStorage.getItem(storage))
       if(Array.isArray(data)){

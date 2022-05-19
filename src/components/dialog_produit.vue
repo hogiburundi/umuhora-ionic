@@ -110,6 +110,7 @@ export default {
         this.saveInDB('produits', data)
         this.makeToast("Success", `"${this.nom}" a été bien créé!`)
       } else {
+        data.quantite = this.item.quantite
         for(let key of Object.keys(data)){
           this.item[key] = data[key]
         }
