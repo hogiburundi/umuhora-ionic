@@ -15,6 +15,8 @@
         </ion-item>
         <ion-label color="danger">{{ logs }}</ion-label>
         <ion-button expand="block" @click="login">
+          <ion-spinner v-if="loging_in"
+            name="crescent" color="light" style="margin: 0 10px;"/>
           CONNEXION
         </ion-button>
       </ion-col>
@@ -36,12 +38,13 @@ import CustomPlugins from '../plugins'
 export default {
   data(){
     return {
-      username:"", password:"", logs:""
+      username:"", password:"", logs:"", loging_in:false
     }
   },
   methods:{
     login(){
       this.logs = ""
+      this.loging_in = true
       axios.post(this.url+"/login/", 
         {"username": this.username, "password":this.password}
       ).then((response) => {
@@ -58,6 +61,8 @@ export default {
       }).catch((error) => {
         console.log(error)
         this.logs = error.response.data
+      }).finally(() => {
+        this.loging_in = false
       })
     },
     openWhatsapp(){
