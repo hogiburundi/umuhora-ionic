@@ -88,28 +88,43 @@ app.mixin({
 
               if(!!commandes){
                 commandes = Object.keys(commandes).filter(x => x < 0)
-                if(commandes.length > 0) full_disconnect = false
-                localStorage.setItem("commandes", "{}")
+                if(commandes.length > 0){
+                  full_disconnect = false
+                } else {
+                  localStorage.setItem("commandes", "{}")
+                }
               }
               if(full_disconnect && !!stocks){
                 stocks = Object.keys(stocks).filter(x => x < 0)
-                if(stocks.length > 0) full_disconnect = false
-                localStorage.setItem("stocks", "{}")
+                if(stocks.length > 0){
+                  full_disconnect = false
+                } else {
+                  localStorage.setItem("stocks", "{}")
+                }
               } 
               if(full_disconnect && !!pertes){
                 pertes = Object.keys(pertes).filter(x => x < 0)
-                if(pertes.length > 0) full_disconnect = false
-                localStorage.setItem("pertes", "{}")
+                if(pertes.length > 0){
+                  full_disconnect = false
+                } else {
+                  localStorage.setItem("pertes", "{}")
+                }
               } 
               if(full_disconnect && !!produits){
                 produits = Object.keys(produits).filter(x => x < 0)
-                if(produits.length > 0) full_disconnect = false
-                localStorage.setItem("produits", "{}")
+                if(produits.length > 0){
+                  full_disconnect = false
+                } else {
+                  localStorage.setItem("produits", "{}")
+                }
               }
               if(full_disconnect && !!payments){
                 payments = Object.keys(payments).filter(x => x < 0)
-                if(payments.length > 0) full_disconnect = false
-                localStorage.setItem("payments", "{}")
+                if(payments.length > 0){
+                  full_disconnect = false
+                } else {
+                  localStorage.setItem("payments", "{}")
+                }
               }
               if(full_disconnect && !!clients){
                 clients = Object.keys(clients).filter(x => x < 0)
