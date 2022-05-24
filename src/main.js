@@ -78,6 +78,7 @@ app.mixin({
           {
             text: 'OUI',
             handler: () => {
+              let full_disconnect = true
               let commandes = JSON.parse(localStorage.getItem("commandes"))
               let stocks = JSON.parse(localStorage.getItem("stocks"))
               let pertes = JSON.parse(localStorage.getItem("pertes"))
@@ -87,50 +88,35 @@ app.mixin({
 
               if(!!commandes){
                 commandes = Object.keys(commandes).filter(x => x < 0)
-                if(commandes.length > 0) {
-                  this.makeToast("Erreur", "synchronisation des commandes obligatoire")
-                  return
-                }
+                if(commandes.length > 0) full_disconnect = false
                 localStorage.setItem("commandes", "{}")
               }
-              if(!!stocks){
+              if(full_disconnect && !!stocks){
                 stocks = Object.keys(stocks).filter(x => x < 0)
-                if(stocks.length > 0) {
-                  this.makeToast("Erreur", "synchronisation des stocks obligatoire")
-                  return
-                }
+                if(stocks.length > 0) full_disconnect = false
                 localStorage.setItem("stocks", "{}")
               } 
-              if(!!pertes){
+              if(full_disconnect && !!pertes){
                 pertes = Object.keys(pertes).filter(x => x < 0)
-                if(pertes.length > 0) {
-                  this.makeToast("Erreur", "synchronisation des pertes obligatoire")
-                  return
-                }
+                if(pertes.length > 0) full_disconnect = false
                 localStorage.setItem("pertes", "{}")
               } 
-              if(!!produits){
+              if(full_disconnect && !!produits){
                 produits = Object.keys(produits).filter(x => x < 0)
-                if(produits.length > 0) {
-                  this.makeToast("Erreur", "synchronisation des produits obligatoire")
-                  return
-                }
+                if(produits.length > 0) full_disconnect = false
                 localStorage.setItem("produits", "{}")
               }
-              if(!!payments){
+              if(full_disconnect && !!payments){
                 payments = Object.keys(payments).filter(x => x < 0)
-                if(payments.length > 0) {
-                  this.makeToast("Erreur", "synchronisation des payments obligatoire")
-                  return
-                }
+                if(payments.length > 0) full_disconnect = false
                 localStorage.setItem("payments", "{}")
               }
-              if(!!clients){
+              if(full_disconnect && !!clients){
                 clients = Object.keys(clients).filter(x => x < 0)
                 this.deleteFromDB("clients", clients)
               }
               this.$store.state.user = null
-              this.$store.state.active_kiosk = null
+              if(full_disconnect) this.$store.state.active_kiosk = null
             },
           },
         ],

@@ -45,6 +45,14 @@ export default {
       axios.post(this.url+"/login/", 
         {"username": this.username, "password":this.password}
       ).then((response) => {
+        let active_kiosk = JSON.parse(localStorage.getItem("active_kiosk"))
+        if(active_kiosk){
+          let ids = response.data.kiosks.map(x => x.id)
+          if(!ids.includes(active_kiosk.id)){
+            this.logs = `Seul les utilisateurs du kiosk "${active_kiosk.nom}" peuvent se connecter`
+            return
+          }
+        }
         this.$store.state.user = response.data
         this.$store.state.user.username = this.username
       }).catch((error) => {

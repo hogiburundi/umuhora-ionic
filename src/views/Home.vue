@@ -93,7 +93,6 @@
 import DialogProduit from "../components/dialog_produit"
 import DialogAchat from "../components/dialog_achat"
 import DialogSync from "../components/dialog_sync"
-import { Camera } from '@capacitor/camera';
 import CustomPlugins from '../plugins'
 
 export default {
@@ -124,7 +123,6 @@ export default {
       this.sync_shown = false
     },
     startScan(){
-      Camera.requestPermissions()
       CustomPlugins.startScan().then((result) => {
         let item = JSON.parse(localStorage.getItem('produits'))[result.value.toString()]
         if(item.quantite > 0){
