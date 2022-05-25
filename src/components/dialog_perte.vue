@@ -37,10 +37,6 @@ export default {
     close(){
       this.$emit("close")
     },
-    generateId(){
-      let ids = Array.from(Object.values(this.$store.state.pertes), x => Math.abs(x.id))
-      return -1 * (Math.max(...ids)+ 1)
-    },
     save(){
       if(!this.qtt || this.qtt > this.item.quantite_actuelle){
         this.makeToast("Erreur", "iyo quantité ntishoboka")
@@ -50,7 +46,7 @@ export default {
         this.makeToast("Erreur", "insiguro ntihagije")
         return;
       }
-      let id = this.generateId()
+      let id = this.generateId("pertes")
       let data = {
         id: id,
         quantite: this.qtt,
@@ -70,8 +66,7 @@ export default {
         user_id: this.active_user.id,
         kiosk_id: this.getActiveKiosk().id
       }
-      this.$store.state.db_pertes[id] = data
-      this.$store.state.pertes.unshift(data)
+      this.saveInDB("pertes", data)
       this.item.quantite_actuelle -= this.qtt
       this.close()
     }
