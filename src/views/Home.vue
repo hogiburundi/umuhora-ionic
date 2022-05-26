@@ -43,9 +43,17 @@
               <ion-label>Edition</ion-label>
               <ion-icon :src="getIcon('personOutline')"/>
             </ion-item>
+            <ion-item button @click="backup">
+              <ion-label>Sauvegarder</ion-label>
+              <ion-icon :src="getIcon('saveOutline')"/>
+            </ion-item>
+            <ion-item button @click="restore">
+              <ion-label>Restaurer</ion-label>
+              <ion-icon :src="getIcon('reloadCircleOutline')"/>
+            </ion-item>
             <ion-item button @click="logOut">
               <ion-label>Deconnexion</ion-label>
-              <ion-icon :src="getIcon('logOutOutline')"/>
+              <ion-icon :src="getIcon('powerOutline')"/>
             </ion-item>
             <ion-item button @click="openWhatsapp">
               <ion-label>Demander l'aide</ion-label>
@@ -155,7 +163,13 @@ export default {
     },
     openWhatsapp(){
       CustomPlugins.openWhatsapp()
-    }
+    },
+    backup(){
+      this.makeToast("backup", "Creation de sauvegarde en cours...")
+    },
+    restore(){
+      this.makeToast("Attention", "tout les données seront remplaçées...")
+    },
   },
   mounted(){
   }
