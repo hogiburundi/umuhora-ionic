@@ -166,6 +166,24 @@ export default {
     },
     backup(){
       this.makeToast("backup", "Creation de sauvegarde en cours...")
+      let data = {
+        clients: JSON.parse(localStorage.getItem("clients")),
+        commandes: JSON.parse(localStorage.getItem("commandes")),
+        produits: JSON.parse(localStorage.getItem("produits")),
+        stocks: JSON.parse(localStorage.getItem("stocks")),
+        pertes: JSON.parse(localStorage.getItem("pertes")),
+        payments: JSON.parse(localStorage.getItem("payments"))
+      }
+      data = JSON.stringify(data);
+      const blob = new Blob([data], {type: 'text/json;charset=windows-1252;'});
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('hidden', '');
+      a.setAttribute('href', url);
+      a.setAttribute('download', 'model.json');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     },
     restore(){
       this.makeToast("Attention", "tout les données seront remplaçées...")
