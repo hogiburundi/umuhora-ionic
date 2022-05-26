@@ -36,8 +36,12 @@ export default {
   components:{VenteItem},
   methods:{
     loadData(){
-      let db = Object.values(JSON.parse(localStorage.produits))
-      this.chunk = db.filter(x => x.quantite > 0).slice(0, 21)
+      try {
+        let db = Object.values(JSON.parse(localStorage.getItem("produits")))
+        this.chunk = db.filter(x => x.quantite > 0).slice(0, 21)
+      } catch(e) {
+        console.warn(e);
+      }
     },
     loadMore(){
       let ibidandazwa = Object.values(JSON.parse(localStorage.produits))

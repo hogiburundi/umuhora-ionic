@@ -187,6 +187,25 @@ export default {
     },
     restore(){
       this.makeToast("Attention", "tout les données seront remplaçées...")
+      this.$store.state.synchronized = false
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.hidden = true;
+      input.accept = '.json';
+      input.onchange = e => {
+         var file = e.target.files[0];
+         var reader = new FileReader();
+         reader.readAsText(file,'UTF-8');
+         reader.onload = readerEvent => {
+            let content = JSON.parse(readerEvent.target.result);
+            for(let table of Object.keys(content)){
+              localStorage.setItem(table, JSON.stringify(content[table]))
+              console.log(table.toLowerCase(), "RESTORED")
+            }
+            this.$store.state.synchronized = true
+         }
+      }
+      input.click();
     },
   },
   mounted(){
