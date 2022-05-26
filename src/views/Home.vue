@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import DialogProduit from "../components/dialog_produit"
 import DialogAchat from "../components/dialog_achat"
 import DialogSync from "../components/dialog_sync"
@@ -165,7 +166,6 @@ export default {
       CustomPlugins.openWhatsapp()
     },
     backup(){
-      this.makeToast("backup", "Creation de sauvegarde en cours...")
       let data = {
         clients: JSON.parse(localStorage.getItem("clients")),
         commandes: JSON.parse(localStorage.getItem("commandes")),
@@ -174,16 +174,27 @@ export default {
         pertes: JSON.parse(localStorage.getItem("pertes")),
         payments: JSON.parse(localStorage.getItem("payments"))
       }
+      let kiosk = this.getActiveKiosk().nom
       data = JSON.stringify(data);
-      const blob = new Blob([data], {type: 'text/json;charset=windows-1252;'});
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.setAttribute('hidden', '');
-      a.setAttribute('href', url);
-      a.setAttribute('download', 'model.json');
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      Filesystem.writeFile({
+        path: `${kiosk}_${new Date().getTime()}.json`,
+        data: data,
+        directory: Directory.Documents,
+        encoding: Encoding.UTF8,
+      }).then((result) => {
+        this.makeToast("backup", `Enregistré dans ${result.uri}`)
+      }, (err) => {
+        this.makeToast("error", JSON.stringify(err))
+      });
+      // const blob = new Blob([data], {type: 'text/json;charset=windows-1252;'});
+      // const url = window.URL.createObjectURL(blob);
+      // const a = document.createElement('a');
+      // a.setAttribute('hidden', '');
+      // a.setAttribute('href', url);
+      // a.setAttribute('download', 'model.json');
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
     },
     restore(){
       this.makeToast("Attention", "tout les données seront remplaçées...")
@@ -200,8 +211,8 @@ export default {
             let content = JSON.parse(readerEvent.target.result);
             for(let table of Object.keys(content)){
               localStorage.setItem(table, JSON.stringify(content[table]))
-              console.log(table.toLowerCase(), "RESTORED")
             }
+            this.makeToast("Success", "les données ont été a été restorées")
             this.$store.state.synchronized = true
          }
       }
