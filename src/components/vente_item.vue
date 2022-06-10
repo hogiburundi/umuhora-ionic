@@ -51,6 +51,10 @@ export default {
       },
       set(value){
         if(value.length==0) return;
+        if(value == 0){
+          this.cart.remove(this.item.id)
+          return
+        }
         this.cart.add(this.item, value);
       }
     }
