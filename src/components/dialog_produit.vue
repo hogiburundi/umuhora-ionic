@@ -82,8 +82,8 @@ export default {
       }
     },
     save(){
-      if(!this.nom) {
-        this.nom_error = "le nom est obligatiore"
+      if(!this.nom || !this.prix_vente || !this.rapport) {
+        this.nom_error = "le nom, le prix sont obligatoire"
         return
       }
       let data = {
