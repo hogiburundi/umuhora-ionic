@@ -341,13 +341,16 @@ export default {
           this.putProduits()
           return
         }
-        axios.post(this.url+`/produit/`, item.updated, this.headers)
+        axios.put(this.url+`/produit/${item.id}/`, item.updated, this.headers)
         .then((response) => {
           this.updated_prods.splice(0, 1)
           this.saveInDB("produits", response.data)
           this.putProduits()
         }).catch((error) => {
           if(!!error.response && error.response.status == 400){
+            if(!!error.response.data["non_field_errors"]){
+              this.deleteFromDB("produits", item.id)
+            }
             this.updated_prods.splice(0, 1)
             this.putProduits()
           } else{
@@ -381,6 +384,9 @@ export default {
           this.postProduits()
         }).catch((error) => {
           if(!!error.response && error.response.status == 400){
+            if(!!error.response.data["non_field_errors"]){
+              this.deleteFromDB("produits", item.id)
+            }
             this.created_produits.splice(0, 1)
             this.postProduits()
           } else{

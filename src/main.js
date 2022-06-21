@@ -147,7 +147,7 @@ app.mixin({
     makeToast(title, message, duration=5000){
       toastController.create({
         header: title,
-        message: message.slice(0, 240),
+        message: this.cleanString(message).slice(0, 240),
         icon: this.getIcon('informationCircleOutline'),
         duration:duration,
         buttons: [
