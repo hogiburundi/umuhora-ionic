@@ -21,7 +21,8 @@
         <ion-label for="du">Date d'expiration</ion-label>
         <ion-text slot=end>{{ datetime(du) }}</ion-text>
       </ion-item>
-      <ion-datetime @ionChange="choosedDu" presentation="time-date"
+      <ion-datetime @ionChange="choosedDu" presentation="date"
+        :min="min_date" :max="max_date"
         :value="du" v-if="du_shown"/>
       <ion-col class="options">
         <ion-button fill=clear color="medium" @click="close">
@@ -45,6 +46,16 @@ export default {
     return {
       qtt:0, prix_vente:0, date:null, escompte:"", du_shown:false,
       du:null
+    }
+  },
+  computed:{
+    min_date(){
+      return new Date().toISOString()
+    },
+    max_date(){
+      let date = new Date()
+      date.setFullYear(date.getFullYear() + 4)
+      return date.toISOString()
     }
   },
   watch:{
