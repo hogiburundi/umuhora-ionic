@@ -28,7 +28,8 @@
         <ion-button fill=clear color="medium" @click="close">
           ANULLER
         </ion-button>
-        <ion-button fill=clear @click="postStock" v-if="escompte>prix_vente">
+        <ion-button fill=clear @click="postStock"
+          v-if="!!prix_vente && escompte>prix_vente">
           VALIDER
         </ion-button>
       </ion-col>
