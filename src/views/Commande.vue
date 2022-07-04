@@ -22,7 +22,7 @@
     <ion-content>
       <ion-col>
         <CommandeItem v-for="commande in commandes" :item="commande"
-          @click="displayFacture(commande)" @deleted="remove(commande)"/>
+          @print="displayFacture(commande)" @deleted="remove(commande)"/>
       </ion-col>
     </ion-content>
     <ion-footer>

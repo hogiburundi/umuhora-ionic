@@ -1,6 +1,6 @@
 <template>
   <ion-col :data-id='item.id' :class="{'parent':true,'danger':item.quantite==0}">
-    <div class="item" @click="$emit('click')">
+    <div class="item">
       <b>No. {{item.id}} du {{ datetime(item.date) }}</b>
       <div class="inline">
         <div class="group">
@@ -21,9 +21,11 @@
         <div>{{ client }}</div>
       </div>
     </div>
-    <div class="inline" text-center button>
-      <ion-button size="small" expand="full" fill="clear"
-        style="margin: 0;" @click.stop="deleteCommande">
+    <div text-center button>
+      <ion-button size="small" expand="full" fill="clear" @click="$emit('print')">
+        <ion-icon color="dark" slot="icon-only" :src="getIcon('print')"/>
+      </ion-button>
+      <ion-button size="small" expand="full" fill="clear" @click.stop="deleteCommande">
         <ion-icon color="danger" slot="icon-only" :src="getIcon('close')"/>
       </ion-button>
     </div>
@@ -93,6 +95,9 @@ export default {
 };
 </script>
 <style scoped>
+*{
+  color: #666;
+}
 .parent{
   display: flex;
   margin: 0 10px 5px 10px;
@@ -110,5 +115,9 @@ export default {
 .key{
   font-size: .8em;
   margin-right: 2px;
+}
+ion-button{
+  margin: 0;
+  padding: 0;
 }
 </style>
