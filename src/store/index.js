@@ -9,6 +9,7 @@ export default createStore({
     // base_url: "",
     api: "/api",
     dialog_produit_shown:false,
+    saved:false,
     dialog_achat_shown:false,
     active_stock_item:null,
     synchronized:false,

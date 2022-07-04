@@ -182,7 +182,8 @@ export default {
         directory: Directory.Documents,
         encoding: Encoding.UTF8,
       }).then((result) => {
-        this.makeToast("backup", `Enregistré dans ${result.uri}`)
+        this.makeToast("backup", `Une sauvegarde a été créée dans ${result.uri}`)
+        this.$store.state.saved = true
       }, (err) => {
         this.makeToast("error", JSON.stringify(err))
       });
@@ -220,6 +221,9 @@ export default {
     },
   },
   mounted(){
+    if(!this.$store.state.saved){
+      this.backup()
+    }
   }
 }
 </script>
