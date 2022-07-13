@@ -24,7 +24,7 @@
     <div class="inline">
       <ion-col class="inline" v-if="!item.validated_by">
         <ion-button size="small" expand="full" fill="clear"
-          style="margin: 0;" @click="validateStock">
+          class="ion-no-padding" @click="validateStock">
           <ion-icon slot="icon-only" :src="getIcon('checkmarkDone')"/>
         </ion-button>
         <ion-button size="small" expand="full" fill="clear"
