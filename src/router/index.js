@@ -17,7 +17,7 @@ import Cart from '../views/Cart.vue'
 const routes = [
   { path: '/', redirect: 'home' },
   {
-    path:"/home/", 
+    path:"/home", 
     name: 'home',
     component: Home,
     children: [
